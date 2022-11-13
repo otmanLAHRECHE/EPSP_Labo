@@ -9,10 +9,13 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import InsertChartOutlinedTwoToneIcon from '@mui/icons-material/InsertChartOutlinedTwoTone';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -100,6 +103,10 @@ function DashboardContent() {
   const [page, setPage] = React.useState([true,false,false,false]);
 
 
+  const handleLogOut = () =>{
+    
+  }
+
   const clickDashboard = () =>{
     
     setPage([true,false,false,false])
@@ -155,8 +162,17 @@ function DashboardContent() {
               {toolBar}
             </Typography>
 
-            <Button color="inherit">َAdmin</Button>
-            <Button color="inherit">Log-out</Button>
+            <Button color="inherit" startIcon={<AdminPanelSettingsOutlinedIcon />}>Admin</Button>
+            <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="secondary"
+                onClick={handleLogOut}
+              >
+                <LogoutIcon />
+              </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
