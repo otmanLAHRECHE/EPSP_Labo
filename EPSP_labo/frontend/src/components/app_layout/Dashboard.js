@@ -14,7 +14,7 @@ import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import InsertChartOutlinedTwoToneIcon from '@mui/icons-material/InsertChartOutlinedTwoTone';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import ThreePRoundedIcon from '@mui/icons-material/ThreePRounded';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -146,7 +146,7 @@ function DashboardContent() {
   
 
   if(localStorage.getItem("auth_token")==null && logOut == true){
-    <Navigate to="/login"/>;
+    window.location.reload();
   }
   
   return (
@@ -181,7 +181,7 @@ function DashboardContent() {
               {toolBar}
             </Typography>
 
-            <Button color="inherit" startIcon={<AdminPanelSettingsOutlinedIcon />}>Admin</Button>
+            <Button color="inherit" startIcon={<ThreePRoundedIcon />}>Reception</Button>
             <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -219,7 +219,7 @@ function DashboardContent() {
                   <ListItemIcon>
                     <BiotechIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Tests" />
+                  <ListItemText primary="Testes médicaux" />
                 </ListItemButton>
                 <ListItemButton selected={page[2]} onClick={clickStatestiques}>
                   <ListItemIcon>

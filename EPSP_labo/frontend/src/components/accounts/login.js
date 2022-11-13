@@ -143,7 +143,7 @@ export default function SignInSide() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            H_Dent login
+            LABORATOIRE_APP login
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
                     <Autocomplete
