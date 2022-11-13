@@ -21,7 +21,7 @@ export default function Dashboard_details(){
           <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
             <Link color="inherit" href="https://github.com/otmanLAHRECHE">
-              H_Dent
+              Labo_SysApp
             </Link>{' '}
             -- created by otman LAHRECHE
             {'.'}

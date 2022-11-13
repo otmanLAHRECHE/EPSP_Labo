@@ -11,8 +11,8 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import VaccinesIcon from '@mui/icons-material/Vaccines';
-import InventoryIcon from '@mui/icons-material/Inventory';
+import InsertChartOutlinedTwoToneIcon from '@mui/icons-material/InsertChartOutlinedTwoTone';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -29,6 +29,7 @@ import EventIcon from '@mui/icons-material/Event';
 import OutputIcon from '@mui/icons-material/Output';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import BiotechIcon from '@mui/icons-material/Biotech';
 
 
 import MenuIcon from '@mui/icons-material/Menu';
@@ -102,22 +103,22 @@ function DashboardContent() {
   const clickDashboard = () =>{
     
     setPage([true,false,false,false])
-    setToolBar("Tableau de bord et statestiques")
+    setToolBar("Tableau de bord")
   };
-  const clickUsers = () =>{
+  const clickTests = () =>{
       
     setPage([false,true,false,false])
-    setToolBar("Utilisateurs")
-  };
-  const clickDoctors = () =>{
-      
-    setPage([false,false,true,false])
-    setToolBar("Medecins dentiste")
+    setToolBar("Tests")
   };
   const clickStatestiques = () =>{
       
+    setPage([false,false,true,false])
+    setToolBar("Statestiques")
+  };
+  const clickSettings = () =>{
+      
     setPage([false,false,false,true])
-    setToolBar("Statestiques des cabinets")
+    setToolBar("Options")
   };
 
   
@@ -153,6 +154,9 @@ function DashboardContent() {
             >
               {toolBar}
             </Typography>
+
+            <Button color="inherit">َAdmin</Button>
+            <Button color="inherit">Log-out</Button>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -176,23 +180,29 @@ function DashboardContent() {
                   </ListItemIcon>
                   <ListItemText primary="Tableau de bord"/>
                 </ListItemButton>
-                <ListItemButton selected={page[1]} onClick={clickUsers}>
+                <ListItemButton selected={page[1]} onClick={clickTests}>
                   <ListItemIcon>
-                    <SupervisedUserCircleIcon />
+                    <BiotechIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Utilisateurs" />
+                  <ListItemText primary="Tests" />
                 </ListItemButton>
-                <ListItemButton selected={page[2]} onClick={clickDoctors}>
+                <ListItemButton selected={page[2]} onClick={clickStatestiques}>
                   <ListItemIcon>
-                    <PeopleIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Medecines dentiste" />
-                </ListItemButton>
-                <ListItemButton selected={page[3]} onClick={clickStatestiques}>
-                  <ListItemIcon>
-                    <BarChartIcon />
+                    <InsertChartOutlinedTwoToneIcon />
                   </ListItemIcon>
                   <ListItemText primary="Statestiques" />
+                </ListItemButton>
+
+                <Divider sx={{ my: 1 }} />
+                    <ListSubheader component="div" inset>
+                      Autre options
+                    </ListSubheader>
+
+                <ListItemButton selected={page[3]} onClick={clickSettings}>
+                  <ListItemIcon>
+                    <SettingsOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Options" />
                 </ListItemButton>
              
           </List>
