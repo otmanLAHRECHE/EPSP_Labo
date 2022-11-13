@@ -28,7 +28,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContentText from '@mui/material/DialogContentText';
 import Slide from '@mui/material/Slide';
 import BiotechIcon from '@mui/icons-material/Biotech';
-
+import {Navigate} from 'react-router-dom';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -39,6 +39,10 @@ import Dashboard_details from './Dashboard-details';
 
 
 const drawerWidth = 240;
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -89,6 +93,7 @@ const mdTheme = createTheme();
 function DashboardContent() {
 
   const [open, setOpen] = React.useState(true);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -99,13 +104,21 @@ function DashboardContent() {
 
   const [logOut, setLogOut] = React.useState(false);
 
-  const [openDelete, setOpenDelete] = React.useState(false);
+  const [openLogOut, setOpenLogOut] = React.useState(false);
 
 
-  const handleLogOut = async () =>{
+  const LogOutClose = () =>{
+    setOpenLogOut(false);
+  }
 
+  const LogOutConfirmation = async () =>{
     await localStorage.removeItem("auth_token");
     setLogOut(true);
+  }
+  
+  const handleLogOut = () =>{
+
+    setOpenLogOut(true);
     
   }
 
@@ -132,7 +145,7 @@ function DashboardContent() {
 
   
 
-  if(logOut == true){
+  if(localStorage.getItem("auth_token")==null && logOut == true){
     <Navigate to="/login"/>;
   }
   
@@ -255,10 +268,10 @@ function DashboardContent() {
         </Box>
       </Box>
 
-      <Dialog open={openDelete}
+      <Dialog open={openLogOut}
                                 TransitionComponent={Transition}
                                 keepMounted
-                                onClose={deleteMedicClose}
+                                onClose={LogOutClose}
                                 aria-describedby="alert-dialog-slide-description"
                               >
                                 <DialogTitle>{"Confirmer la déconnection"}</DialogTitle>
@@ -268,8 +281,8 @@ function DashboardContent() {
                                   </DialogContentText>
                                 </DialogContent>
                                 <DialogActions>
-                                  <Button onClick={deleteMedicClose}>Anuller</Button>
-                                  <Button onClick={deleteConfirmation}>Log out</Button>
+                                  <Button onClick={LogOutClose}>Anuller</Button>
+                                  <Button onClick={LogOutConfirmation}>Log out</Button>
                                 </DialogActions>
                   </Dialog>
 
