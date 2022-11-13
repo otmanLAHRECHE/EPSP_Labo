@@ -21,17 +21,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-import Groups3Icon from '@mui/icons-material/Groups3';
-import EventIcon from '@mui/icons-material/Event';
-import OutputIcon from '@mui/icons-material/Output';
-import AnalyticsIcon from '@mui/icons-material/Analytics';
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContentText from '@mui/material/DialogContentText';
+import Slide from '@mui/material/Slide';
 import BiotechIcon from '@mui/icons-material/Biotech';
 
 
@@ -102,8 +97,15 @@ function DashboardContent() {
 
   const [page, setPage] = React.useState([true,false,false,false]);
 
+  const [logOut, setLogOut] = React.useState(false);
 
-  const handleLogOut = () =>{
+  const [openDelete, setOpenDelete] = React.useState(false);
+
+
+  const handleLogOut = async () =>{
+
+    await localStorage.removeItem("auth_token");
+    setLogOut(true);
     
   }
 
@@ -129,6 +131,10 @@ function DashboardContent() {
   };
 
   
+
+  if(logOut == true){
+    <Navigate to="/login"/>;
+  }
   
   return (
     <ThemeProvider theme={mdTheme}>
@@ -248,6 +254,25 @@ function DashboardContent() {
           
         </Box>
       </Box>
+
+      <Dialog open={openDelete}
+                                TransitionComponent={Transition}
+                                keepMounted
+                                onClose={deleteMedicClose}
+                                aria-describedby="alert-dialog-slide-description"
+                              >
+                                <DialogTitle>{"Confirmer la déconnection"}</DialogTitle>
+                                <DialogContent>
+                                  <DialogContentText id="alert-dialog-slide-description">
+                                  Êtes-vous sûr ?
+                                  </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                  <Button onClick={deleteMedicClose}>Anuller</Button>
+                                  <Button onClick={deleteConfirmation}>Log out</Button>
+                                </DialogActions>
+                  </Dialog>
+
     </ThemeProvider>
   );
 }
