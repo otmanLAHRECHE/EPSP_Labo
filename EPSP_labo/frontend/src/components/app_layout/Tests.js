@@ -35,8 +35,8 @@ import Container from '@mui/material/Container';
 
 import Alt from '../layouts/alert';
 
-import SortieItemsTable from '../layouts/sortie_items_table';
 import { internal_processStyles } from '@mui/styled-engine';
+import ExamenItemsList from './Items-test-list';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -46,15 +46,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const columns = [
     { field: 'id', headerName: 'Id', width: 60, hide: true },
-    { field: 'id', headerName: "No D'ENREGISTREMENT", width: 60},
-    { field: 'id', headerName: "NOM", width: 150},
-    { field: 'id', headerName: "PRENOM", width: 150},
-    { field: 'id', headerName: "AGE", width: 100},
-    { field: 'id', headerName: "GENRE", width: 100},
+    { field: 'id2', headerName: "No D'ENREGISTREMENT", width: 100},
+    { field: 'id3', headerName: "NOM", width: 150},
+    { field: 'id4', headerName: "PRENOM", width: 150},
+    { field: 'id5', headerName: "AGE", width: 100},
+    { field: 'id6', headerName: "GENRE", width: 100},
     { field: 'date', headerName: "DATE D'EXAMEN", width: 140 },
-    { field: 'date', headerName: "DYPE D'EXAMEN", width: 140 },
+    { field: 'date2', headerName: "TYPE D'EXAMEN", width: 140 },
     { field: 'sort', headerName: "LES TESTES D'EXAMEN", width: 200 , renderCell: (params) => (
-      <SortieItemsTable rows={params.row.sortie_items_set}/>
+      <ExamenItemsList rows={params.row.sortie_items_set}/>
     ),
    },
   ];
@@ -257,7 +257,7 @@ const columns = [
             <Dialog open={openDelete}
                                     TransitionComponent={Transition}
                                     keepMounted
-                                    onClose={deleteBonSortieClose}
+                                    onClose={deleteExamenClose}
                                     aria-describedby="alert-dialog-slide-description"
                                   >
                                     <DialogTitle>{"Confirmer la suppression d'un examen"}</DialogTitle>

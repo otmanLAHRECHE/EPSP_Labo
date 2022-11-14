@@ -34,6 +34,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Dashboard_details from './Dashboard-details';
+import Tests from './Tests';
 
 
 
@@ -130,7 +131,7 @@ function DashboardContent() {
   const clickTests = () =>{
       
     setPage([false,true,false,false])
-    setToolBar("Tests")
+    setToolBar("Examens")
   };
   const clickStatestiques = () =>{
       
@@ -219,7 +220,7 @@ function DashboardContent() {
                   <ListItemIcon>
                     <BiotechIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Testes médicaux" />
+                  <ListItemText primary="Examens médicaux" />
                 </ListItemButton>
                 <ListItemButton selected={page[2]} onClick={clickStatestiques}>
                   <ListItemIcon>
@@ -258,7 +259,7 @@ function DashboardContent() {
 
         
         {page[0] ? <Dashboard_details/> : null}
-        {page[1] ? <Dashboard_details/> : null}
+        {page[1] ? <Tests/> : null}
         {page[2] ? <Dashboard_details/> : null}
         {page[3] ? <Dashboard_details/> : null}
         
