@@ -57,4 +57,4 @@ const columns = [
   });
 
 
-  export 
+  export default function 
