@@ -46,13 +46,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const columns = [
     { field: 'id', headerName: 'Id', width: 60, hide: true },
-    { field: 'id2', headerName: "No D'ENREGISTREMENT", width: 100},
-    { field: 'id3', headerName: "NOM", width: 150},
-    { field: 'id4', headerName: "PRENOM", width: 150},
+    { field: 'id2', headerName: "No D'ENREGISTREMENT", width: 180},
+    { field: 'id3', headerName: "NOM", width: 140},
+    { field: 'id4', headerName: "PRENOM", width: 140},
     { field: 'id5', headerName: "AGE", width: 100},
-    { field: 'id6', headerName: "GENRE", width: 100},
-    { field: 'date', headerName: "DATE D'EXAMEN", width: 140 },
-    { field: 'date2', headerName: "TYPE D'EXAMEN", width: 140 },
+    { field: 'id6', headerName: "GENRE", width: 80},
+    { field: 'date', headerName: "DATE D'PRELEVEMENT", width: 150 },
+    { field: 'date2', headerName: "INF DE PRELEVEMENT", width: 150 },
+    { field: 'date3', headerName: "TYPE D'EXAMEN", width: 140 },
     { field: 'sort', headerName: "LES TESTES D'EXAMEN", width: 200 , renderCell: (params) => (
       <ExamenItemsList rows={params.row.sortie_items_set}/>
     ),

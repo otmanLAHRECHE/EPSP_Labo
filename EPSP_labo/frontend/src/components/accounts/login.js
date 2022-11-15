@@ -156,9 +156,12 @@ export default function SignInSide() {
                                         if(newVlue.id == 1){
                                           setPasswordState(false);
                                           setPassword("")
-                                        }else{
+                                        }else if(newVlue.id == 2){
                                           setPasswordState(true);
-                                          setPassword("123456789");
+                                          setPassword("1234");
+                                        }else{
+                                          setPasswordState(false);
+                                          setPassword("");
                                         }
                                       }
                                       
