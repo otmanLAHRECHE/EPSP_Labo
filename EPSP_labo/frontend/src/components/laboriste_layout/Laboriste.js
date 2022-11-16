@@ -25,6 +25,7 @@ import Container from '@mui/material/Container';
 
 import Grid from '@mui/material/Grid';
 import Alt from '../layouts/alert';
+import { addNewLaboriste, deleteLaboriste, getAllLaboriste, getSelectedLaboriste, updateLaboriste } from '../../actions/laboriste_data';
 
 
 const columns = [
@@ -81,7 +82,7 @@ const columns = [
         }else{    
           const token = localStorage.getItem("auth_token");
   
-          setRowData(await getSelectedFournisseeur(token, selectionModel[0])); 
+          setRowData(await getSelectedLaboriste(token, selectionModel[0])); 
         }
   
       }
@@ -139,7 +140,7 @@ const columns = [
   
           const token = localStorage.getItem("auth_token");
   
-          setResponse(await addNewFournisseur(token, JSON.stringify(data))); 
+          setResponse(await addNewLaboriste(token, JSON.stringify(data))); 
           
         }
         else{
@@ -176,7 +177,7 @@ const columns = [
           }
           const token = localStorage.getItem("auth_token");
   
-          setResponse(await updateFournisseur(token, JSON.stringify(data), rowData.id)); 
+          setResponse(await updateLaboriste(token, JSON.stringify(data), rowData.id)); 
   
           setOpenUpdate(false);
           
@@ -192,7 +193,7 @@ const columns = [
   
         setOpenDelete(false);
         const token = localStorage.getItem("auth_token");
-        setResponse(await deleteFournisseur(token, selectionModel[0])); 
+        setResponse(await deleteLaboriste(token, selectionModel[0])); 
           
       }
 
@@ -241,7 +242,8 @@ const columns = [
           const fetchData = async () => {
             try {
               const token = localStorage.getItem("auth_token");
-              setData(await getAllFournisseur(token));
+              console.log("token",token)
+              setData(await getAllLaboriste(token));
               setLoading(false);
             } catch (error) {
               console.log("error", error);
@@ -392,7 +394,7 @@ const columns = [
                       <Dialog open={openDelete}
                                     TransitionComponent={Transition}
                                     keepMounted
-                                    onClose={deleteFournClose}
+                                    onClose={deleteLaboristeClose}
                                     aria-describedby="alert-dialog-slide-description"
                                   >
                                     <DialogTitle>{"Confirmer la suppression d'un laboriste"}</DialogTitle>
