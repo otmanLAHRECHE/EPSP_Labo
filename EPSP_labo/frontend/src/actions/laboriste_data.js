@@ -1,4 +1,5 @@
 export async function getAllLaboriste(token){
+    console.log("token",token);
 
     const response = await fetch(
         '/labo/api/get_all_laboriste/',
