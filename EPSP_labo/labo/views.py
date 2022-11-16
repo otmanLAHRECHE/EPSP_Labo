@@ -26,7 +26,6 @@ def getAllLaboriste(request):
 
         return Response(status=status.HTTP_200_OK,data=source_serial.data)
                 
-    
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED) 
 
