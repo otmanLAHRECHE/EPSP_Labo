@@ -30,6 +30,11 @@ import Slide from '@mui/material/Slide';
 import BiotechIcon from '@mui/icons-material/Biotech';
 import {Navigate} from 'react-router-dom';
 
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import BadgeIcon from '@mui/icons-material/Badge';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import ScienceIcon from '@mui/icons-material/Science';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -101,7 +106,7 @@ function DashboardLaboristeContent() {
 
   const [toolBar,setToolBar] = React.useState("Tableau de bord");
 
-  const [page, setPage] = React.useState([true,false,false,false]);
+  const [page, setPage] = React.useState([true,false,false,false,false,false,false,false]);
 
   const [logOut, setLogOut] = React.useState(false);
 
@@ -126,22 +131,45 @@ function DashboardLaboristeContent() {
 
   const clickDashboard = () =>{
     
-    setPage([true,false,false,false])
+    setPage([true,false,false,false,false,false,false,false])
     setToolBar("Tableau de bord")
   };
   const clickTests = () =>{
       
-    setPage([false,true,false,false])
+    setPage([false,true,false,false,false,false,false,false])
     setToolBar("Examens")
+  };
+  const clickResults = () =>{
+      
+    setPage([false,false,true,false,false,false,false,false])
+    setToolBar("Resultats")
+  };
+
+  const clickLaboristes = () =>{
+      
+    setPage([false,false,false,true,false,false,false,false])
+    setToolBar("Laboristes")
+  };
+
+  const clickInfPrelevement = () =>{
+      
+    setPage([false,false,false,false,true,false,false,false])
+    setToolBar("Infirmiers de prélèvement")
   };
   const clickStatestiques = () =>{
       
-    setPage([false,false,true,false])
+    setPage([false,false,false,false,false,true,false,false])
     setToolBar("Statestiques")
   };
+  const clickExemensTests = () =>{
+      
+    setPage([false,false,false,false,false,false,true,false])
+    setToolBar("Options")
+  };
+
   const clickSettings = () =>{
       
-    setPage([false,false,false,true])
+    setPage([false,false,false,false,false,false,false,true])
     setToolBar("Options")
   };
 
@@ -217,13 +245,36 @@ function DashboardLaboristeContent() {
                   </ListItemIcon>
                   <ListItemText primary="Tableau de bord"/>
                 </ListItemButton>
+
                 <ListItemButton selected={page[1]} onClick={clickTests}>
                   <ListItemIcon>
                     <BiotechIcon />
                   </ListItemIcon>
                   <ListItemText primary="Examens médicaux" />
                 </ListItemButton>
-                <ListItemButton selected={page[2]} onClick={clickStatestiques}>
+
+                <ListItemButton selected={page[2]} onClick={clickResults}>
+                  <ListItemIcon>
+                    <ReceiptIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Resultats" />
+                </ListItemButton>
+
+                <ListItemButton selected={page[3]} onClick={clickLaboristes}>
+                  <ListItemIcon>
+                    <AdminPanelSettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Laboristes" />
+                </ListItemButton>
+
+                <ListItemButton selected={page[4]} onClick={clickInfPrelevement}>
+                  <ListItemIcon>
+                    <BadgeIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Inf de prélèvement" />
+                </ListItemButton>
+
+                <ListItemButton selected={page[5]} onClick={clickStatestiques}>
                   <ListItemIcon>
                     <InsertChartOutlinedTwoToneIcon />
                   </ListItemIcon>
@@ -235,7 +286,14 @@ function DashboardLaboristeContent() {
                       Autre options
                     </ListSubheader>
 
-                <ListItemButton selected={page[3]} onClick={clickSettings}>
+                <ListItemButton selected={page[6]} onClick={clickExemensTests}>
+                  <ListItemIcon>
+                    <ScienceIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Testes" />
+                </ListItemButton>
+
+                <ListItemButton selected={page[7]} onClick={clickSettings}>
                   <ListItemIcon>
                     <SettingsOutlinedIcon />
                   </ListItemIcon>
@@ -263,6 +321,10 @@ function DashboardLaboristeContent() {
         {page[1] ? <Tests/> : null}
         {page[2] ? <Dashboard_details/> : null}
         {page[3] ? <Dashboard_details/> : null}
+        {page[4] ? <Dashboard_details/> : null}
+        {page[5] ? <Dashboard_details/> : null}
+        {page[6] ? <Dashboard_details/> : null}
+        {page[7] ? <Dashboard_details/> : null}
         
 
         
