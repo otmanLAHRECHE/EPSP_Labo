@@ -40,6 +40,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Dashboard_details from './Dashboard-details';
 import Tests from './Tests';
+import Laboristes from './Laboriste';
 
 
 
@@ -320,7 +321,7 @@ function DashboardLaboristeContent() {
         {page[0] ? <Dashboard_details/> : null}
         {page[1] ? <Tests/> : null}
         {page[2] ? <Dashboard_details/> : null}
-        {page[3] ? <Dashboard_details/> : null}
+        {page[3] ? <Laboristes/> : null}
         {page[4] ? <Dashboard_details/> : null}
         {page[5] ? <Dashboard_details/> : null}
         {page[6] ? <Dashboard_details/> : null}
