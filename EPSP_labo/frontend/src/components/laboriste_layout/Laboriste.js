@@ -292,7 +292,7 @@ const columns = [
                               aria-labelledby="nested-list-subheader"
                               subheader={
                                 <ListSubheader component="div" id="nested-list-subheader">
-                                  Manager les fournisseurs
+                                  Manager les laboriste
                                 </ListSubheader>
                               }
                             >
