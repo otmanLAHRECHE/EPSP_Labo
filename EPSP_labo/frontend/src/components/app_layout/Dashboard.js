@@ -114,6 +114,7 @@ function DashboardContent() {
 
   const LogOutConfirmation = async () =>{
     await localStorage.removeItem("auth_token");
+    await localStorage.removeItem("user_type");
     setLogOut(true);
   }
   

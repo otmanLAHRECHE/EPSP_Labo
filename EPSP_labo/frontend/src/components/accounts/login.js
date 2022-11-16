@@ -84,7 +84,6 @@ export default function SignInSide() {
       setLoginError(true);
       test = false;
     }else{
-      if(user.id ==1 || user.id ==2){
         if(password == null || password == ""){
           setPasswordError([true, "Chapm est obligatoire"]);
           setLoginError(true);
@@ -94,9 +93,6 @@ export default function SignInSide() {
         if(test){
           setResponse(await login_api(user.label, password.toString()));
         }
-      }else{
-
-      }
     }
 
   };
@@ -105,8 +101,13 @@ export default function SignInSide() {
 
   React.useEffect( () =>{
 
+    const save_user_type = async() =>{
+      await localStorage.setItem("user_type", user.label);
+    }
+
    if(response =="logged"){
     setOpen(true);
+    save_user_type();
     setTimeout(()=>{
       console.log("timeout....")
       setLoged(true);
@@ -123,7 +124,7 @@ export default function SignInSide() {
 
 
   if (localStorage.getItem("auth_token") && loged == true) {
-    console.log("navigate")
+    console.log(user.label);
     return <Navigate to="/"/>;
   }else{
   return (
