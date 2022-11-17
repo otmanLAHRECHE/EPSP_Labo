@@ -355,8 +355,8 @@ const columns = [
                           <DialogTitle>Modifier un infirmier</DialogTitle>
                               <DialogContent>
                                 <TextField
-                                  error={infFirstName[0]}
-                                  helperText={infFirstName[1]}
+                                  error={infFirstNameError[0]}
+                                  helperText={infFirstNameError[1]}
                                   required
                                   margin="dense"
                                   name="inf_first_name"
