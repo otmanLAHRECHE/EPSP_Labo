@@ -41,6 +41,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Dashboard_details from './Dashboard-details';
 import Tests from './Tests';
 import Laboristes from './Laboriste';
+import Inf_prelevement from './inf_prelevement';
 
 
 
@@ -322,7 +323,7 @@ function DashboardLaboristeContent() {
         {page[1] ? <Tests/> : null}
         {page[2] ? <Dashboard_details/> : null}
         {page[3] ? <Laboristes/> : null}
-        {page[4] ? <Dashboard_details/> : null}
+        {page[4] ? <Inf_prelevement/> : null}
         {page[5] ? <Dashboard_details/> : null}
         {page[6] ? <Dashboard_details/> : null}
         {page[7] ? <Dashboard_details/> : null}
