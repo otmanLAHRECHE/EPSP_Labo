@@ -95,3 +95,87 @@ def deleteLaboriste(request, id):
     if request.method == 'DELETE' and request.user.is_authenticated:
         Laboriste.objects.filter(id=id).delete()
         return Response(status=status.HTTP_200_OK, data = {"status":"laboriste deleted"})
+
+
+
+
+
+
+@api_view(['GET'])
+def getAllInfirmier(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = InfPrileve.objects.all()
+
+        source_serial = InfirmierSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
+
+@api_view(['GET'])
+def getSelectedInfirmier(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = InfPrileve.objects.get(id = id)
+
+        source_serial = InfirmierSerializer(queryset)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET'])
+def getAllInfirmiersToSelect(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = InfPrileve.objects.all()
+
+        source_serial = InfirmierSelectSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
+@api_view(['POST'])
+def createNewInfirmier(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        first_name = request.data.pop('first_name')
+        last_name = request.data.pop('last_name')
+
+        source = InfPrileve.objects.create(first_name=first_name, last_name=last_name)
+
+        if source.id is not None:
+            return Response(status=status.HTTP_201_CREATED, data = {"status":"Infirmier created"})
+        else:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(['POST'])
+def updateInfirmier(request, id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        first_name = request.data.pop("first_name")
+        last_name = request.data.pop("last_name")
+        infirmier_to_update = InfPrileve.objects.get(id=id)
+        if not infirmier_to_update.first_name == first_name:
+            infirmier_to_update.first_name = first_name
+        if not infirmier_to_update.last_name == last_name:
+            infirmier_to_update.last_name = last_name
+        
+        infirmier_to_update.save()
+        
+        return Response(status=status.HTTP_200_OK, data = {"status":"infirmier updated"})
+
+
+@api_view(['DELETE'])
+def deleteInfirmier(request, id):
+    if request.method == 'DELETE' and request.user.is_authenticated:
+        InfPrileve.objects.filter(id=id).delete()
+        return Response(status=status.HTTP_200_OK, data = {"status":"infirmier deleted"})
