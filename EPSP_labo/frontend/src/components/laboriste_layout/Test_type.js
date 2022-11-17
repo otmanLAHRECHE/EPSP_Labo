@@ -20,6 +20,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContentText from '@mui/material/DialogContentText';
 import Slide from '@mui/material/Slide';
 
+import FormControl from '@mui/material/FormControl';
+
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
+import InputLabel from '@mui/material/InputLabel';
+
 
 import Container from '@mui/material/Container';
 
@@ -117,7 +124,6 @@ const columns = [
 
     }
 
-
     const addTestSave = async () =>{
 
       var test2 = true;
@@ -132,7 +138,7 @@ const columns = [
         test2 = false;
       }
       if (testType == ""){
-        setTestType([true,"Ce champ est obligatoire"])
+        setTestTypeError([true,"Ce champ est obligatoire"])
         test2 = false;
       }
       
@@ -178,7 +184,7 @@ const columns = [
         test2 = false;
       }
       if (testType == ""){
-        setTestType([true,"Ce champ est obligatoire"])
+        setTestTypeError([true,"Ce champ est obligatoire"])
         test2 = false;
       }
       
@@ -367,7 +373,7 @@ const columns = [
                             </ListItemIcon>
                             <ListItemText primary="Modifier un teste" />
                           </ListItemButton>
-                          <ListItemButton onClick={deleteInfOpen}>
+                          <ListItemButton onClick={deleteTestOpen}>
                             <ListItemIcon>
                               <DeleteForeverIcon />
                             </ListItemIcon>
@@ -379,7 +385,7 @@ const columns = [
                 </Grid>  
 
 
-                  <Dialog open={open} onClose={addInfClose}  maxWidth="md" fullWidth={true}>
+                  <Dialog open={open} onClose={addTestClose}  maxWidth="md" fullWidth={true}>
                       <DialogTitle>Ajouter un teste</DialogTitle>
                           <DialogContent>
                             <TextField
