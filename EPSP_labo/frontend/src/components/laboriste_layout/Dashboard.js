@@ -166,7 +166,7 @@ function DashboardLaboristeContent() {
   const clickExemensTests = () =>{
       
     setPage([false,false,false,false,false,false,true,false])
-    setToolBar("Options")
+    setToolBar("Type des examens")
   };
 
   const clickSettings = () =>{
@@ -292,7 +292,7 @@ function DashboardLaboristeContent() {
                   <ListItemIcon>
                     <ScienceIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Testes" />
+                  <ListItemText primary="Type des examens" />
                 </ListItemButton>
 
                 <ListItemButton selected={page[7]} onClick={clickSettings}>
