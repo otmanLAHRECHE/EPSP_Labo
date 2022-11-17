@@ -41,11 +41,13 @@ const columns = [
 
   export default function Test_types(){
 
-    const [infFirstName, setInfFirstName] = React.useState("");
-    const [infLastName, setInfLastName] = React.useState("");
+    const [test, setTest] = React.useState("");
+    const [testType, setTestType] = React.useState("");
+    const [testColor, setTestColor] = React.useState("");
 
-    const [infFirstNameError, setInfFirstNameError] = React.useState([false, ""]);
-    const [infLastNameError, setInfLastNameError] = React.useState([false, ""]);
+    const [testError, setTestError] = React.useState([false, ""]);
+    const [testTypeError, setTestTypeError] = React.useState([false, ""]);
+    const [testColorError, setTestColorError] = React.useState([false, ""]);
 
 
 
