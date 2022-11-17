@@ -179,3 +179,91 @@ def deleteInfirmier(request, id):
     if request.method == 'DELETE' and request.user.is_authenticated:
         InfPrileve.objects.filter(id=id).delete()
         return Response(status=status.HTTP_200_OK, data = {"status":"infirmier deleted"})
+
+
+
+
+
+
+@api_view(['GET'])
+def getAllExameTests(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = ExamenTestes.objects.all()
+
+        source_serial = ExemenTestSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
+
+@api_view(['GET'])
+def getSelectedExemenTest(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = ExamenTestes.objects.get(id = id)
+
+        source_serial = ExemenTestSerializer(queryset)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET'])
+def getAllExemenTestToSelect(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = ExamenTestes.objects.all()
+
+        source_serial = ExemenTestSelectSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
+@api_view(['POST'])
+def createNewExemenTest(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        exam_test = request.data.pop('exam_test')
+        exam_type = request.data.pop('exam_type')
+        exam_color = request.data.pop('exam_color')
+
+        source = ExamenTestes.objects.create(exam_test=exam_test, exam_type=exam_type, exam_color=exam_color)
+
+        if source.id is not None:
+            return Response(status=status.HTTP_201_CREATED, data = {"status":"Exemen test created"})
+        else:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(['POST'])
+def updateExemenTest(request, id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        exam_test = request.data.pop('exam_test')
+        exam_type = request.data.pop('exam_type')
+        exam_color = request.data.pop('exam_color')
+        Exemen_Test_to_update = InfPrileve.objects.get(id=id)
+        if not Exemen_Test_to_update.exam_test == exam_test:
+            Exemen_Test_to_update.exam_test = exam_test
+        if not Exemen_Test_to_update.exam_type == exam_type:
+            Exemen_Test_to_update.exam_type = exam_type
+        if not Exemen_Test_to_update.exam_color == exam_color:
+            Exemen_Test_to_update.exam_color = exam_color
+        
+        Exemen_Test_to_update.save()
+        
+        return Response(status=status.HTTP_200_OK, data = {"status":"Exemen test updated"})
+
+
+@api_view(['DELETE'])
+def deleteExemenTest(request, id):
+    if request.method == 'DELETE' and request.user.is_authenticated:
+        ExamenTestes.objects.filter(id=id).delete()
+        return Response(status=status.HTTP_200_OK, data = {"status":"Exemen test deleted"})

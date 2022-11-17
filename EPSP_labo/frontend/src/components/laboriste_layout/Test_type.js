@@ -25,6 +25,7 @@ import Container from '@mui/material/Container';
 
 import Grid from '@mui/material/Grid';
 import Alt from '../layouts/alert';
+import { addNewExemenTest, deleteExemenTest, getAllExemenTEst, getSelectedExemenTest, updateExemenTest } from '../../actions/exemen_test_data';
 
 
 const columns = [
@@ -86,7 +87,7 @@ const columns = [
       }else{    
         const token = localStorage.getItem("auth_token");
 
-        setRowData(await getSelectedInfirmier(token, selectionModel[0])); 
+        setRowData(await getSelectedExemenTest(token, selectionModel[0])); 
       }
 
     }
@@ -151,7 +152,7 @@ const columns = [
 
         const token = localStorage.getItem("auth_token");
 
-        setResponse(await addNewInfirmier(token, JSON.stringify(data))); 
+        setResponse(await addNewExemenTest(token, JSON.stringify(data))); 
         
       }
       else{
@@ -196,7 +197,7 @@ const columns = [
         }  
         const token = localStorage.getItem("auth_token");
 
-        setResponse(await updateInfirmier(token, JSON.stringify(data), rowData.id)); 
+        setResponse(await updateExemenTest(token, JSON.stringify(data), rowData.id)); 
 
         setOpenUpdate(false);
         
@@ -212,7 +213,7 @@ const columns = [
 
       setOpenDelete(false);
       const token = localStorage.getItem("auth_token");
-      setResponse(await deleteInfirmier(token, selectionModel[0])); 
+      setResponse(await deleteExemenTest(token, selectionModel[0])); 
         
     }
 
@@ -280,7 +281,7 @@ const columns = [
           try {
             const token = localStorage.getItem("auth_token");
             console.log("token",token)
-            setData(await getAllInfirmier(token));
+            setData(await getAllExemenTEst(token));
             setLoading(false);
           } catch (error) {
             console.log("error", error);

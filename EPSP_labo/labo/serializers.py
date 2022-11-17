@@ -31,3 +31,16 @@ class InfirmierSelectSerializer(serializers.ModelSerializer):
     class Meta:
         model = InfPrileve
         fields = ['id', 'label']
+
+
+class ExemenTestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamenTestes
+        fields = ['id', 'exam_test', 'exam_type', 'exam_color']
+
+
+class ExemenTestSelectSerializer(serializers.ModelSerializer):
+    label = serializers.CharField(source = 'type') 
+    class Meta:
+        model = ExamenTestes
+        fields = ['id', 'label']
