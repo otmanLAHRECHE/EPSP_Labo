@@ -25,7 +25,7 @@ import Container from '@mui/material/Container';
 
 import Grid from '@mui/material/Grid';
 import Alt from '../layouts/alert';
-import { addNewLaboriste, deleteLaboriste, getAllLaboriste, getSelectedLaboriste, updateLaboriste } from '../../actions/laboriste_data';
+import { addNewInfirmier, deleteInfirmier, getAllInfirmier, getSelectedInfirmier, updateInfirmier } from '../../actions/inf_prelevement_data';
 
 
 const columns = [
@@ -80,7 +80,7 @@ const columns = [
         }else{    
           const token = localStorage.getItem("auth_token");
   
-          setRowData(await getSelectedLaboriste(token, selectionModel[0])); 
+          setRowData(await getSelectedInfirmier(token, selectionModel[0])); 
         }
   
       }
@@ -138,7 +138,7 @@ const columns = [
   
           const token = localStorage.getItem("auth_token");
   
-          setResponse(await addNewLaboriste(token, JSON.stringify(data))); 
+          setResponse(await addNewInfirmier(token, JSON.stringify(data))); 
           
         }
         else{
@@ -175,7 +175,7 @@ const columns = [
           }
           const token = localStorage.getItem("auth_token");
   
-          setResponse(await updateLaboriste(token, JSON.stringify(data), rowData.id)); 
+          setResponse(await updateInfirmier(token, JSON.stringify(data), rowData.id)); 
   
           setOpenUpdate(false);
           
@@ -191,7 +191,7 @@ const columns = [
   
         setOpenDelete(false);
         const token = localStorage.getItem("auth_token");
-        setResponse(await deleteLaboriste(token, selectionModel[0])); 
+        setResponse(await deleteInfirmier(token, selectionModel[0])); 
           
       }
 
@@ -241,7 +241,7 @@ const columns = [
             try {
               const token = localStorage.getItem("auth_token");
               console.log("token",token)
-              setData(await getAllLaboriste(token));
+              setData(await getAllInfirmier(token));
               setLoading(false);
             } catch (error) {
               console.log("error", error);
