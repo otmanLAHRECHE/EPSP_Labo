@@ -59,18 +59,10 @@ const columns = [
     ),
    },
   ];
-
-  
-
   
   var sortieItemsTableData = [];
 
-
-
-
   export default function Tests(){
-
-
 
     const [testCode, setTestCode] = React.useState("");
     const [name, setName] = React.useState(null);
@@ -80,7 +72,7 @@ const columns = [
     const [testType, setTestType] = React.useState(null);
     const [docName, setDocName] = React.useState(null);
     const [date, setDate] = React.useState("");
-
+    
     const [dateFilter, setDateFilter] = React.useState(dayjs());
 
     const [examenName, setExamenName] = React.useState(null);
