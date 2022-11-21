@@ -39,6 +39,12 @@ import { internal_processStyles } from '@mui/styled-engine';
 import ExamenItemsList from './Items-test-list';
 
 
+import FormControl from '@mui/material/FormControl';
+
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -315,33 +321,82 @@ const columns = [
 
                                         </Grid>
                                         <Grid item xs={4}>
-                                        <TextField
-                                                  error={nameError[0]}
-                                                  helperText={nameError[1]}
-                                                  margin="dense"
-                                                  id="Nom_de_malade"
-                                                  label="Nom de malade"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  onChange={(event) => {setName(event.target.value)}}
-                                          />
+                                        <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
+                                          <InputLabel required htmlFor="grouped-select"
+                                               error={genreError[0]} helperText={genreError[1]}>Genre</InputLabel>
+                                            <Select defaultValue="" id="grouped-select" label="Genre"
+                                            onChange={change_type}>
+                                              <MenuItem value="">
+                                                <em>None</em>
+                                              </MenuItem>
+                                              <MenuItem value={1}>homme</MenuItem>
+                                              <MenuItem value={2}>famme</MenuItem>
+                                            
+
+                                            </Select>
+                                </FormControl>   
                                         
                                         </Grid>
 
                                         <Grid item xs={4}>
-                                        <TextField
-                                                  error={prenameError[0]}
-                                                  helperText={prenameError[1]}
-                                                  margin="dense"
-                                                  id="No_d_enregistrement"
-                                                  label="Prenom de malade"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  onChange={(event) => {setPrename(event.target.value)}}
-                                          />
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DesktopDatePicker
+                                                        label="Date de prélèvement"
+                                                        inputFormat="DD/MM/YYYY"
+                                                        value={date}
+                                                        onChange={handleChangeDate}
+                                                        renderInput={(params) => <TextField {...params} error={dateError[0]}
+                                                        helperText={dateError[1]} 
+                                                        required/>}
+                                                />
+
+                                            </LocalizationProvider>
                                                  
                                         
                                         </Grid>
+
+                        
+                      </Grid>
+
+                      <Grid container spacing={2}>
+                                        <Grid item xs={4}>
+                                        <Autocomplete
+                                                    disablePortal
+                                                    value={}
+                                                    onChange={(event, newVlue) =>{
+                                                        setSource(newVlue);
+                                                        
+                                                    }}
+                                                    options={allSources}
+                                                    renderInput={(params) => <TextField {...params} error={sourceError[0]}
+                                                    helperText={sourceError[1]} fullWidth variant="standard" label="Destination" 
+                                                    required/>}
+                                                />  
+                                        
+
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                        <Autocomplete
+                                                    disablePortal
+                                                    value={source}
+                                                    onChange={(event, newVlue) =>{
+                                                        setSource(newVlue);
+                                                        
+                                                    }}
+                                                    options={allSources}
+                                                    renderInput={(params) => <TextField {...params} error={sourceError[0]}
+                                                    helperText={sourceError[1]} fullWidth variant="standard" label="Destination" 
+                                                    required/>}
+                                                />  
+                                        
+                                        </Grid>
+
+                                        <Grid item xs={4}>
+                                         
+                                        
+                                        </Grid>
+
+                                        
 
                         
                       </Grid>
