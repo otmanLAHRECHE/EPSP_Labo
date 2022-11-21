@@ -72,7 +72,7 @@ const columns = [
     const [testType, setTestType] = React.useState(null);
     const [docName, setDocName] = React.useState(null);
     const [date, setDate] = React.useState("");
-    
+
     const [dateFilter, setDateFilter] = React.useState(dayjs());
 
     const [examenName, setExamenName] = React.useState(null);
@@ -244,6 +244,115 @@ const columns = [
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
+
+
+            <Dialog open={open} onClose={addBonSortieClose}  maxWidth="lg" fullWidth={true}>
+                  <DialogTitle>Ajouter un exemen</DialogTitle>
+                    <DialogContent>
+                      <Grid container spacing={2}>
+                                        <Grid item xs={4}>
+                                          <TextField
+                                                  error={testCodeError[0]}
+                                                  helperText={testCodeError[1]}
+                                                  margin="dense"
+                                                  id="No_d_enregistrement"
+                                                  label="No d'enregistrement"
+                                                  fullWidth
+                                                  variant="standard"
+                                                  type="number"
+                                                  onChange={(event) => {setTestCode(event.target.value)}}
+                                          />
+
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                        <TextField
+                                                  error={nameError[0]}
+                                                  helperText={nameError[1]}
+                                                  margin="dense"
+                                                  id="Nom_de_malade"
+                                                  label="Nom de malade"
+                                                  fullWidth
+                                                  variant="standard"
+                                                  onChange={(event) => {setName(event.target.value)}}
+                                          />
+                                        
+                                        </Grid>
+
+                                        <Grid item xs={4}>
+                                        <TextField
+                                                  error={prenameError[0]}
+                                                  helperText={prenameError[1]}
+                                                  margin="dense"
+                                                  id="No_d_enregistrement"
+                                                  label="Prenom de malade"
+                                                  fullWidth
+                                                  variant="standard"
+                                                  onChange={(event) => {setPrename(event.target.value)}}
+                                          />
+                                                 
+                                        
+                                        </Grid>
+
+                        
+                      </Grid>
+
+                      <br></br> 
+
+                      <Grid container spacing={2}>
+                                        <Grid item xs={4}>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DesktopDatePicker
+                                                        label="Date"
+                                                        inputFormat="DD/MM/YYYY"
+                                                        value={dateNaissance}
+                                                        onChange={handleChangeDate}
+                                                        renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
+                                                        helperText={dateNaissanceError[1]} 
+                                                        required/>}
+                                                />
+
+                                            </LocalizationProvider>
+
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                        <TextField
+                                                  error={nameError[0]}
+                                                  helperText={nameError[1]}
+                                                  margin="dense"
+                                                  id="Nom_de_malade"
+                                                  label="Nom de malade"
+                                                  fullWidth
+                                                  variant="standard"
+                                                  onChange={(event) => {setName(event.target.value)}}
+                                          />
+                                        
+                                        </Grid>
+
+                                        <Grid item xs={4}>
+                                        <TextField
+                                                  error={prenameError[0]}
+                                                  helperText={prenameError[1]}
+                                                  margin="dense"
+                                                  id="No_d_enregistrement"
+                                                  label="Prenom de malade"
+                                                  fullWidth
+                                                  variant="standard"
+                                                  onChange={(event) => {setPrename(event.target.value)}}
+                                          />
+                                                 
+                                        
+                                        </Grid>
+
+                        
+                      </Grid>
+                    </DialogContent>
+                              <DialogActions>
+                                <Button onClick={addBonSortieClose}>Anuller</Button>
+                                <Button onClick={addBonSortieSave}>Sauvgarder</Button>
+                              </DialogActions>   
+
+                    
+            </Dialog>
 
             
 
