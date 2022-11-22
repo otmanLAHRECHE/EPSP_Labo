@@ -107,6 +107,8 @@ const columns = [
     const [responseErrorSignal, setResponseErrorSignal] = React.useState(false);
     const [sortieQntError, setSortieQntError] = React.useState(false);
 
+    const [all]
+
     const [currentStockItem, setCurrentStockItem] = React.useState([]);
     const [data, setData] = React.useState([]);
     const [dataSortie, setDataSortie] = React.useState([]);
