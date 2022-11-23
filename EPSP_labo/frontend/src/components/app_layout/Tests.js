@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
+import { useTheme, styled  } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { DataGrid, GridToolbar, GridActionsCellItem,GridToolbarContainer,GridToolbarFilterButton,} from '@mui/x-data-grid';
 import dayjs from 'dayjs';
+
+import Chip from '@mui/material/Chip';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
@@ -44,6 +46,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
+import InputLabel from '@mui/material/InputLabel';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -66,7 +70,12 @@ const columns = [
    },
   ];
   
-  var sortieItemsTableData = [];
+
+  const ListItem = styled('li')(({ theme }) => ({
+    margin: theme.spacing(0.5),
+  }));
+
+
 
   export default function Tests(){
 
@@ -76,6 +85,7 @@ const columns = [
     const [dateNaissance, setDateNaissance] = React.useState("");
     const [genre, setGenre] = React.useState(null);
     const [testType, setTestType] = React.useState(null);
+    const [infPrelevement, setInfPrelevement] = React.useState(null);
     const [docName, setDocName] = React.useState(null);
     const [date, setDate] = React.useState("");
 
@@ -96,6 +106,7 @@ const columns = [
     const [dateNaissanceError, setDateNaissanceError] = React.useState([false, ""]);
     const [genreError, setGenreError] = React.useState([false, ""]);
     const [testTypeError, setTestTypeError] = React.useState([false, ""]);
+    const [infPrelevementError, setInfPrelevementError] = React.useState([false, ""]);
     const [docNameError, setDocNameError] = React.useState([false, ""]);
     const [dateError, setDateError] = React.useState([false, ""]);
 
@@ -107,7 +118,8 @@ const columns = [
     const [responseErrorSignal, setResponseErrorSignal] = React.useState(false);
     const [sortieQntError, setSortieQntError] = React.useState(false);
 
-    const [all]
+    const [allTestTypes, setAllTestTypes] = React.useState([]);
+    const [allInfPrelevement, setAllInfPrelevement] = React.useState([]);
 
     const [currentStockItem, setCurrentStockItem] = React.useState([]);
     const [data, setData] = React.useState([]);
@@ -149,11 +161,20 @@ const columns = [
         const handleChangeFilterDate = (newValue) =>{
           setDateFilter(newValue);
 
-          console.log("filter date...", newValue);
+        }
+
+        const handleChangeDateN = (newValue) =>{
+          setDateNaissance(newValue);
 
         }
 
+        const handleChangeDatePR = (newValue) =>{
+          setDate(newValue);
+        }
+
         const addExamenOpen = () =>{
+
+          setOpen(true);
 
         }
 
@@ -174,6 +195,25 @@ const columns = [
 
 
         }
+
+        const addBonSortieClose = () =>{
+          setOpen(false);
+
+        }
+
+        const addBonSortieSave = () =>{
+          
+        }
+
+        const change_type = (event) => {
+          if (event.target.value == ""){
+            setGenre("")
+          }else if (event.target.value == 1){
+            setGenre("Homme")
+          }else if (event.target.value == 2){
+            setGenre("Famme")
+          }
+      };
 
         
 
@@ -310,10 +350,10 @@ const columns = [
                                         <Grid item xs={4}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DesktopDatePicker
-                                                        label="Date"
+                                                        label="Date de naissanse"
                                                         inputFormat="DD/MM/YYYY"
                                                         value={dateNaissance}
-                                                        onChange={handleChangeDate}
+                                                        onChange={handleChangeDateN}
                                                         renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
                                                         helperText={dateNaissanceError[1]} 
                                                         required/>}
@@ -346,7 +386,7 @@ const columns = [
                                                         label="Date de prélèvement"
                                                         inputFormat="DD/MM/YYYY"
                                                         value={date}
-                                                        onChange={handleChangeDate}
+                                                        onChange={handleChangeDatePR}
                                                         renderInput={(params) => <TextField {...params} error={dateError[0]}
                                                         helperText={dateError[1]} 
                                                         required/>}
@@ -364,14 +404,14 @@ const columns = [
                                         <Grid item xs={4}>
                                         <Autocomplete
                                                     disablePortal
-                                                    value={}
+                                                    value={infPrelevement}
                                                     onChange={(event, newVlue) =>{
-                                                        setSource(newVlue);
+                                                        setInfPrelevement(newVlue);
                                                         
                                                     }}
-                                                    options={allSources}
-                                                    renderInput={(params) => <TextField {...params} error={sourceError[0]}
-                                                    helperText={sourceError[1]} fullWidth variant="standard" label="Destination" 
+                                                    options={allInfPrelevement}
+                                                    renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
+                                                    helperText={infPrelevementError[1]} fullWidth variant="standard" label="Infirmier de prélèvement" 
                                                     required/>}
                                                 />  
                                         
@@ -380,21 +420,30 @@ const columns = [
                                         <Grid item xs={4}>
                                         <Autocomplete
                                                     disablePortal
-                                                    value={source}
+                                                    value={testType}
                                                     onChange={(event, newVlue) =>{
-                                                        setSource(newVlue);
+                                                        setTestType(newVlue);
                                                         
                                                     }}
-                                                    options={allSources}
-                                                    renderInput={(params) => <TextField {...params} error={sourceError[0]}
-                                                    helperText={sourceError[1]} fullWidth variant="standard" label="Destination" 
+                                                    options={allTestTypes}
+                                                    renderInput={(params) => <TextField {...params} error={testTypeError[0]}
+                                                    helperText={testTypeError[1]} fullWidth variant="standard" label="Type de examen" 
                                                     required/>}
                                                 />  
                                         
                                         </Grid>
 
                                         <Grid item xs={4}>
-                                         
+                                        <TextField
+                                                  error={docNameError[0]}
+                                                  helperText={docNameError[1]}
+                                                  margin="dense"
+                                                  id="No_d_enregistrement"
+                                                  label="Medecin d'analyse"
+                                                  fullWidth
+                                                  variant="standard"
+                                                  onChange={(event) => {setDocName(event.target.value)}}
+                                          />          
                                         
                                         </Grid>
 
