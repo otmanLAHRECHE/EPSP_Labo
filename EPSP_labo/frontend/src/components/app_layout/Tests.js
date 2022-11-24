@@ -55,6 +55,8 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 import InputLabel from '@mui/material/InputLabel';
+import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
+import { getAllTestesTypesForSelect } from '../../actions/exemen_test_data';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -140,8 +142,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [currentStockItem, setCurrentStockItem] = React.useState([]);
     const [data, setData] = React.useState([]);
     const [dataSortie, setDataSortie] = React.useState([]);
-    const [namesData, setNamesData] = React.useState([]);
-    const [sourceData, setSourceData] = React.useState([]);
+    const [infData, setInfData] = React.useState([]);
+    const [testTypeData, setTestTypeData] = React.useState([]);
     const [arrivageData, setArrivageData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
@@ -188,9 +190,30 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           setDate(newValue);
         }
 
-        const addExamenOpen = () =>{
+        const addExamenOpen = async () =>{
 
-          setOpen(true);
+          setTestCode("");
+          setName("");
+          setPrename("");
+          setGenre(null);
+          setDateNaissance("");
+          setDate("");
+          setDocName("");
+
+          setTestCodeError([false, ""]);
+          setNameError([false, ""]);
+          setPrenameError([false, ""]);
+          setGenreError([false, ""]);
+          setDateNaissanceError([false, ""]);
+          setDateError([false, ""]);
+          setDocNameError([false, ""]);
+          setTestesError([false, ""])
+
+          const token = localStorage.getItem("auth_token");
+
+          setInfData(await getAllInfirmierForSelect(token));
+
+          setTestTypeData(await getAllTestesTypesForSelect(token));
 
         }
 
@@ -218,7 +241,9 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         }
 
         const addExamenSave = () =>{
+
           
+
         }
 
         const change_type = (event) => {
@@ -230,6 +255,32 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             setGenre("Famme")
           }
       };
+
+
+      React.useEffect(() =>{
+        try{
+          if (infData == "no data"){
+            setResponseErrorSignal(true);
+          } else if(infData != "") {
+            setAllInfPrelevement(infData);
+          }
+        }catch(e){
+          console.log(e);
+        }
+      }, [infData]);
+
+      React.useEffect(() =>{
+        try{
+          if (testTypeData == "no data"){
+            setResponseErrorSignal(true);
+          } else if(testTypeData != "") {
+            setAllTestTypes(testTypeData);
+            setOpen(true);
+          }
+        }catch(e){
+          console.log(e);
+        }
+      }, [testTypeData]);
 
         
 

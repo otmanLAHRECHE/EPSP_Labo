@@ -40,7 +40,7 @@ class ExemenTestSerializer(serializers.ModelSerializer):
 
 
 class ExemenTestSelectSerializer(serializers.ModelSerializer):
-    label = serializers.CharField(source = 'type') 
+    label = serializers.CharField(source = 'exam_type') 
     class Meta:
         model = ExamenTestes
         fields = ['id', 'label']

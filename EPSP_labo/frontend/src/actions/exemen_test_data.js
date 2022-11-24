@@ -127,10 +127,10 @@ export async function getAllExemenTEst(token){
   
   
   
-  export async function getAllLaboristeForSelect(token){
+  export async function getAllTestesTypesForSelect(token){
     console.log("inside methode", token)
     const response = await fetch(
-        '/labo/api/get_all_laboriste_to_select/',
+        '/labo/api/get_all_exemen_test_types_to_select/',
         {
           method: 'GET',
           headers: {

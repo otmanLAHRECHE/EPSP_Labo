@@ -216,7 +216,7 @@ def getSelectedExemenTest(request, id):
 @api_view(['GET'])
 def getAllExemenTestToSelect(request):
     if request.method == 'GET' and request.user.is_authenticated:
-        queryset = ExamenTestes.objects.all()
+        queryset = ExamenTestes.objects.values('exam_type').distinct()
 
         source_serial = ExemenTestSelectSerializer(queryset, many=True)
 

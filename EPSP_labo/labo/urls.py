@@ -22,7 +22,7 @@ urlpatterns = [
 
     
     path('api/get_all_exmene_test/', views.getAllExameTests),
-    path('api/get_all_exemen_test_to_select/', views.getAllExemenTestToSelect),
+    path('api/get_all_exemen_test_types_to_select/', views.getAllExemenTestToSelect),
     path('api/get_selected_exemen_test/<int:id>', views.getSelectedExemenTest),
     path('api/create_new_exemen_test/', views.createNewExemenTest),
     path('api/update_exemen_test/<int:id>', views.updateExemenTest),

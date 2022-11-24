@@ -36,8 +36,6 @@ class ExamenTestes(models.Model):
     def __str__(self):
         return self.exam_test
     
-    def type(self):
-        return str(self.exam_type)
 
 
 class Examen(models.Model):
