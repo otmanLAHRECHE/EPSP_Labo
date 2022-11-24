@@ -144,7 +144,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [dataSortie, setDataSortie] = React.useState([]);
     const [infData, setInfData] = React.useState([]);
     const [testTypeData, setTestTypeData] = React.useState([]);
-    const [arrivageData, setArrivageData] = React.useState([]);
+    const [testesData, setTestesData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false);
@@ -488,8 +488,13 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                         <Autocomplete
                                                     disablePortal
                                                     value={testType}
-                                                    onChange={(event, newVlue) =>{
+                                                    onChange={async (event, newVlue) =>{
                                                         setTestType(newVlue);
+
+                                                        if (newVlue != null){
+                                                          const token = localStorage.getItem("auth_token");
+                                                          setTestesData(await )
+                                                        }
                                                         
                                                     }}
                                                     options={allTestTypes}

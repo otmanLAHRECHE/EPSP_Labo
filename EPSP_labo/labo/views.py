@@ -227,6 +227,20 @@ def getAllExemenTestToSelect(request):
         return Response(status=status.HTTP_401_UNAUTHORIZED) 
 
 
+@api_view(['GET'])
+def getAllTestesOfType(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = ExamenTestes.objects.values('exam_type').distinct()
+
+        source_serial = ExemenTestSelectSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
 @api_view(['POST'])
 def createNewExemenTest(request):
     if request.method == 'POST' and request.user.is_authenticated:
