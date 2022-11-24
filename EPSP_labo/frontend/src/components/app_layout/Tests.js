@@ -11,6 +11,14 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 
 
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+
+import Checkbox from '@mui/material/Checkbox';
+
+
+
+
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Link from '@mui/material/Link';
@@ -69,6 +77,9 @@ const columns = [
     ),
    },
   ];
+
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
   
 
   const ListItem = styled('li')(({ theme }) => ({
@@ -86,6 +97,7 @@ const columns = [
     const [genre, setGenre] = React.useState(null);
     const [testType, setTestType] = React.useState(null);
     const [infPrelevement, setInfPrelevement] = React.useState(null);
+    const [testes, setTestes] = React.useState(null);
     const [docName, setDocName] = React.useState(null);
     const [date, setDate] = React.useState("");
 
@@ -109,6 +121,9 @@ const columns = [
     const [infPrelevementError, setInfPrelevementError] = React.useState([false, ""]);
     const [docNameError, setDocNameError] = React.useState([false, ""]);
     const [dateError, setDateError] = React.useState([false, ""]);
+    
+    const [testesError, setTestesError] = React.useState([false, ""]);
+
 
     const [dateFilterError, setDateFilterError] = React.useState("");
 
@@ -120,6 +135,7 @@ const columns = [
 
     const [allTestTypes, setAllTestTypes] = React.useState([]);
     const [allInfPrelevement, setAllInfPrelevement] = React.useState([]);
+    const [allTestes, setAllTestes] = React.useState([]);
 
     const [currentStockItem, setCurrentStockItem] = React.useState([]);
     const [data, setData] = React.useState([]);
@@ -196,12 +212,12 @@ const columns = [
 
         }
 
-        const addBonSortieClose = () =>{
+        const addExamenClose = () =>{
           setOpen(false);
 
         }
 
-        const addBonSortieSave = () =>{
+        const addExamenSave = () =>{
           
         }
 
@@ -294,7 +310,7 @@ const columns = [
             <Copyright sx={{ pt: 4 }} />
 
 
-            <Dialog open={open} onClose={addBonSortieClose}  maxWidth="lg" fullWidth={true}>
+            <Dialog open={open} onClose={addExamenClose}  maxWidth="lg" fullWidth={true}>
                   <DialogTitle>Ajouter un exemen</DialogTitle>
                     <DialogContent>
                       <Grid container spacing={2}>
@@ -447,14 +463,45 @@ const columns = [
                                         
                                         </Grid>
 
+                                        <Grid item xs={12}>
+                                          <Autocomplete
+                                                multiple
+                                                id="checkboxes-tags-demo"
+                                                options={allTestes}
+                                                disableCloseOnSelect
+                                                getOptionLabel={(option) => option.title}
+                                                onChange={(event, newVlue) =>{
+                                                  setTestes(newVlue);
+                                                  
+                                              }}
+                                                renderOption={(props, option, { selected }) => (
+                                                  <li {...props}>
+                                                    <Checkbox
+                                                      icon={icon}
+                                                      checkedIcon={checkedIcon}
+                                                      style={{ marginRight: 8 }}
+                                                      checked={selected}
+                                                    />
+                                                    {option.title}
+                                                  </li>
+                                                )}
+                                                style={{ width: 500 }}
+                                                renderInput={(params) => (
+                                                  <TextField {...params} label="Les testes d'examen" placeholder="Teste" error={testesError[0]}
+                                                  helperText={testesError[1]}/>
+                                                )}
+                                              />       
+                                        
+                                        </Grid>
+
                                         
 
                         
                       </Grid>
                     </DialogContent>
                               <DialogActions>
-                                <Button onClick={addBonSortieClose}>Anuller</Button>
-                                <Button onClick={addBonSortieSave}>Sauvgarder</Button>
+                                <Button onClick={addExamenClose}>Anuller</Button>
+                                <Button onClick={addExamenSave}>Sauvgarder</Button>
                               </DialogActions>   
 
                     
