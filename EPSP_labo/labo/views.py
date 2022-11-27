@@ -298,10 +298,14 @@ def deleteExemenTest(request, id):
 
 
 @api_view(['GET'])
-def getLastExemenTest(request, id):
+def getLastExemenTest(request):
     if request.method == 'GET' and request.user.is_authenticated:
-        queryset = ExamenTestes.objects.get(id = id)
+        queryset = ExamenTestes.objects.all().order_by("-no_enregistrement")
 
+        if queryset:
+            queryset = queryset[0]  
+
+        
         source_serial = ExemenTestSerializer(queryset)
 
         return Response(status=status.HTTP_200_OK,data=source_serial.data)

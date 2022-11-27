@@ -56,7 +56,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
-import { getAllTestesTypesForSelect, getTestesForSelectedType } from '../../actions/exemen_test_data';
+import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -145,6 +145,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [infData, setInfData] = React.useState([]);
     const [testTypeData, setTestTypeData] = React.useState([]);
     const [testesData, setTestesData] = React.useState([]);
+    const [numberEnrgData, setNumberEnrgData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false);
@@ -214,6 +215,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           setInfData(await getAllInfirmierForSelect(token));
 
           setTestTypeData(await getAllTestesTypesForSelect(token));
+
+          setNumberEnrgData(await getLastExemenTest(token));
 
         }
 
@@ -294,6 +297,18 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           console.log(e);
         }
       }, [testesData]);
+
+      React.useEffect(() =>{
+        try{
+          if (numberEnrgData == "no data"){
+            setResponseErrorSignal(true);
+          } else if(numberEnrgData != "") {
+            setAllInfPrelevement(infData);
+          }
+        }catch(e){
+          console.log(e);
+        }
+      }, [numberEnrgData]);
 
         
 

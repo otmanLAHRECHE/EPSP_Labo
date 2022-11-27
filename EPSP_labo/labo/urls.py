@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/update_exemen_test/<int:id>', views.updateExemenTest),
     path('api/delete_exemen_test/<int:id>', views.deleteExemenTest),
     path('api/get_all_exemen_test_of_type/<str:exm_type>', views.getExameTestsOfSelectedType),
+    path('api/get_last_exemen_test/', views.getLastExemenTest),
 
 
 ]
