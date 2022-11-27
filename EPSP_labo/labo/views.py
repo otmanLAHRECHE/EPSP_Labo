@@ -199,7 +199,7 @@ def getAllExameTests(request):
 
 
 @api_view(['GET'])
-def getExameTestsOfSelectedTypes(request, exm_type):
+def getExameTestsOfSelectedType(request, exm_type):
     if request.method == 'GET' and request.user.is_authenticated:
         queryset = ExamenTestes.objects.filter(exam_type=str(exm_type))
 
@@ -294,3 +294,18 @@ def deleteExemenTest(request, id):
     if request.method == 'DELETE' and request.user.is_authenticated:
         ExamenTestes.objects.filter(id=id).delete()
         return Response(status=status.HTTP_200_OK, data = {"status":"Exemen test deleted"})
+
+
+
+@api_view(['GET'])
+def getLastExemenTest(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = ExamenTestes.objects.get(id = id)
+
+        source_serial = ExemenTestSerializer(queryset)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)

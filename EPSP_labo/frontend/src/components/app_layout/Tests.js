@@ -56,7 +56,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
-import { getAllTestesTypesForSelect } from '../../actions/exemen_test_data';
+import { getAllTestesTypesForSelect, getTestesForSelectedType } from '../../actions/exemen_test_data';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -282,6 +282,19 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         }
       }, [testTypeData]);
 
+
+      React.useEffect(() =>{
+        try{
+          if (testesData == "no data"){
+            setResponseErrorSignal(true);
+          } else if(testesData != "") {
+            setAllTestes(testesData);
+          }
+        }catch(e){
+          console.log(e);
+        }
+      }, [testesData]);
+
         
 
         return(
@@ -493,7 +506,11 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
                                                         if (newVlue != null){
                                                           const token = localStorage.getItem("auth_token");
-                                                          setTestesData(await )
+                                                          setTestesData(await getTestesForSelectedType(token, newVlue.label));
+                                                        }
+                                                        else{
+                                                          setAllTestes([]);
+                                                          setTestes(null);
                                                         }
                                                         
                                                     }}
@@ -525,8 +542,9 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                                 id="checkboxes-tags-demo"
                                                 options={allTestes}
                                                 disableCloseOnSelect
-                                                getOptionLabel={(option) => option.title}
+                                                getOptionLabel={(option) => option.exam_test}
                                                 onChange={(event, newVlue) =>{
+                                                  console.log(newVlue);
                                                   setTestes(newVlue);
                                                   
                                               }}
@@ -538,7 +556,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                                       style={{ marginRight: 8 }}
                                                       checked={selected}
                                                     />
-                                                    {option.title}
+                                                    {option.exam_test}
                                                   </li>
                                                 )}
                                                 style={{ width: 500 }}
