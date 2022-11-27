@@ -44,3 +44,9 @@ class ExemenTestSelectSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExamenTestes
         fields = ['id', 'label']
+
+
+class ExemenTestOfTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamenTestes
+        fields = ['id', 'exam_test']

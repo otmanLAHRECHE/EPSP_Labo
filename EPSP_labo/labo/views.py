@@ -198,6 +198,19 @@ def getAllExameTests(request):
         return Response(status=status.HTTP_401_UNAUTHORIZED) 
 
 
+@api_view(['GET'])
+def getExameTestsOfSelectedTypes(request, exm_type):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = ExamenTestes.objects.filter(exam_type=str(exm_type))
+
+        source_serial = ExemenTestSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
 
 @api_view(['GET'])
 def getSelectedExemenTest(request, id):
