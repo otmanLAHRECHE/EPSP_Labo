@@ -200,6 +200,9 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           setDateNaissance("");
           setDate("");
           setDocName("");
+          setInfPrelevement(null);
+          setTestType(null);
+          setTestes(null);
 
           setTestCodeError([false, ""]);
           setNameError([false, ""]);
@@ -208,7 +211,9 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           setDateNaissanceError([false, ""]);
           setDateError([false, ""]);
           setDocNameError([false, ""]);
-          setTestesError([false, ""])
+          setInfPrelevementError([false, ""]);
+          setTestTypeError([false, ""]);
+          setTestesError([false, ""]);
 
           const token = localStorage.getItem("auth_token");
 
@@ -243,7 +248,113 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
         }
 
-        const addExamenSave = () =>{
+        const addExamenSave = async() =>{
+
+          var test = true;
+
+          setTestCodeError([false, ""]);
+          setNameError([false, ""]);
+          setPrenameError([false, ""]);
+          setGenreError([false, ""]);
+          setDateNaissanceError([false, ""]);
+          setDateError([false, ""]);
+          setDocNameError([false, ""]);          
+          setInfPrelevementError([false, ""]);
+          setTestTypeError([false, ""]);
+          setTestesError([false, ""]);
+
+          if(testCode == "" || testCode == 0){
+            test = false;
+            setTestCodeError([true, "erreur sur ce champ"]);
+          }
+
+          if(name =="" || name == null){
+            test = false;
+            setNameError([true, "champ est obligatoire"]);
+          }
+
+          if(prename =="" || prename == null){
+            test = false;
+            setPrenameError([true, "champ est obligatoire"]);
+          }
+
+          if(genre == "" || genre ==null){
+            test = false;
+            setGenreError([true, "champ est obligatoire"]);
+          }
+
+          if(date == null || date == ""){
+            test = false;
+            setDateError([true, "champ est obligatoire"]);
+          }else if(date.isValid() == false){
+            test = false;
+            setDateError([true, "date n est pas valide"]);
+          }
+
+          if(dateNaissance == null || dateNaissance == ""){
+            test = false;
+            setDateNaissanceError([true, "champ est obligatoire"]);
+          }else if(dateNaissance.isValid() == false){
+            test = false;
+            setDateNaissanceError([true, "date n est pas valide"]);
+          }
+
+          if(infPrelevement ==null){
+            test = null;
+            setInfPrelevementError([true, "champ est obligatoire"]);
+          }
+
+          if(testType ==null){
+            test = null;
+            setTestTypeError([true, "champ est obligatoire"]);
+          }
+
+          if(testes ==null){
+            test = null;
+            setTestesError([true, "champ est obligatoire"]);
+          }
+
+          if(docName =="" || docName == null){
+            test = false;
+            setDocNameError([true, "champ est obligatoire"]);
+          }
+
+          if (true){
+            var m = date.get('month')+1;
+            const d = date.get('date') +"/"+m +"/"+date.get('year');
+
+            var mN = dateNaissance.get('month')+1;
+            const d2 = dateNaissance.get('date') +"/"+m +"/"+ dateNaissance.get('year');
+
+            var ts = "";
+            for(let i =0; i<testes.length ; i++){
+              if(i != 0){
+                ts = ts + "/" + testes[i].id
+              }else{
+                ts = testes[i].id
+              }
+            }
+
+            const data = {
+              "no_enregistrement": Number(testCode),
+              "patient_first_name": name,
+              "patient_last_name": prename,
+              "patient_birth_day": d2,
+              "patient_genre": genre,
+              "doctor_send_from": docName,
+              "date_prelevement": d,
+              "inf_prelevement_id": infPrelevement.id,
+              "exm_type": testType.label,
+              "tests_examen": ts,
+              "test_seen": "false",
+              "result_ready": "false",
+            }
+
+            console.log(data);
+
+
+
+          }
 
           
 
@@ -303,7 +414,9 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           if (numberEnrgData == "no data"){
             setResponseErrorSignal(true);
           } else if(numberEnrgData != "") {
-            setAllInfPrelevement(infData);
+            setTestCode(numberEnrgData.no_enregistrement);
+          } else{
+            setTestCode(1);
           }
         }catch(e){
           console.log(e);
@@ -403,6 +516,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                                   fullWidth
                                                   variant="standard"
                                                   type="number"
+                                                  value={testCode}
                                                   onChange={(event) => {setTestCode(event.target.value)}}
                                           />
 
@@ -459,9 +573,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                         </Grid>
                                         <Grid item xs={4}>
                                         <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
-                                          <InputLabel required htmlFor="grouped-select"
-                                               error={genreError[0]} helperText={genreError[1]}>Genre</InputLabel>
-                                            <Select defaultValue="" id="grouped-select" label="Genre"
+                                          <InputLabel required htmlFor="grouped-select">Genre</InputLabel>
+                                            <Select defaultValue="" id="grouped-select" label="Genre" error={genreError[0]} helperText={genreError[1]}
                                             onChange={change_type}>
                                               <MenuItem value="">
                                                 <em>None</em>
