@@ -14,7 +14,6 @@ export async function getAllExemen(token){
     );
     const text = await response.text();
     if (response.status === 200) {
-      console.log("get the data succesfully", JSON.parse(text));
       return JSON.parse(text);
     } else {
       console.log("failed", text);
@@ -39,7 +38,6 @@ export async function getAllExemen(token){
   );
   const text = await response.text();
   if (response.status === 200) {
-    console.log("get the data succesfully", JSON.parse(text));
     return JSON.parse(text);
   } else {
     console.log("failed", text);
@@ -64,7 +62,6 @@ export async function getAllExemen(token){
   );
   const text = await response.text();
   if (response.status === 201) {
-    console.log("status 200, response: ", JSON.parse(text));
     return JSON.parse(text);
   } else {
     console.log("failed", text);
@@ -89,7 +86,6 @@ export async function getAllExemen(token){
   );
   const text = await response.text();
   if (response.status === 200) {
-    console.log("status 200, response: ", JSON.parse(text));
     return JSON.parse(text);
   } else {
     console.log("failed", text);
@@ -114,7 +110,6 @@ export async function getAllExemen(token){
   );
   const text = await response.text();
   if (response.status === 200) {
-    console.log("status 200, response: ", JSON.parse(text));
     return JSON.parse(text);
   } else {
     console.log("failed", text);
@@ -140,7 +135,6 @@ export async function getAllExemen(token){
     );
     const text = await response.text();
     if (response.status === 200) {
-      console.log("get the data succesfully", JSON.parse(text));
       return JSON.parse(text);
     } else {
       console.log("failed", text);

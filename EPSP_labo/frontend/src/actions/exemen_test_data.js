@@ -15,7 +15,6 @@ export async function getAllExemenTEst(token){
     );
     const text = await response.text();
     if (response.status === 200) {
-      console.log("get the data succesfully", JSON.parse(text));
       return JSON.parse(text);
     } else {
       console.log("failed", text);
@@ -40,7 +39,6 @@ export async function getAllExemenTEst(token){
   );
   const text = await response.text();
   if (response.status === 200) {
-    console.log("get the data succesfully", JSON.parse(text));
     return JSON.parse(text);
   } else {
     console.log("failed", text);
@@ -65,7 +63,6 @@ export async function getAllExemenTEst(token){
   );
   const text = await response.text();
   if (response.status === 201) {
-    console.log("status 200, response: ", JSON.parse(text));
     return JSON.parse(text);
   } else {
     console.log("failed", text);
@@ -90,7 +87,6 @@ export async function getAllExemenTEst(token){
   );
   const text = await response.text();
   if (response.status === 200) {
-    console.log("status 200, response: ", JSON.parse(text));
     return JSON.parse(text);
   } else {
     console.log("failed", text);
@@ -115,7 +111,6 @@ export async function getAllExemenTEst(token){
   );
   const text = await response.text();
   if (response.status === 200) {
-    console.log("status 200, response: ", JSON.parse(text));
     return JSON.parse(text);
   } else {
     console.log("failed", text);
@@ -142,13 +137,9 @@ export async function getAllExemenTEst(token){
     );
     const text = await response.text();
     if (response.status === 200) {
-      console.log("get the data succesfully", JSON.parse(text));
       return JSON.parse(text);
     } else {
       console.log("failed", text);
-      Object.entries(JSON.parse(text)).forEach(([key, value]) => {
-        fail(`${key}: ${value}`);
-      });
       return "no data";
     }
   
@@ -171,13 +162,9 @@ export async function getAllExemenTEst(token){
     );
     const text = await response.text();
     if (response.status === 200) {
-      console.log("get the data succesfully", JSON.parse(text));
       return JSON.parse(text);
     } else {
       console.log("failed", text);
-      Object.entries(JSON.parse(text)).forEach(([key, value]) => {
-        fail(`${key}: ${value}`);
-      });
       return "no data";
     }
   
