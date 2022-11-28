@@ -297,6 +297,8 @@ def deleteExemenTest(request, id):
 
 
 
+
+
 @api_view(['GET'])
 def getLastExemenTest(request):
     if request.method == 'GET' and request.user.is_authenticated:
@@ -316,3 +318,18 @@ def getLastExemenTest(request):
     
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+
+@api_view(['GET'])
+def getAllExames(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = Examen.objects.all()
+
+        source_serial = ExemenSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
