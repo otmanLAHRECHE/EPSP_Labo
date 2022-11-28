@@ -304,14 +304,12 @@ def getLastExemenTest(request):
     if request.method == 'GET' and request.user.is_authenticated:
         queryset = Examen.objects.all().order_by("-no_enregistrement")
 
-        print(queryset)
-
         if queryset:
             queryset = queryset[0]
             print(True)  
 
 
-        source_serial = ExemenSerializer(queryset, many = True)
+        source_serial = ExemenSerializer(queryset)
 
         return Response(status=status.HTTP_200_OK,data=source_serial.data)
                 
@@ -333,3 +331,181 @@ def getAllExames(request):
                 
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
+@api_view(['GET'])
+def getSelectedExemen(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = Examen.objects.get(id = id)
+
+        source_serial = ExemenSerializer(queryset)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+
+@api_view(['POST'])
+def createNewExemen(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+
+        no_enregistrement = request.data.pop('no_enregistrement')
+        patient_first_name = request.data.pop('patient_first_name')
+        patient_last_name = request.data.pop('patient_last_name')
+        date_p = request.data.pop('date_prelevement')
+        date_ns = request.data.pop('patient_birth_day')
+        patient_genre = request.data.pop('patient_genre')
+        doctor_send_from = request.data.pop('doctor_send_from')
+        inf_prelevement_id = request.data.pop('inf_prelevement_id')
+        exm_type = request.data.pop('exm_type')
+        tests_examen = request.data.pop('tests_examen')
+        test_seen = request.data.pop('test_seen')
+        result_ready = request.data.pop('result_ready')
+
+        inf_prelevement = InfPrileve.objects.get(id=inf_prelevement_id)
+
+        date_prelevement = date_p.split("/")
+        patient_birth_day = date_ns.split("/")
+
+        d_p = date_prelevement[0]
+        m_p = date_prelevement[1]
+
+        d_ns = patient_birth_day[0]
+        m_ns = patient_birth_day[1]
+
+        if d_p[0] == '0':
+            d_p.replace('0','',1)
+        if m_p[0] == '0':
+            m_p.replace('0','',1)
+        if d_ns[0] == '0':
+            d_ns.replace('0','',1)
+        if m_ns[0] == '0':
+            m_ns.replace('0','',1)
+
+        date_prelevement[0] = d_p
+        date_prelevement[1] = m_p
+        patient_birth_day[0] = d_ns
+        patient_birth_day[1] = m_ns
+
+        
+        date_prelevement = datetime.date(int(date_prelevement[2]), int(date_prelevement[1]), int(date_prelevement[0]))
+        patient_birth_day = datetime.date(int(patient_birth_day[2]), int(patient_birth_day[1]), int(patient_birth_day[0]))
+
+
+        source = Examen.objects.create(no_enregistrement = no_enregistrement, patient_first_name = patient_first_name, patient_last_name=patient_last_name, patient_birth_day=patient_birth_day, patient_genre=patient_genre, doctor_send_from=doctor_send_from, date_prelevement=date_prelevement, inf_prelevement=inf_prelevement, exm_type=exm_type, tests_examen=tests_examen, test_seen=test_seen, result_ready=result_ready)
+
+        if source.id is not None:
+            return Response(status=status.HTTP_201_CREATED, data = {"status":"Exemen created"})
+        else:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(['POST'])
+def updateExemen(request, id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        no_enregistrement = request.data.pop('no_enregistrement')
+        patient_first_name = request.data.pop('patient_first_name')
+        patient_last_name = request.data.pop('patient_last_name')
+        date_p = request.data.pop('date_prelevement')
+        date_ns = request.data.pop('patient_birth_day')
+        patient_genre = request.data.pop('patient_genre')
+        doctor_send_from = request.data.pop('doctor_send_from')
+        inf_prelevement_id = request.data.pop('inf_prelevement_id')
+        exm_type = request.data.pop('exm_type')
+        tests_examen = request.data.pop('tests_examen')
+
+        inf_prelevement = InfPrileve.objects.get(id=inf_prelevement_id)
+
+        date_prelevement = date_p.split("/")
+        patient_birth_day = date_ns.split("/")
+
+        d_p = date_prelevement[0]
+        m_p = date_prelevement[1]
+
+        d_ns = patient_birth_day[0]
+        m_ns = patient_birth_day[1]
+
+        if d_p[0] == '0':
+            d_p.replace('0','',1)
+        if m_p[0] == '0':
+            m_p.replace('0','',1)
+        if d_ns[0] == '0':
+            d_ns.replace('0','',1)
+        if m_ns[0] == '0':
+            m_ns.replace('0','',1)
+
+        date_prelevement[0] = d_p
+        date_prelevement[1] = m_p
+        patient_birth_day[0] = d_ns
+        patient_birth_day[1] = m_ns
+
+        
+        date_prelevement = datetime.date(int(date_prelevement[2]), int(date_prelevement[1]), int(date_prelevement[0]))
+        patient_birth_day = datetime.date(int(patient_birth_day[2]), int(patient_birth_day[1]), int(patient_birth_day[0]))
+
+        examen_to_update = Examen.objects.get(id = id)
+
+        if not examen_to_update.no_enregistrement == no_enregistrement:
+            examen_to_update.no_enregistrement = no_enregistrement
+        if not examen_to_update.patient_first_name == patient_first_name:
+            examen_to_update.patient_first_name = patient_first_name
+        if not examen_to_update.patient_last_name == patient_last_name:
+            examen_to_update.patient_last_name = patient_last_name
+        
+        if not examen_to_update.patient_genre == patient_genre:
+            examen_to_update.patient_genre = patient_genre
+        
+        if not examen_to_update.doctor_send_from == doctor_send_from:
+            examen_to_update.doctor_send_from = doctor_send_from
+        
+        if not examen_to_update.exm_type == exm_type:
+            examen_to_update.exm_type = exm_type
+        
+        if not examen_to_update.tests_examen == tests_examen:
+            examen_to_update.tests_examen = tests_examen
+        
+        if not examen_to_update.inf_prelevement.full_name == inf_prelevement.full_name:
+            examen_to_update.inf_prelevement = inf_prelevement
+        
+        if not examen_to_update.date_prelevement == date_prelevement:
+            examen_to_update.date_prelevement = date_prelevement
+            
+        if not examen_to_update.patient_birth_day == patient_birth_day:
+            examen_to_update.patient_birth_day = patient_birth_day
+        
+        examen_to_update.save()
+        
+        return Response(status=status.HTTP_200_OK, data = {"status":"Exemen updated"})
+
+
+@api_view(['DELETE'])
+def deleteExemen(request, id):
+    if request.method == 'DELETE' and request.user.is_authenticated:
+        Examen.objects.filter(id=id).delete()
+        return Response(status=status.HTTP_200_OK, data = {"status":"Exemen deleted"})
+
+
+
+@api_view(['GET'])
+def getAllExamenOfMonth(request, month, year):
+    if request.method == 'GET' and request.user.is_authenticated:
+
+        range = monthrange(year, month)
+
+        date_start = datetime.date(year , month, 1)
+        date_end = datetime.date( year, month, range[1])
+
+        queryset = Examen.objects.filter(date_prelevement__gte=date_start, date_prelevement__lte=date_end)
+
+        source_serial = ExemenSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
+

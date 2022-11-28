@@ -1,5 +1,4 @@
 export async function getAllLaboriste(token){
-    console.log("token",token);
 
     const response = await fetch(
         '/labo/api/get_all_laboriste/',
@@ -101,7 +100,6 @@ export async function getAllLaboriste(token){
   
   
   export async function deleteLaboriste(token, id){
-  console.log("inside methode", token)
   const response = await fetch(
       '/labo/api/delete_laboriste/'+id,
       {
@@ -128,7 +126,6 @@ export async function getAllLaboriste(token){
   
   
   export async function getAllLaboristeForSelect(token){
-    console.log("inside methode", token)
     const response = await fetch(
         '/labo/api/get_all_laboriste_to_select/',
         {

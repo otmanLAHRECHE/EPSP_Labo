@@ -101,7 +101,6 @@ export async function getAllExemenTEst(token){
   
   
   export async function deleteExemenTest(token, id){
-  console.log("inside methode", token)
   const response = await fetch(
       '/labo/api/delete_exemen_test/'+id,
       {

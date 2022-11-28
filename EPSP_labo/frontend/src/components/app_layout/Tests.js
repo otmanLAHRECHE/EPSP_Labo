@@ -57,6 +57,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
 import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
+import { addNewExemen, getAllExamenOfMonth } from '../../actions/examen_data';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -66,18 +67,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const columns = [
     { field: 'id', headerName: 'Id', width: 60, hide: true },
-    { field: 'id2', headerName: "No D'ENREGISTREMENT", width: 180},
-    { field: 'id3', headerName: "NOM", width: 140},
-    { field: 'id4', headerName: "PRENOM", width: 140},
-    { field: 'id5', headerName: "AGE", width: 100},
-    { field: 'id6', headerName: "GENRE", width: 80},
-    { field: 'date', headerName: "DATE D'PRELEVEMENT", width: 150 },
-    { field: 'date2', headerName: "INF DE PRELEVEMENT", width: 150 },
-    { field: 'date3', headerName: "TYPE D'EXAMEN", width: 140 },
-    { field: 'sort', headerName: "LES TESTES D'EXAMEN", width: 200 , renderCell: (params) => (
-      <ExamenItemsList rows={params.row.sortie_items_set}/>
+    { field: 'no_enregistrement', headerName: "No D'ENREGISTREMENT", width: 180},
+    { field: 'patient_first_name', headerName: "NOM", width: 140},
+    { field: 'patient_last_name', headerName: "PRENOM", width: 140},
+    { field: 'patient_birth_day', headerName: "DATE Ns", width: 140},
+    { field: 'patient_genre', headerName: "GENRE", width: 80},
+    { field: 'date_prelevement', headerName: "DATE D'PRELEVEMENT", width: 160 },
+    { field: 'inf_prelevement', headerName: "INF DE PRELEVEMENT", width: 160, valueGetter: (params) =>
+    `${params.row.inf_prelevement.first_name || ''} ${params.row.inf_prelevement.last_name || ''}` },
+    { field: 'exm_type', headerName: "TYPE D'EXAMEN", width: 140 },
+    { field: 'tes_exm', headerName: "LES TESTES D'EXAMEN", width: 250 , renderCell: (params) => (
+      <ExamenItemsList testes={params.row.tests_examen}/>
     ),
    },
+   { field: 'result_ready', headerName: "ETAT DE RESULTAT", width: 160 },
   ];
 
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -352,8 +355,14 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
             console.log(data);
 
+            const token = localStorage.getItem("auth_token");
 
+            setResponse(await addNewExemen(token, JSON.stringify(data)));         
 
+          }else{
+
+            console.log("error");
+            setLoadError(true);
           }
 
           
@@ -414,7 +423,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           if (numberEnrgData == "no data"){
             setResponseErrorSignal(true);
           } else if(numberEnrgData != "") {
-            setTestCode(numberEnrgData.no_enregistrement);
+            setTestCode(numberEnrgData.no_enregistrement + 1);
           } else{
             setTestCode(1);
           }
@@ -422,6 +431,47 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           console.log(e);
         }
       }, [numberEnrgData]);
+
+
+      React.useEffect(() => {
+  
+        if (response == "error"){
+          setResponseErrorSignal(true);
+        } else if(response != "") {
+          setResponseSuccesSignal(true);
+        }
+  
+      }, [response]);
+
+      React.useEffect(() => {
+
+        setLoading(true);
+        setDateFilterError([false, ""]);
+
+        const fetchData = async () => {
+          try {
+            const token = localStorage.getItem("auth_token");
+            var month = dateFilter.get("month")+1
+            var year = dateFilter.get('year')
+            setData(await getAllExamenOfMonth(token, month, year));
+            setLoading(false);
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+
+        if (dateFilter.isValid() == false || dateFilter ==""){
+          setDateFilterError([true, "une erreur sur le champ de date"]);
+          setDateFilterNotErr(true);
+        }else{
+          fetchData();
+        }
+  
+        
+  
+      }, [response, dateFilter]);
+
+
 
         
 
