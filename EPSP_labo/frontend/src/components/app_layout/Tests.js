@@ -322,7 +322,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             setDocNameError([true, "champ est obligatoire"]);
           }
 
-          if (true){
+          if (test){
             var m = date.get('month')+1;
             const d = date.get('date') +"/"+m +"/"+date.get('year');
 
@@ -466,6 +466,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         }else{
           fetchData();
         }
+
+        setOpen(false);
   
         
   
