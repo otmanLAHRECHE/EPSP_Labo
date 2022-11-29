@@ -53,9 +53,19 @@ class ExemenTestOfTypeSerializer(serializers.ModelSerializer):
 
 
 
+class TestDetailsSerializer(serializers.ModelSerializer):
+
+    examen_test = ExemenTestSerializer()
+    class Meta:
+        model = TestDetails
+        fields = ['id', 'examen_test']
+
+
+
 class ExemenSerializer(serializers.ModelSerializer):
 
     inf_prelevement = InfirmierSerializer()
+    tests_examen = TestDetailsSerializer(many=True)
     class Meta:
         model = Examen
         fields = ['id', 'no_enregistrement','patient_first_name','patient_last_name','patient_birth_day','patient_genre','doctor_send_from','date_prelevement','inf_prelevement','exm_type','tests_examen','test_seen','result_ready']

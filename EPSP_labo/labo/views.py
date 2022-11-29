@@ -296,9 +296,6 @@ def deleteExemenTest(request, id):
         return Response(status=status.HTTP_200_OK, data = {"status":"Exemen test deleted"})
 
 
-
-
-
 @api_view(['GET'])
 def getLastExemenTest(request):
     if request.method == 'GET' and request.user.is_authenticated:
@@ -316,6 +313,8 @@ def getLastExemenTest(request):
     
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
 
 
 
@@ -508,4 +507,7 @@ def getAllExamenOfMonth(request, month, year):
                 
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
+
 

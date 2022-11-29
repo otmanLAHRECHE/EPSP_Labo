@@ -57,7 +57,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
 import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
-import { addNewExemen, getAllExamenOfMonth } from '../../actions/examen_data';
+import { addNewExemen, getAllExamenOfMonth, deleteExemen } from '../../actions/examen_data';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -233,15 +233,27 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         }
 
         const deleteExamenOpen = () =>{
+
+          if(selectionModel.length == 0){
+            setSelectionError(true);
+          }else{   
+            setOpenDelete(true);
+          }
           
         }
 
         const deleteExamenClose = () =>{
 
+          setOpenDelete(false)
+
 
         }
 
-        const deleteConfirmation = () =>{
+        const deleteConfirmation = async () =>{
+
+          setOpenDelete(false);
+          const token = localStorage.getItem("auth_token");
+          setResponse(await deleteExemen(token, selectionModel[0])); 
 
 
         }
@@ -472,6 +484,9 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         
   
       }, [response, dateFilter]);
+
+
+      
 
 
 

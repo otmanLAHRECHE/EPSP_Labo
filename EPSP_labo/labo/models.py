@@ -49,7 +49,6 @@ class Examen(models.Model):
     date_prelevement = models.DateField()
     inf_prelevement = models.ForeignKey(InfPrileve, on_delete=models.CASCADE)
     exm_type = models.CharField(max_length=100)
-    tests_examen = models.CharField(max_length=200)
     test_seen = models.CharField(max_length=50)
     result_ready = models.CharField(max_length=50)
 
@@ -63,6 +62,17 @@ class Resultat(models.Model):
     laboriste_worker = models.ForeignKey(Laboriste, on_delete=models.CASCADE)
     date_result = models.DateField()
     result_tests = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.id
+
+
+
+class TestDetails(models.Model):
+    id = models.AutoField(primary_key=True)
+    examen_test = models.ForeignKey(ExamenTestes, on_delete=models.CASCADE)
+    examen = models.ForeignKey(Examen, on_delete=models.CASCADE)
+    resultat_test = models.CharField(max_length=100)
 
     def __str__(self):
         return self.id
