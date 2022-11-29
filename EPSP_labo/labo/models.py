@@ -71,7 +71,7 @@ class Resultat(models.Model):
 class TestDetails(models.Model):
     id = models.AutoField(primary_key=True)
     examen_test = models.ForeignKey(ExamenTestes, on_delete=models.CASCADE)
-    examen = models.ForeignKey(Examen, on_delete=models.CASCADE)
+    examen = models.ForeignKey(Examen, on_delete=models.CASCADE, related_name="test_details")
     resultat_test = models.CharField(max_length=100)
 
     def __str__(self):

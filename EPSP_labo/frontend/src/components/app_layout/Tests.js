@@ -77,7 +77,7 @@ const columns = [
     `${params.row.inf_prelevement.first_name || ''} ${params.row.inf_prelevement.last_name || ''}` },
     { field: 'exm_type', headerName: "TYPE D'EXAMEN", width: 140 },
     { field: 'tes_exm', headerName: "LES TESTES D'EXAMEN", width: 250 , renderCell: (params) => (
-      <ExamenItemsList testes={params.row.tests}/>
+      <ExamenItemsList testes={params.row.test_details}/>
     ),
    },
    { field: 'result_ready', headerName: "ETAT DE RESULTAT", width: 160 },

@@ -6,7 +6,9 @@ import Chip from '@mui/material/Chip';
 import { styled } from '@mui/material/styles';
 
 
-
+const ListItem = styled('li')(({ theme }) => ({
+  margin: theme.spacing(0.5),
+}));
 
 export default function ExamenItemsList(props) {
   
@@ -29,7 +31,7 @@ export default function ExamenItemsList(props) {
           <ListItem key={Math.random()}>
             <Chip
               label={test.examen_test.exam_test}
-              color={test.examen_test.exam_type === 'Serologie' ? "error" : (test.examen_test.exam_type === 'Bacteriologie' ? "warning" : "secondary")}
+              color={test.examen_test.exam_color}
             />
           </ListItem>
         );
