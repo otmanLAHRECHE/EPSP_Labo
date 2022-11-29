@@ -39,4 +39,9 @@ urlpatterns = [
     path('api/get_all_exmene_of_month/<int:month>/<int:year>', views.getAllExamenOfMonth),
 
 
+
+    
+    path('api/create_new_test/', views.createNewTest),
+    path('api/update_test/<int:id>', views.updateTest),
+    path('api/delete_test/<int:id>', views.deleteTest),
 ]

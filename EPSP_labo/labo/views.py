@@ -299,14 +299,17 @@ def deleteExemenTest(request, id):
 @api_view(['GET'])
 def getLastExemenTest(request):
     if request.method == 'GET' and request.user.is_authenticated:
-        queryset = Examen.objects.all().order_by("-no_enregistrement")
+        queryset = Examen.objects.all()
 
         if queryset:
+            queryset = Examen.objects.all().order_by("-no_enregistrement")
             queryset = queryset[0]
-            print(True)  
+            print(True) 
+            source_serial = ExemenSerializer(queryset)
+        else:
+            print(False) 
+            source_serial = ExemenSerializer(queryset, many=True)
 
-
-        source_serial = ExemenSerializer(queryset)
 
         return Response(status=status.HTTP_200_OK,data=source_serial.data)
                 
@@ -361,7 +364,6 @@ def createNewExemen(request):
         doctor_send_from = request.data.pop('doctor_send_from')
         inf_prelevement_id = request.data.pop('inf_prelevement_id')
         exm_type = request.data.pop('exm_type')
-        tests_examen = request.data.pop('tests_examen')
         test_seen = request.data.pop('test_seen')
         result_ready = request.data.pop('result_ready')
 
@@ -395,10 +397,10 @@ def createNewExemen(request):
         patient_birth_day = datetime.date(int(patient_birth_day[2]), int(patient_birth_day[1]), int(patient_birth_day[0]))
 
 
-        source = Examen.objects.create(no_enregistrement = no_enregistrement, patient_first_name = patient_first_name, patient_last_name=patient_last_name, patient_birth_day=patient_birth_day, patient_genre=patient_genre, doctor_send_from=doctor_send_from, date_prelevement=date_prelevement, inf_prelevement=inf_prelevement, exm_type=exm_type, tests_examen=tests_examen, test_seen=test_seen, result_ready=result_ready)
+        source = Examen.objects.create(no_enregistrement = no_enregistrement, patient_first_name = patient_first_name, patient_last_name=patient_last_name, patient_birth_day=patient_birth_day, patient_genre=patient_genre, doctor_send_from=doctor_send_from, date_prelevement=date_prelevement, inf_prelevement=inf_prelevement, exm_type=exm_type, test_seen=test_seen, result_ready=result_ready)
 
         if source.id is not None:
-            return Response(status=status.HTTP_201_CREATED, data = {"status":"Exemen created"})
+            return Response(status=status.HTTP_201_CREATED, data = {"id_examen":source.id})
         else:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -507,6 +509,55 @@ def getAllExamenOfMonth(request, month, year):
                 
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+
+
+@api_view(['POST'])
+def createNewTest(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        examen_test_id = request.data.pop('exam_test_id')
+        exam_id = request.data.pop('exam_id')
+
+        examen_test = ExamenTestes.objects.get(id = examen_test_id)
+        examen = Examen.objects.get(id = exam_id)
+
+        source = TestDetails.objects.create(examen_test=examen_test, examen=examen)
+
+        if source.id is not None:
+            return Response(status=status.HTTP_201_CREATED, data = {"status":"Test created"})
+        else:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(['POST'])
+def updateTest(request, id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        
+
+        examen_test_id = request.data.pop('exam_test_id')
+        id = request.data.pop('id')
+
+        examen_test = ExamenTestes.objects.get(id = examen_test_id)
+        examen = Examen.objects.get(id = exam_id)
+
+        Test_to_update = TestDetails.objects.get(id = id)
+
+        Test_to_update = InfPrileve.objects.get(id=id)
+        if not Test_to_update.examen_test == examen_test:
+            Test_to_update.examen_test = examen_test
+        
+        Test_to_update.save()
+        
+        return Response(status=status.HTTP_200_OK, data = {"status":"Test updated"})
+
+
+@api_view(['DELETE'])
+def deleteTest(request, id):
+    if request.method == 'DELETE' and request.user.is_authenticated:
+        TestDetails.objects.filter(id=id).delete()
+        return Response(status=status.HTTP_200_OK, data = {"status":"Test deleted"})
+
 
 
 

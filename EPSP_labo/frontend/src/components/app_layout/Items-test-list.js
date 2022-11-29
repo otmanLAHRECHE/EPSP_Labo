@@ -7,49 +7,8 @@ import { styled } from '@mui/material/styles';
 
 
 
-var list_d = [];
 
 export default function ExamenItemsList(props) {
-
-  
-  const ListItem = styled('li')(({ theme }) => ({
-    margin: theme.spacing(0.5),
-  }));
-
-  const [result, setResult] = React.useState("");
-  const [listDesplay, setListDesplay] = React.useState([]);
-  const list_work = props.testes.split("/");
-
-  React.useEffect(() => {
-    list_d = [];
-    console.log("props.....", props.testes);
-    const get_data = async (id) =>{
-      const token = localStorage.getItem("auth_token");
-        setResult(await getSelectedExemenTest(token, id));
-    }
-      for(let i=0; i<list_work.length; i++){ 
-        get_data(Number(list_work[i]));
-        if(i== list_work.length -1 ){
-          list_d = [];
-        }
-      }
-            
-  }, []);
-
-  React.useEffect(() => {
-
-    if(result == ""){
-
-    }else{
-      list_d.push(result);
-      console.log("result.............",result);
-      console.log("list.............",list_d);
-      setListDesplay(list_d);
-    }
-    
-    
-  }, [result]);
-
   
 
   return (
@@ -65,12 +24,12 @@ export default function ExamenItemsList(props) {
       }}
       component="ul"
     >
-      {listDesplay.map((test) => {
+      {props.testes.map((test) => {
         return (
           <ListItem key={Math.random()}>
             <Chip
-              label={test.exam_test}
-              color={test.exam_type === 'Serologie' ? "error" : (test.exam_type === 'Bacteriologie' ? "warning" : "secondary")}
+              label={test.examen_test.exam_test}
+              color={test.examen_test.exam_type === 'Serologie' ? "error" : (test.examen_test.exam_type === 'Bacteriologie' ? "warning" : "secondary")}
             />
           </ListItem>
         );

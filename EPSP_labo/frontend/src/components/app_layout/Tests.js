@@ -57,7 +57,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
 import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
-import { addNewExemen, getAllExamenOfMonth, deleteExemen } from '../../actions/examen_data';
+import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest } from '../../actions/examen_data';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -77,7 +77,7 @@ const columns = [
     `${params.row.inf_prelevement.first_name || ''} ${params.row.inf_prelevement.last_name || ''}` },
     { field: 'exm_type', headerName: "TYPE D'EXAMEN", width: 140 },
     { field: 'tes_exm', headerName: "LES TESTES D'EXAMEN", width: 250 , renderCell: (params) => (
-      <ExamenItemsList testes={params.row.tests_examen}/>
+      <ExamenItemsList testes={params.row.tests}/>
     ),
    },
    { field: 'result_ready', headerName: "ETAT DE RESULTAT", width: 160 },
@@ -91,7 +91,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     margin: theme.spacing(0.5),
   }));
 
-
+  
 
   export default function Tests(){
 
@@ -341,14 +341,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             var mN = dateNaissance.get('month')+1;
             const d2 = dateNaissance.get('date') +"/"+m +"/"+ dateNaissance.get('year');
 
-            var ts = "";
-            for(let i =0; i<testes.length ; i++){
-              if(i != 0){
-                ts = ts + "/" + testes[i].id
-              }else{
-                ts = testes[i].id
-              }
-            }
+          
 
             const data = {
               "no_enregistrement": Number(testCode),
@@ -360,7 +353,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
               "date_prelevement": d,
               "inf_prelevement_id": infPrelevement.id,
               "exm_type": testType.label,
-              "tests_examen": ts,
               "test_seen": "false",
               "result_ready": "false",
             }
@@ -369,7 +361,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
             const token = localStorage.getItem("auth_token");
 
-            setResponse(await addNewExemen(token, JSON.stringify(data)));         
+            setCallBack(await addNewExemen(token, JSON.stringify(data)));         
 
           }else{
 
@@ -485,7 +477,50 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
   
       }, [response, dateFilter]);
 
+      React.useEffect(() => {
 
+        const upload = async (da) =>{
+          const token = localStorage.getItem("auth_token");
+            await addNewTest(token, JSON.stringify(da));
+        }
+
+        const upload2 = async (da) =>{
+          const token = localStorage.getItem("auth_token");           
+            setResponse(await addNewTest(token, JSON.stringify(da)));
+        }
+
+  
+        if (callBack == ""){
+
+        } else{
+
+          console.log("callback..........", callBack.id_examen);
+          console.log("length..........", testes.length);
+
+          for(var i=0; i<testes.length; i++){
+
+            if(i != testes.length - 1){
+              const d = {
+                "exam_id":Number(callBack.id_examen),
+                "exam_test_id":testes[i].id
+              };
+
+              upload(d);
+
+            }else{
+              const d = {
+                "exam_id":Number(callBack.id_examen),
+                "exam_test_id":testes[i].id
+              };
+              upload2(d);              
+            }                    
+          }
+          setResponseSuccesSignal(true);
+          setCallBack("");
+          setOpen(false);
+        }
+  
+      }, [callBack]);
       
 
 
