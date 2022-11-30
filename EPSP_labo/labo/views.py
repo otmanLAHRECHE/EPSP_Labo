@@ -276,7 +276,7 @@ def updateExemenTest(request, id):
         exam_test = request.data.pop('exam_test')
         exam_type = request.data.pop('exam_type')
         exam_color = request.data.pop('exam_color')
-        Exemen_Test_to_update = InfPrileve.objects.get(id=id)
+        Exemen_Test_to_update = ExamenTestes.objects.get(id=id)
         if not Exemen_Test_to_update.exam_test == exam_test:
             Exemen_Test_to_update.exam_test = exam_test
         if not Exemen_Test_to_update.exam_type == exam_type:

@@ -30,6 +30,8 @@ import Slide from '@mui/material/Slide';
 import BiotechIcon from '@mui/icons-material/Biotech';
 import {Navigate} from 'react-router-dom';
 
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -184,6 +186,14 @@ function DashboardContent() {
             </Typography>
 
             <Button color="inherit" startIcon={<ThreePRoundedIcon />}>Reception</Button>
+            <FiberManualRecordIcon
+                fontSize="small"
+                  sx={{
+                    mr: 1,
+                    color: '#4caf50',
+                  }}
+            />      
+            
             <IconButton
                 size="large"
                 aria-label="account of current user"

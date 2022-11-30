@@ -67,12 +67,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const columns = [
     { field: 'id', headerName: 'Id', width: 60, hide: true },
-    { field: 'no_enregistrement', headerName: "No D'ENREGISTREMENT", width: 180},
-    { field: 'patient_first_name', headerName: "NOM", width: 140},
-    { field: 'patient_last_name', headerName: "PRENOM", width: 140},
-    { field: 'patient_birth_day', headerName: "DATE Ns", width: 140},
+    { field: 'no_enregistrement', headerName: "No D'ENR", width: 80},
+    { field: 'patient_first_name', headerName: "NOM", width: 100},
+    { field: 'patient_last_name', headerName: "PRENOM", width: 100},
+    { field: 'patient_birth_day', headerName: "DATE Ns", width: 100},
     { field: 'patient_genre', headerName: "GENRE", width: 80},
-    { field: 'date_prelevement', headerName: "DATE D'PRELEVEMENT", width: 160 },
+    { field: 'date_prelevement', headerName: "DATE DE PRELEVEMENT", width: 160 },
     { field: 'inf_prelevement', headerName: "INF DE PRELEVEMENT", width: 160, valueGetter: (params) =>
     `${params.row.inf_prelevement.first_name || ''} ${params.row.inf_prelevement.last_name || ''}` },
     { field: 'exm_type', headerName: "TYPE D'EXAMEN", width: 140 },
