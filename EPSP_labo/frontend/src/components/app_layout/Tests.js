@@ -171,7 +171,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             <Typography variant="body2" color="text.secondary" align="center" {...props}>
               {'Copyright © '}
               <Link color="inherit" href="https://github.com/otmanLAHRECHE">
-                Labo_SysApp EPSP_labo V1.0 
+                Labo_SysApp V1.0 
               </Link>{' '}
               -- created by otman LAHRECHE
               {'.'}

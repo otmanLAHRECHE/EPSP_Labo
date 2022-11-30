@@ -501,7 +501,7 @@ def getAllExamenOfMonth(request, month, year):
         date_start = datetime.date(year , month, 1)
         date_end = datetime.date( year, month, range[1])
 
-        queryset = Examen.objects.filter(date_prelevement__gte=date_start, date_prelevement__lte=date_end)
+        queryset = Examen.objects.filter(date_prelevement__gte=date_start, date_prelevement__lte=date_end).order_by("-date_prelevement")
 
         source_serial = ExemenSerializer(queryset, many=True)
 
