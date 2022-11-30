@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
-import { getSelectedExemenTest } from '../../actions/exemen_test_data';
 import Chip from '@mui/material/Chip';
 import { styled } from '@mui/material/styles';
 

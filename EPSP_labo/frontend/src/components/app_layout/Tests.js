@@ -41,6 +41,8 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Typography from '@mui/material/Typography';
 
+import { darken, lighten } from '@mui/material/styles';
+
 import Container from '@mui/material/Container';
 
 import Alt from '../layouts/alert';
@@ -58,11 +60,19 @@ import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
 import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
 import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest } from '../../actions/examen_data';
+import ReadyStatus from './ready_status';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+
+const getBackgroundColor = (color, mode) =>
+  mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6);
+
+const getHoverBackgroundColor = (color, mode) =>
+  mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5);
 
 
 const columns = [
@@ -80,7 +90,11 @@ const columns = [
       <ExamenItemsList testes={params.row.test_details}/>
     ),
    },
-   { field: 'result_ready', headerName: "ETAT DE RESULTAT", width: 160 },
+   { field: 'result_ready', headerName: "ETAT DE RESULTAT", width: 220 ,
+      renderCell: (params) => (
+        <ReadyStatus status={params.row.test_details}/>
+      ),
+  },
   ];
 
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -521,17 +535,12 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         }
   
       }, [callBack]);
-      
-
-
-
-        
 
         return(
 
           <React.Fragment>
 
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={2}>
 
               <Grid item xs={6}>
@@ -577,13 +586,13 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
               </Grid>
 
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column'}}>
                 <div style={{ height: 700, width: '100%' }}>
                           <DataGrid
                             components={{
                               Toolbar: GridToolbar,
                             }}
-                              rows={data}
+                            rows={data}
                               columns={columns}
                               pageSize={15}
                               checkboxSelection = {false}
