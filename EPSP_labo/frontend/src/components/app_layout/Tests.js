@@ -246,6 +246,28 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           if(selectionModel.length == 0){
             setSelectionError(true);
           }else{    
+          setTestCode("");
+          setName("");
+          setPrename("");
+          setGenre(null);
+          setDateNaissance("");
+          setDate("");
+          setDocName("");
+          setInfPrelevement(null);
+          setTestType(null);
+          setTestes(null);
+
+          setTestCodeError([false, ""]);
+          setNameError([false, ""]);
+          setPrenameError([false, ""]);
+          setGenreError([false, ""]);
+          setDateNaissanceError([false, ""]);
+          setDateError([false, ""]);
+          setDocNameError([false, ""]);
+          setInfPrelevementError([false, ""]);
+          setTestTypeError([false, ""]);
+          setTestesError([false, ""]);
+
             const token = localStorage.getItem("auth_token");
 
             setInfData(await getAllInfirmierForSelect(token));
@@ -411,8 +433,33 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             setGenre("Famme")
           }
       };
+    
+      React.useEffect(() => {
+        console.log(rowData);
+        try{
+  
+          if (rowData == "no data"){
+            setResponseErrorSignal(true);
+          } else if(rowData != "") {
+    
+          setOpenUpdate(true);
+    
+          setBonNbr(rowData.bon_sortie_nbr);
+          setSource({"id":rowData.source.id, "label":rowData.source.name +" "+rowData.source.service});
+          setDate(dayjs(rowData.date, 'YYYY-MM-DD'));
+  
+          setBonNbrError([false, ""]);
+          setSourceError([false, ""]);
+          setDateError([false, ""]);
+  
+          }
+        }catch(e){
+          console.log(e)
+        }
+  
+      }, [rowData]);
 
-
+      
       React.useEffect(() =>{
         try{
           if (infData == "no data"){

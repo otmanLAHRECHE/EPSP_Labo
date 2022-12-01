@@ -539,11 +539,9 @@ def updateTest(request, id):
         id = request.data.pop('id')
 
         examen_test = ExamenTestes.objects.get(id = examen_test_id)
-        examen = Examen.objects.get(id = exam_id)
 
         Test_to_update = TestDetails.objects.get(id = id)
-
-        Test_to_update = InfPrileve.objects.get(id=id)
+        
         if not Test_to_update.examen_test == examen_test:
             Test_to_update.examen_test = examen_test
         
