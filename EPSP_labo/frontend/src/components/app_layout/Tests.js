@@ -161,6 +161,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [dataSortie, setDataSortie] = React.useState([]);
     const [infData, setInfData] = React.useState([]);
     const [testTypeData, setTestTypeData] = React.useState([]);
+    const [test2TypeData, setTest2TypeData] = React.useState([]);
     const [testesData, setTestesData] = React.useState([]);
     const [numberEnrgData, setNumberEnrgData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
@@ -174,6 +175,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [loadingSortieItem, setLoadingSortieItem] = React.useState(false);
 
     const [dataError, setDataError] = React.useState(false);
+    
+    const [genreValue, setGenreValue] = React.useState();
 
 
     const theme = useTheme
@@ -272,7 +275,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
             setInfData(await getAllInfirmierForSelect(token));
 
-            setTestTypeData(await getAllTestesTypesForSelect(token));
+            setTest2TypeData(await getAllTestesTypesForSelect(token));
     
             setRowData(await getSelectedExemen(token, selectionModel[0])); 
           }
@@ -281,6 +284,10 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
         const editExamenClose = () =>{
           setOpenUpdate(false);
+        }
+
+        const editExamenSave = () =>{
+
         }
 
         const deleteExamenOpen = () =>{
@@ -437,20 +444,54 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
       React.useEffect(() => {
         console.log(rowData);
         try{
+
+          const get_data = async(x)=>{
+            const token = localStorage.getItem("auth_token");
+            setTestesData(await getTestesForSelectedType(token, x));
+          }
+
+
   
           if (rowData == "no data"){
             setResponseErrorSignal(true);
           } else if(rowData != "") {
+
+          get_data(rowData.exm_type)
     
           setOpenUpdate(true);
     
-          setBonNbr(rowData.bon_sortie_nbr);
-          setSource({"id":rowData.source.id, "label":rowData.source.name +" "+rowData.source.service});
-          setDate(dayjs(rowData.date, 'YYYY-MM-DD'));
+          setTestCode(rowData.no_enregistrement);
+          setName(rowData.patient_first_name);
+          setPrename(rowData.patient_last_name);
+          setDateNaissance(dayjs(rowData.patient_birth_day, 'YYYY-MM-DD'));
+          setGenre(rowData.patient_genre);
+          if(rowData.patient_genre == "Homme"){
+            setGenreValue(1);
+          }else{
+            setGenreValue(2);
+          }
+          setDocName(rowData.doctor_send_from);
+          setDate(dayjs(rowData.date_prelevement, 'YYYY-MM-DD'));
+          setInfPrelevement({"id":rowData.inf_prelevement.id, "label":rowData.inf_prelevement.first_name +" "+rowData.inf_prelevement.last_name})
+          setTestType({"label":rowData.exm_type});
+          
+          var list = [];
+          for(let i=0; i<rowData.test_details.length; i++){
+            list.push(rowData.test_details[i]);
+          }
+          setTestes(list);
+          list = [];
   
-          setBonNbrError([false, ""]);
-          setSourceError([false, ""]);
+          setTestCodeError([false, ""]);
+          setNameError([false, ""]);
+          setPrenameError([false, ""]);
+          setGenreError([false, ""]);
+          setDateNaissanceError([false, ""]);
           setDateError([false, ""]);
+          setDocNameError([false, ""]);
+          setInfPrelevementError([false, ""]);
+          setTestTypeError([false, ""]);
+          setTestesError([false, ""]);
   
           }
         }catch(e){
@@ -459,7 +500,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
   
       }, [rowData]);
 
-      
+
       React.useEffect(() =>{
         try{
           if (infData == "no data"){
@@ -484,6 +525,18 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           console.log(e);
         }
       }, [testTypeData]);
+
+      React.useEffect(() =>{
+        try{
+          if (test2TypeData == "no data"){
+            setResponseErrorSignal(true);
+          } else if(test2TypeData != "") {
+            setAllTestTypes(test2TypeData);
+          }
+        }catch(e){
+          console.log(e);
+        }
+      }, [test2TypeData]);
 
 
       React.useEffect(() =>{
@@ -883,7 +936,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             </Dialog>
 
 
-            <Dialog open={open} onClose={editExamenClose}  maxWidth="lg" fullWidth={true}>
+            <Dialog open={openUpdate} onClose={editExamenClose}  maxWidth="lg" fullWidth={true}>
                   <DialogTitle>Modifier un exemen</DialogTitle>
                     <DialogContent>
                       <Grid container spacing={2}>
@@ -911,6 +964,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                                   label="Nom de malade"
                                                   fullWidth
                                                   variant="standard"
+                                                  value={name}
                                                   onChange={(event) => {setName(event.target.value)}}
                                           />
                                         
@@ -925,6 +979,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                                   label="Prenom de malade"
                                                   fullWidth
                                                   variant="standard"
+                                                  value={prename}
                                                   onChange={(event) => {setPrename(event.target.value)}}
                                           />
                                                  
@@ -956,7 +1011,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                         <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
                                           <InputLabel required htmlFor="grouped-select">Genre</InputLabel>
                                             <Select defaultValue="" id="grouped-select" label="Genre" error={genreError[0]} helperText={genreError[1]}
-                                            onChange={change_type}>
+                                            onChange={change_type}
+                                            value={genreValue}>
                                               <MenuItem value="">
                                                 <em>None</em>
                                               </MenuItem>
@@ -1040,6 +1096,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                                   label="Medecin d'analyse"
                                                   fullWidth
                                                   variant="standard"
+                                                  value={docName}
                                                   onChange={(event) => {setDocName(event.target.value)}}
                                           />          
                                         
@@ -1083,8 +1140,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                       </Grid>
                     </DialogContent>
                               <DialogActions>
-                                <Button onClick={addExamenClose}>Anuller</Button>
-                                <Button onClick={addExamenSave}>Sauvgarder</Button>
+                                <Button onClick={editExamenClose}>Anuller</Button>
+                                <Button onClick={editExamenSave}>Sauvgarder</Button>
                               </DialogActions>   
 
                     
