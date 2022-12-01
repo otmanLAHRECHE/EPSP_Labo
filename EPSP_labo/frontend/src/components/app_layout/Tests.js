@@ -448,7 +448,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
           const get_data = async(x)=>{
             const token = localStorage.getItem("auth_token");
-            setTestes2Data(await getTestesForSelectedType(token, x));
+            setTestesData(await getTestesForSelectedType(token, x));
           }
 
 
@@ -547,25 +547,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         }
       }, [testesData]);
 
-      React.useEffect(() =>{
-        try{
-          if (testes2Data == "no data"){
-            setResponseErrorSignal(true);
-          } else if(testes2Data != "") {
-            setAllTestes(testes2Data);
-
-            var list = [];
-          for(let i=0; i<rowData.test_details.length; i++){
-            list.push(rowData.test_details[i]);
-          }
-          console.log("list.....................", list);
-          setTestes(list);
-          list = [];
-          }
-        }catch(e){
-          console.log(e);
-        }
-      }, [testes2Data]);
+      
 
       React.useEffect(() =>{
         try{
