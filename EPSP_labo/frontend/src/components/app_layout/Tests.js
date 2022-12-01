@@ -163,6 +163,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [testTypeData, setTestTypeData] = React.useState([]);
     const [test2TypeData, setTest2TypeData] = React.useState([]);
     const [testesData, setTestesData] = React.useState([]);
+    const [testes2Data, setTestes2Data] = React.useState([]);
     const [numberEnrgData, setNumberEnrgData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
@@ -447,7 +448,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
           const get_data = async(x)=>{
             const token = localStorage.getItem("auth_token");
-            setTestesData(await getTestesForSelectedType(token, x));
+            setTestes2Data(await getTestesForSelectedType(token, x));
           }
 
 
@@ -475,12 +476,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           setInfPrelevement({"id":rowData.inf_prelevement.id, "label":rowData.inf_prelevement.first_name +" "+rowData.inf_prelevement.last_name})
           setTestType({"label":rowData.exm_type});
           
-          var list = [];
-          for(let i=0; i<rowData.test_details.length; i++){
-            list.push(rowData.test_details[i]);
-          }
-          setTestes(list);
-          list = [];
+          
   
           setTestCodeError([false, ""]);
           setNameError([false, ""]);
@@ -550,6 +546,26 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           console.log(e);
         }
       }, [testesData]);
+
+      React.useEffect(() =>{
+        try{
+          if (testes2Data == "no data"){
+            setResponseErrorSignal(true);
+          } else if(testes2Data != "") {
+            setAllTestes(testes2Data);
+
+            var list = [];
+          for(let i=0; i<rowData.test_details.length; i++){
+            list.push(rowData.test_details[i]);
+          }
+          console.log("list.....................", list);
+          setTestes(list);
+          list = [];
+          }
+        }catch(e){
+          console.log(e);
+        }
+      }, [testes2Data]);
 
       React.useEffect(() =>{
         try{
