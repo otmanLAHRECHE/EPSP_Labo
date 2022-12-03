@@ -59,7 +59,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
 import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
-import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelectedExemen } from '../../actions/examen_data';
+import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelectedExemen, updateExemen } from '../../actions/examen_data';
 import ReadyStatus from './ready_status';
 
 
@@ -127,6 +127,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [examenNameError, setExamenNameError] = React.useState([false, ""]);
 
     const [callBack, setCallBack] = React.useState("");
+    const [callBackUpdate, setCallBackUpdate] = React.useState("");
 
     const [dateFilterNotErr, setDateFilterNotErr] = React.useState(false);
     
@@ -287,7 +288,101 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           setOpenUpdate(false);
         }
 
-        const editExamenSave = () =>{
+        const editExamenSave = async() =>{
+
+          var test = true;
+
+          if(testCode == "" || testCode == 0){
+            test = false;
+            setTestCodeError([true, "erreur sur ce champ"]);
+          }
+
+          if(name =="" || name == null){
+            test = false;
+            setNameError([true, "champ est obligatoire"]);
+          }
+
+          if(prename =="" || prename == null){
+            test = false;
+            setPrenameError([true, "champ est obligatoire"]);
+          }
+
+          if(genre == "" || genre ==null){
+            test = false;
+            setGenreError([true, "champ est obligatoire"]);
+          }
+
+          if(date == null || date == ""){
+            test = false;
+            setDateError([true, "champ est obligatoire"]);
+          }else if(date.isValid() == false){
+            test = false;
+            setDateError([true, "date n est pas valide"]);
+          }
+
+          if(dateNaissance == null || dateNaissance == ""){
+            test = false;
+            setDateNaissanceError([true, "champ est obligatoire"]);
+          }else if(dateNaissance.isValid() == false){
+            test = false;
+            setDateNaissanceError([true, "date n est pas valide"]);
+          }
+
+          if(infPrelevement ==null){
+            test = null;
+            setInfPrelevementError([true, "champ est obligatoire"]);
+          }
+
+          if(testType ==null){
+            test = null;
+            setTestTypeError([true, "champ est obligatoire"]);
+          }
+
+          if(testes ==null){
+            test = null;
+            setTestesError([true, "champ est obligatoire"]);
+          }
+
+          if(docName =="" || docName == null){
+            test = false;
+            setDocNameError([true, "champ est obligatoire"]);
+          }
+
+          if (test){
+            var m = date.get('month')+1;
+            const d = date.get('date') +"/"+m +"/"+date.get('year');
+
+            var mN = dateNaissance.get('month')+1;
+            const d2 = dateNaissance.get('date') +"/"+m +"/"+ dateNaissance.get('year');
+
+          
+
+            const data = {
+              "no_enregistrement": Number(testCode),
+              "patient_first_name": name,
+              "patient_last_name": prename,
+              "patient_birth_day": d2,
+              "patient_genre": genre,
+              "doctor_send_from": docName,
+              "date_prelevement": d,
+              "inf_prelevement_id": infPrelevement.id,
+              "exm_type": testType.label,
+              "test_seen": "false",
+              "result_ready": "false",
+            }
+
+            console.log(data);
+
+            const token = localStorage.getItem("auth_token");
+
+            setCallBackUpdate(await updateExemen(token, JSON.stringify(data), rowData.id));         
+
+          }else{
+
+            console.log("error");
+            setLoadError(true);
+          }
+
 
         }
 

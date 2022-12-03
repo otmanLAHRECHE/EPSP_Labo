@@ -418,7 +418,6 @@ def updateExemen(request, id):
         doctor_send_from = request.data.pop('doctor_send_from')
         inf_prelevement_id = request.data.pop('inf_prelevement_id')
         exm_type = request.data.pop('exm_type')
-        tests_examen = request.data.pop('tests_examen')
 
         inf_prelevement = InfPrileve.objects.get(id=inf_prelevement_id)
 
@@ -466,9 +465,6 @@ def updateExemen(request, id):
         
         if not examen_to_update.exm_type == exm_type:
             examen_to_update.exm_type = exm_type
-        
-        if not examen_to_update.tests_examen == tests_examen:
-            examen_to_update.tests_examen = tests_examen
         
         if not examen_to_update.inf_prelevement.full_name == inf_prelevement.full_name:
             examen_to_update.inf_prelevement = inf_prelevement
