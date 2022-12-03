@@ -553,6 +553,15 @@ def deleteTest(request, id):
         return Response(status=status.HTTP_200_OK, data = {"status":"Test deleted"})
 
 
+@api_view(['DELETE'])
+def deleteTestOfExamen(request, id):
+    if request.method == 'DELETE' and request.user.is_authenticated:
+
+        examen = Examen.objects.get(id= id)
+        TestDetails.objects.filter(examen = examen).delete()
+        return Response(status=status.HTTP_200_OK, data = {"status":"Test deleted"})
+
+
 
 
 

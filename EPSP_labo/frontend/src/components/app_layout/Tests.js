@@ -59,7 +59,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
 import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
-import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelectedExemen, updateExemen } from '../../actions/examen_data';
+import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelectedExemen, updateExemen, deleteTestOfExamen } from '../../actions/examen_data';
 import ReadyStatus from './ready_status';
 
 
@@ -694,10 +694,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         }
 
         setOpen(false);
-  
-        
-  
       }, [response, dateFilter]);
+
 
       React.useEffect(() => {
 
@@ -743,6 +741,56 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         }
   
       }, [callBack]);
+
+
+      React.useEffect(() => {
+
+        const delete_history = async() =>{
+          const token = localStorage.getItem("auth_token");
+            await deleteTestOfExamen(token, JSON.stringify(da), rowData.id);
+        }
+
+        const upload = async (da) =>{
+          const token = localStorage.getItem("auth_token");
+            await addNewTest(token, JSON.stringify(da));
+        }
+        const upload2 = async (da) =>{
+          const token = localStorage.getItem("auth_token");           
+            setResponse(await addNewTest(token, JSON.stringify(da)));
+        }
+
+        if (callBackUpdate == ""){
+
+        } else{
+
+          delete_history();
+
+          for(var i=0; i<testes.length; i++){
+            if(i != testes.length - 1){
+              const d = {
+                "exam_id":Number(callBackUpdate.id_examen),
+                "exam_test_id":testes[i].id
+              };
+
+              upload(d);
+
+            }else{
+              const d = {
+                "exam_id":Number(callBackUpdate.id_examen),
+                "exam_test_id":testes[i].id
+              };
+              upload2(d);              
+            }                    
+          }
+          setResponseSuccesSignal(true);
+          setCallBackUpdate("");
+          setOpen(false);
+        }
+  
+      }, [callBackUpdate]);
+
+
+
 
         return(
 

@@ -217,3 +217,27 @@ export async function getAllExemen(token){
     }
     
     };
+
+
+    export async function deleteTestOfExamen(token, id){
+      const response = await fetch(
+          '/labo/api/delete_test_of_examen/'+id,
+          {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Token ' +token,
+            },
+            body: JSON.stringify()
+          }
+      );
+      const text = await response.text();
+      if (response.status === 200) {
+        return JSON.parse(text);
+      } else {
+        console.log("failed", text);
+        return "error";
+      }
+      
+      };

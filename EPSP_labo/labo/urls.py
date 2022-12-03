@@ -44,4 +44,5 @@ urlpatterns = [
     path('api/create_new_test/', views.createNewTest),
     path('api/update_test/<int:id>', views.updateTest),
     path('api/delete_test/<int:id>', views.deleteTest),
+    path('api/delete_test_of_examen/<int:id>', views.deleteTestOfExamen),
 ]
