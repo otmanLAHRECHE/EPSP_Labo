@@ -1,10 +1,16 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
+import Chip from '@mui/material/Chip';
+import { styled } from '@mui/material/styles';
 
 
+const ListItem = styled('li')(({ theme }) => ({
+  margin: theme.spacing(0.5),
+}));
 
 export default function ExamenItemsList(props) {
+  
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -19,18 +25,12 @@ export default function ExamenItemsList(props) {
       }}
       component="ul"
     >
-      {props.tests.map((test) => {
-        let icon;
-
-        if (data.label === 'React') {
-          icon = <TagFacesIcon />;
-        }
-
+      {props.testes.map((test) => {
         return (
-          <ListItem key={data.key}>
+          <ListItem key={Math.random()}>
             <Chip
-              label={test}
-              color={props.type === 'Serologie' ? "error" : (props.type === 'Bacteriologie' ? "warning" : "secondary")}
+              label={test.examen_test.exam_test}
+              color={test.examen_test.exam_color}
             />
           </ListItem>
         );
