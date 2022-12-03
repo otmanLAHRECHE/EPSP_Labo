@@ -747,7 +747,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
         const delete_history = async() =>{
           const token = localStorage.getItem("auth_token");
-            await deleteTestOfExamen(token, JSON.stringify(da), rowData.id);
+            await deleteTestOfExamen(token, rowData.id);
         }
 
         const upload = async (da) =>{
@@ -768,7 +768,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           for(var i=0; i<testes.length; i++){
             if(i != testes.length - 1){
               const d = {
-                "exam_id":Number(callBackUpdate.id_examen),
+                "exam_id":Number(rowData.id),
                 "exam_test_id":testes[i].id
               };
 
@@ -776,7 +776,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
             }else{
               const d = {
-                "exam_id":Number(callBackUpdate.id_examen),
+                "exam_id":Number(rowData.id),
                 "exam_test_id":testes[i].id
               };
               upload2(d);              
@@ -784,7 +784,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           }
           setResponseSuccesSignal(true);
           setCallBackUpdate("");
-          setOpen(false);
+          setOpenUpdate(false);
         }
   
       }, [callBackUpdate]);

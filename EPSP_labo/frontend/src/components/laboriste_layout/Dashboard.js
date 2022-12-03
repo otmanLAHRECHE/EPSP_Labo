@@ -45,6 +45,9 @@ import Inf_prelevement from './inf_prelevement';
 import Test_types from './Test_type';
 
 
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+
+
 
 
 const drawerWidth = 240;
@@ -215,6 +218,13 @@ function DashboardLaboristeContent() {
             </Typography>
 
             <Button color="inherit" startIcon={<BiotechIcon />}>LABORATOIRE</Button>
+            <FiberManualRecordIcon
+                fontSize="small"
+                  sx={{
+                    mr: 1,
+                    color: '#4caf50',
+                  }}
+            />     
             <IconButton
                 size="large"
                 aria-label="account of current user"
