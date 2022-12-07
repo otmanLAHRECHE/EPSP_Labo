@@ -724,110 +724,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                   <DialogTitle>Resultat</DialogTitle>
                     <DialogContent>
                       <Grid container spacing={2}>
-                                        <Grid item xs={4}>
-                                          <TextField
-                                                  error={testCodeError[0]}
-                                                  helperText={testCodeError[1]}
-                                                  margin="dense"
-                                                  id="No_d_enregistrement"
-                                                  label="No d'enregistrement"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  type="number"
-                                                  value={testCode}
-                                                  onChange={(event) => {setTestCode(event.target.value)}}
-                                          />
-
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                        <TextField
-                                                  error={nameError[0]}
-                                                  helperText={nameError[1]}
-                                                  margin="dense"
-                                                  id="Nom_de_malade"
-                                                  label="Nom de malade"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  onChange={(event) => {setName(event.target.value)}}
-                                          />
-                                        
-                                        </Grid>
-
-                                        <Grid item xs={4}>
-                                        <TextField
-                                                  error={prenameError[0]}
-                                                  helperText={prenameError[1]}
-                                                  margin="dense"
-                                                  id="No_d_enregistrement"
-                                                  label="Prenom de malade"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  onChange={(event) => {setPrename(event.target.value)}}
-                                          />
-                                                 
-                                        
-                                        </Grid>
-
-                        
-                      </Grid>
-
-                      <br></br> 
-
-                      <Grid container spacing={2}>
-                                        <Grid item xs={4}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DesktopDatePicker
-                                                        label="Date de naissanse"
-                                                        inputFormat="DD/MM/YYYY"
-                                                        value={dateNaissance}
-                                                        onChange={handleChangeDateN}
-                                                        renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
-                                                        helperText={dateNaissanceError[1]} 
-                                                        required/>}
-                                                />
-
-                                            </LocalizationProvider>
-
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                        <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
-                                          <InputLabel required htmlFor="grouped-select">Genre</InputLabel>
-                                            <Select defaultValue="" id="grouped-select" label="Genre" error={genreError[0]} helperText={genreError[1]}
-                                            onChange={change_type}>
-                                              <MenuItem value="">
-                                                <em>None</em>
-                                              </MenuItem>
-                                              <MenuItem value={1}>homme</MenuItem>
-                                              <MenuItem value={2}>famme</MenuItem>
-                                            
-
-                                            </Select>
-                                </FormControl>   
-                                        
-                                        </Grid>
-
-                                        <Grid item xs={4}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DesktopDatePicker
-                                                        label="Date de prélèvement"
-                                                        inputFormat="DD/MM/YYYY"
-                                                        value={date}
-                                                        onChange={handleChangeDatePR}
-                                                        renderInput={(params) => <TextField {...params} error={dateError[0]}
-                                                        helperText={dateError[1]} 
-                                                        required/>}
-                                                />
-
-                                            </LocalizationProvider>
-                                                 
-                                        
-                                        </Grid>
-
-                        
-                      </Grid>
-
-                      <Grid container spacing={2}>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={6}>
                                         <Autocomplete
                                                     disablePortal
                                                     value={infPrelevement}
@@ -843,148 +740,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                         
 
                                         </Grid>
-                                        <Grid item xs={4}>
-                                        <Autocomplete
-                                                    disablePortal
-                                                    value={testType}
-                                                    onChange={async (event, newVlue) =>{
-                                                        setTestType(newVlue);
-
-                                                        if (newVlue != null){
-                                                          const token = localStorage.getItem("auth_token");
-                                                          setTestesData(await getTestesForSelectedType(token, newVlue.label));
-                                                        }
-                                                        else{
-                                                          setAllTestes([]);
-                                                          setTestes(null);
-                                                        }
-                                                        
-                                                    }}
-                                                    options={allTestTypes}
-                                                    renderInput={(params) => <TextField {...params} error={testTypeError[0]}
-                                                    helperText={testTypeError[1]} fullWidth variant="standard" label="Type de examen" 
-                                                    required/>}
-                                                />  
-                                        
-                                        </Grid>
-
-                                        <Grid item xs={4}>
-                                        <TextField
-                                                  error={docNameError[0]}
-                                                  helperText={docNameError[1]}
-                                                  margin="dense"
-                                                  id="No_d_enregistrement"
-                                                  label="Medecin d'analyse"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  onChange={(event) => {setDocName(event.target.value)}}
-                                          />          
-                                        
-                                        </Grid>
-
-                                        <Grid item xs={12}>
-                                          <Autocomplete
-                                                multiple
-                                                id="checkboxes-tags-demo"
-                                                options={allTestes}
-                                                disableCloseOnSelect
-                                                getOptionLabel={(option) => option.exam_test}
-                                                onChange={(event, newVlue) =>{
-                                                  console.log(newVlue);
-                                                  setTestes(newVlue);
-                                                  
-                                              }}
-                                                renderOption={(props, option, { selected }) => (
-                                                  <li {...props}>
-                                                    <Checkbox
-                                                      icon={icon}
-                                                      checkedIcon={checkedIcon}
-                                                      style={{ marginRight: 8 }}
-                                                      checked={selected}
-                                                    />
-                                                    {option.exam_test}
-                                                  </li>
-                                                )}
-                                                style={{ width: 500 }}
-                                                renderInput={(params) => (
-                                                  <TextField {...params} label="Les testes d'examen" placeholder="Teste" error={testesError[0]}
-                                                  helperText={testesError[1]}/>
-                                                )}
-                                              />       
-                                        
-                                        </Grid>
-
-                                        
-
-                        
-                      </Grid>
-                    </DialogContent>
-                              <DialogActions>
-                                <Button onClick={addExamenClose}>Anuller</Button>
-                                <Button onClick={addExamenSave}>Sauvgarder</Button>
-                              </DialogActions>   
-
-                    
-            </Dialog>
-
-
-            <Dialog open={openUpdate} onClose={editExamenClose}  maxWidth="lg" fullWidth={true}>
-                  <DialogTitle>Modifier un exemen</DialogTitle>
-                    <DialogContent>
-                      <Grid container spacing={2}>
-                                        <Grid item xs={4}>
-                                          <TextField
-                                                  error={testCodeError[0]}
-                                                  helperText={testCodeError[1]}
-                                                  margin="dense"
-                                                  id="No_d_enregistrement"
-                                                  label="No d'enregistrement"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  type="number"
-                                                  value={testCode}
-                                                  onChange={(event) => {setTestCode(event.target.value)}}
-                                          />
-
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                        <TextField
-                                                  error={nameError[0]}
-                                                  helperText={nameError[1]}
-                                                  margin="dense"
-                                                  id="Nom_de_malade"
-                                                  label="Nom de malade"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  value={name}
-                                                  onChange={(event) => {setName(event.target.value)}}
-                                          />
-                                        
-                                        </Grid>
-
-                                        <Grid item xs={4}>
-                                        <TextField
-                                                  error={prenameError[0]}
-                                                  helperText={prenameError[1]}
-                                                  margin="dense"
-                                                  id="No_d_enregistrement"
-                                                  label="Prenom de malade"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  value={prename}
-                                                  onChange={(event) => {setPrename(event.target.value)}}
-                                          />
-                                                 
-                                        
-                                        </Grid>
-
-                        
-                      </Grid>
-
-                      <br></br> 
-
-                      <Grid container spacing={2}>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={6}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DesktopDatePicker
                                                         label="Date de naissanse"
@@ -997,148 +753,31 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                                                 />
 
                                             </LocalizationProvider>
-
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                        <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
-                                          <InputLabel required htmlFor="grouped-select">Genre</InputLabel>
-                                            <Select defaultValue="" id="grouped-select" label="Genre" error={genreError[0]} helperText={genreError[1]}
-                                            onChange={change_type}
-                                            value={genreValue}>
-                                              <MenuItem value="">
-                                                <em>None</em>
-                                              </MenuItem>
-                                              <MenuItem value={1}>homme</MenuItem>
-                                              <MenuItem value={2}>famme</MenuItem>
-                                            
-
-                                            </Select>
-                                </FormControl>   
                                         
                                         </Grid>
 
-                                        <Grid item xs={4}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DesktopDatePicker
-                                                        label="Date de prélèvement"
-                                                        inputFormat="DD/MM/YYYY"
-                                                        value={date}
-                                                        onChange={handleChangeDatePR}
-                                                        renderInput={(params) => <TextField {...params} error={dateError[0]}
-                                                        helperText={dateError[1]} 
-                                                        required/>}
-                                                />
-
-                                            </LocalizationProvider>
-                                                 
-                                        
-                                        </Grid>
-
-                        
                       </Grid>
+
+                      <br></br> 
 
                       <Grid container spacing={2}>
-                                        <Grid item xs={4}>
-                                        <Autocomplete
-                                                    disablePortal
-                                                    value={infPrelevement}
-                                                    onChange={(event, newVlue) =>{
-                                                        setInfPrelevement(newVlue);
-                                                        
-                                                    }}
-                                                    options={allInfPrelevement}
-                                                    renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
-                                                    helperText={infPrelevementError[1]} fullWidth variant="standard" label="Infirmier de prélèvement" 
-                                                    required/>}
-                                                />  
-                                        
+                                        <Grid item xs={6}>
 
                                         </Grid>
-                                        <Grid item xs={4}>
-                                        <Autocomplete
-                                                    disablePortal
-                                                    value={testType}
-                                                    onChange={async (event, newVlue) =>{
-                                                        setTestType(newVlue);
-
-                                                        if (newVlue != null){
-                                                          const token = localStorage.getItem("auth_token");
-                                                          setTestesData(await getTestesForSelectedType(token, newVlue.label));
-                                                        }
-                                                        else{
-                                                          setAllTestes([]);
-                                                          setTestes(null);
-                                                        }
-                                                        
-                                                    }}
-                                                    options={allTestTypes}
-                                                    renderInput={(params) => <TextField {...params} error={testTypeError[0]}
-                                                    helperText={testTypeError[1]} fullWidth variant="standard" label="Type de examen" 
-                                                    required/>}
-                                                />  
+                                        <Grid item xs={6}>
                                         
                                         </Grid>
-
-                                        <Grid item xs={4}>
-                                        <TextField
-                                                  error={docNameError[0]}
-                                                  helperText={docNameError[1]}
-                                                  margin="dense"
-                                                  id="No_d_enregistrement"
-                                                  label="Medecin d'analyse"
-                                                  fullWidth
-                                                  variant="standard"
-                                                  value={docName}
-                                                  onChange={(event) => {setDocName(event.target.value)}}
-                                          />          
-                                        
-                                        </Grid>
-
-                                        <Grid item xs={12}>
-                                          <Autocomplete
-                                                multiple
-                                                id="checkboxes-tags-demo"
-                                                options={allTestes}
-                                                disableCloseOnSelect
-                                                getOptionLabel={(option) => option.exam_test}
-                                                onChange={(event, newVlue) =>{
-                                                  console.log(newVlue);
-                                                  setTestes(newVlue);
-                                                  
-                                              }}
-                                                renderOption={(props, option, { selected }) => (
-                                                  <li {...props}>
-                                                    <Checkbox
-                                                      icon={icon}
-                                                      checkedIcon={checkedIcon}
-                                                      style={{ marginRight: 8 }}
-                                                      checked={selected}
-                                                    />
-                                                    {option.exam_test}
-                                                  </li>
-                                                )}
-                                                style={{ width: 500 }}
-                                                renderInput={(params) => (
-                                                  <TextField {...params} label="Les testes d'examen" placeholder="Teste" error={testesError[0]}
-                                                  helperText={testesError[1]}/>
-                                                )}
-                                              />       
-                                        
-                                        </Grid>
-
-                                        
-
                         
                       </Grid>
+
                     </DialogContent>
                               <DialogActions>
-                                <Button onClick={editExamenClose}>Anuller</Button>
-                                <Button onClick={editExamenSave}>Sauvgarder</Button>
+                                <Button onClick={addResultatClose}>Anuller</Button>
+                                <Button onClick={addResultatSave}>Sauvgarder</Button>
                               </DialogActions>   
 
                     
             </Dialog>
-            
 
             <Dialog open={openDelete}
                                     TransitionComponent={Transition}
