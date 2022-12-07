@@ -61,7 +61,7 @@ class Resultat(models.Model):
     examen = models.ForeignKey(Examen, on_delete=models.CASCADE)
     laboriste_worker = models.ForeignKey(Laboriste, on_delete=models.CASCADE)
     date_result = models.DateField()
-    result_tests = models.CharField(max_length=50)
+    result_tests = models.TextField()
 
     def __str__(self):
         return self.id

@@ -55,6 +55,7 @@ import FormControl from '@mui/material/FormControl';
 
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import SummarizeIcon from '@mui/icons-material/Summarize';
 
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
@@ -213,41 +214,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           setDate(newValue);
         }
 
-        const addExamenOpen = async () =>{
-
-          setTestCode("");
-          setName("");
-          setPrename("");
-          setGenre(null);
-          setDateNaissance("");
-          setDate("");
-          setDocName("");
-          setInfPrelevement(null);
-          setTestType(null);
-          setTestes(null);
-
-          setTestCodeError([false, ""]);
-          setNameError([false, ""]);
-          setPrenameError([false, ""]);
-          setGenreError([false, ""]);
-          setDateNaissanceError([false, ""]);
-          setDateError([false, ""]);
-          setDocNameError([false, ""]);
-          setInfPrelevementError([false, ""]);
-          setTestTypeError([false, ""]);
-          setTestesError([false, ""]);
-
-          const token = localStorage.getItem("auth_token");
-
-          setInfData(await getAllInfirmierForSelect(token));
-
-          setTestTypeData(await getAllTestesTypesForSelect(token));
-
-          setNumberEnrgData(await getLastExemenTest(token));
-
-        }
-
-        const editExamenOpen = async() =>{
+        const addResultOpen = async() =>{
           if(selectionModel.length == 0){
             setSelectionError(true);
           }else{    
@@ -284,11 +251,11 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           
         }
 
-        const editExamenClose = () =>{
+        const addResultatClose = () =>{
           setOpenUpdate(false);
         }
 
-        const editExamenSave = async() =>{
+        const addResultatSave = async() =>{
 
           var test = true;
 
@@ -412,121 +379,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
         }
 
-        const addExamenClose = () =>{
-          setOpen(false);
-
-        }
-
-        const addExamenSave = async() =>{
-
-          var test = true;
-
-          setTestCodeError([false, ""]);
-          setNameError([false, ""]);
-          setPrenameError([false, ""]);
-          setGenreError([false, ""]);
-          setDateNaissanceError([false, ""]);
-          setDateError([false, ""]);
-          setDocNameError([false, ""]);          
-          setInfPrelevementError([false, ""]);
-          setTestTypeError([false, ""]);
-          setTestesError([false, ""]);
-
-          if(testCode == "" || testCode == 0){
-            test = false;
-            setTestCodeError([true, "erreur sur ce champ"]);
-          }
-
-          if(name =="" || name == null){
-            test = false;
-            setNameError([true, "champ est obligatoire"]);
-          }
-
-          if(prename =="" || prename == null){
-            test = false;
-            setPrenameError([true, "champ est obligatoire"]);
-          }
-
-          if(genre == "" || genre ==null){
-            test = false;
-            setGenreError([true, "champ est obligatoire"]);
-          }
-
-          if(date == null || date == ""){
-            test = false;
-            setDateError([true, "champ est obligatoire"]);
-          }else if(date.isValid() == false){
-            test = false;
-            setDateError([true, "date n est pas valide"]);
-          }
-
-          if(dateNaissance == null || dateNaissance == ""){
-            test = false;
-            setDateNaissanceError([true, "champ est obligatoire"]);
-          }else if(dateNaissance.isValid() == false){
-            test = false;
-            setDateNaissanceError([true, "date n est pas valide"]);
-          }
-
-          if(infPrelevement ==null){
-            test = null;
-            setInfPrelevementError([true, "champ est obligatoire"]);
-          }
-
-          if(testType ==null){
-            test = null;
-            setTestTypeError([true, "champ est obligatoire"]);
-          }
-
-          if(testes ==null){
-            test = null;
-            setTestesError([true, "champ est obligatoire"]);
-          }
-
-          if(docName =="" || docName == null){
-            test = false;
-            setDocNameError([true, "champ est obligatoire"]);
-          }
-
-          if (test){
-            var m = date.get('month')+1;
-            const d = date.get('date') +"/"+m +"/"+date.get('year');
-
-            var mN = dateNaissance.get('month')+1;
-            const d2 = dateNaissance.get('date') +"/"+m +"/"+ dateNaissance.get('year');
-
-          
-
-            const data = {
-              "no_enregistrement": Number(testCode),
-              "patient_first_name": name,
-              "patient_last_name": prename,
-              "patient_birth_day": d2,
-              "patient_genre": genre,
-              "doctor_send_from": docName,
-              "date_prelevement": d,
-              "inf_prelevement_id": infPrelevement.id,
-              "exm_type": testType.label,
-              "test_seen": "false",
-              "result_ready": "false",
-            }
-
-            console.log(data);
-
-            const token = localStorage.getItem("auth_token");
-
-            setCallBack(await addNewExemen(token, JSON.stringify(data)));         
-
-          }else{
-
-            console.log("error");
-            setLoadError(true);
-          }
-
-          
-
-        }
-
         const change_type = (event) => {
           if (event.target.value == ""){
             setGenre("")
@@ -537,6 +389,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           }
       };
     
+
       React.useEffect(() => {
         console.log(rowData);
         try{
@@ -590,7 +443,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         }
   
       }, [rowData]);
-
 
       React.useEffect(() =>{
         try{
@@ -833,8 +685,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                     }}
                 >
                 <ButtonGroup variant="outlined" aria-label="outlined primary button group" orientation="vertical">
-                  <Button startIcon={<AddCircleOutlineIcon />} onClick={addExamenOpen}>Ajouter un examen</Button>
-                  <Button startIcon={<EditAttributesIcon />} onClick={editExamenOpen}>Modifier un examen</Button>
+                  <Button startIcon={<SummarizeIcon />} onClick={addResultOpen}>Ajouter un résultat</Button>
                   <Button startIcon={<DeleteForeverIcon />} onClick={deleteExamenOpen}>Supprimer un examen</Button>
                 </ButtonGroup>
                 </Box>
@@ -869,8 +720,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             <Copyright sx={{ pt: 4 }} />
 
 
-            <Dialog open={open} onClose={addExamenClose}  maxWidth="lg" fullWidth={true}>
-                  <DialogTitle>Ajouter un exemen</DialogTitle>
+            <Dialog open={openUpdate} onClose={addResultatClose}  maxWidth="lg" fullWidth={true}>
+                  <DialogTitle>Resultat</DialogTitle>
                     <DialogContent>
                       <Grid container spacing={2}>
                                         <Grid item xs={4}>
