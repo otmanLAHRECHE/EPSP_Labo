@@ -60,6 +60,7 @@ import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
 import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
 import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelectedExemen, updateExemen, deleteTestOfExamen } from '../../actions/examen_data';
 import ReadyStatus from './ready_status';
+import AddCircleOutline from '@mui/icons-material/AddCircleOutline';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -210,6 +211,144 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
         const handleChangeDatePR = (newValue) =>{
           setDate(newValue);
+        }
+
+        const addExamenOpen = async() =>{
+          setTestCode("");
+          setName("");
+          setPrename("");
+          setGenre(null);
+          setDateNaissance("");
+          setDate("");
+          setDocName("");
+          setInfPrelevement(null);
+          setTestType(null);
+          setTestes(null);
+
+          setTestCodeError([false, ""]);
+          setNameError([false, ""]);
+          setPrenameError([false, ""]);
+          setGenreError([false, ""]);
+          setDateNaissanceError([false, ""]);
+          setDateError([false, ""]);
+          setDocNameError([false, ""]);
+          setInfPrelevementError([false, ""]);
+          setTestTypeError([false, ""]);
+          setTestesError([false, ""]);
+
+            const token = localStorage.getItem("auth_token");
+
+            setInfData(await getAllInfirmierForSelect(token));
+
+            setTestTypeData(await getAllTestesTypesForSelect(token));
+
+            setNumberEnrgData(await getLastExemenTest(token));
+        }
+
+        const addExamenClose = () =>{
+          setOpen(false);
+        }
+
+        const addExamenSave = async() =>{
+          var test = true;
+
+          if(testCode == "" || testCode == 0){
+            test = false;
+            setTestCodeError([true, "erreur sur ce champ"]);
+          }
+
+          if(name =="" || name == null){
+            test = false;
+            setNameError([true, "champ est obligatoire"]);
+          }
+
+          if(prename =="" || prename == null){
+            test = false;
+            setPrenameError([true, "champ est obligatoire"]);
+          }
+
+          if(genre == "" || genre ==null){
+            test = false;
+            setGenreError([true, "champ est obligatoire"]);
+          }
+
+          if(date == null || date == ""){
+            test = false;
+            setDateError([true, "champ est obligatoire"]);
+          }else if(date.isValid() == false){
+            test = false;
+            setDateError([true, "date n est pas valide"]);
+          }
+
+          if(dateNaissance == null || dateNaissance == ""){
+            test = false;
+            setDateNaissanceError([true, "champ est obligatoire"]);
+          }else if(dateNaissance.isValid() == false){
+            test = false;
+            setDateNaissanceError([true, "date n est pas valide"]);
+          }
+
+          if(infPrelevement ==null){
+            test = null;
+            setInfPrelevementError([true, "champ est obligatoire"]);
+          }
+
+          if(testType ==null){
+            test = null;
+            setTestTypeError([true, "champ est obligatoire"]);
+          }
+
+          if(testes ==null){
+            test = null;
+            setTestesError([true, "champ est obligatoire"]);
+          }
+
+          if(docName =="" || docName == null){
+            test = false;
+            setDocNameError([true, "champ est obligatoire"]);
+          }
+
+          if (test){
+
+            var m = date.get('month')+1;
+            const d = date.get('date') +"/"+m +"/"+date.get('year');
+
+            var mN = dateNaissance.get('month')+1;
+            const d2 = dateNaissance.get('date') +"/"+m +"/"+ dateNaissance.get('year');
+
+          
+
+            const data = {
+              "no_enregistrement": Number(testCode),
+              "patient_first_name": name,
+              "patient_last_name": prename,
+              "patient_birth_day": d2,
+              "patient_genre": genre,
+              "doctor_send_from": docName,
+              "date_prelevement": d,
+              "inf_prelevement_id": infPrelevement.id,
+              "exm_type": testType.label,
+              "test_seen": "false",
+              "result_ready": "false",
+            }
+
+            console.log(data);
+
+            const token = localStorage.getItem("auth_token");
+
+            setCallBack(await addNewExemen(token, JSON.stringify(data)));         
+
+          }else{
+
+            console.log("error");
+            setLoadError(true);
+          }
+
+
+
+            
+          }
+
         }
 
 
@@ -685,7 +824,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                     }}
                 >
                 <ButtonGroup variant="outlined" aria-label="outlined primary button group" orientation="vertical">
-                  <Button startIcon={<FactCheckIcon />} onClick={editExamenOpen}>Resultat</Button>
+                  <Button startIcon={<AddCircleOutline />} onClick={addExamenOpen}>Ajouter un examen</Button>
+                  <Button startIcon={<EditAttributesIcon />} onClick={editExamenOpen}>Modifier un examen</Button>
                   <Button startIcon={<DeleteForeverIcon />} onClick={deleteExamenOpen}>Supprimer un examen</Button>
                 </ButtonGroup>
                 </Box>
@@ -718,6 +858,56 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
+
+            <Dialog open={open} onClose={addExamenClose}  maxWidth="lg" fullWidth={true}>
+                  <DialogTitle>Resultat</DialogTitle>
+                    <DialogContent>
+                      <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DesktopDatePicker
+                                                        label="Date de resultat"
+                                                        inputFormat="DD/MM/YYYY"
+                                                        value={dateNaissance}
+                                                        onChange={handleChangeDateN}
+                                                        renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
+                                                        helperText={dateNaissanceError[1]} 
+                                                        required/>}
+                                                />
+
+                                            </LocalizationProvider>
+
+                                        </Grid>
+
+                                        
+                                        <Grid item xs={6}>
+                                        <Autocomplete
+                                                    disablePortal
+                                                    value={infPrelevement}
+                                                    onChange={(event, newVlue) =>{
+                                                        setInfPrelevement(newVlue);                                                        
+                                                    }}
+                                                    options={allInfPrelevement}
+                                                    renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
+                                                    helperText={infPrelevementError[1]} fullWidth variant="standard" label="Laboriste" 
+                                                    required/>}
+                                                />                                          
+                                        </Grid>                        
+                      </Grid>
+
+                      <br/><br/>
+
+                      <Grid container spacing={2}>                                                                                
+                      
+                      </Grid>
+                    </DialogContent>
+                              <DialogActions>
+                                <Button onClick={addExamenClose}>Anuller</Button>
+                                <Button onClick={addExamenSave}>Sauvgarder</Button>
+                              </DialogActions>   
+
+                    
+            </Dialog>
 
             <Dialog open={openUpdate} onClose={addResultatClose}  maxWidth="lg" fullWidth={true}>
                   <DialogTitle>Resultat</DialogTitle>

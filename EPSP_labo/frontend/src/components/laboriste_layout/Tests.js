@@ -762,6 +762,12 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
                       <Grid container spacing={2}>
                                         <Grid item xs={6}>
+                                        <TextField
+                                        id="outlined-textarea"
+                                        label="Multiline Placeholder"
+                                        placeholder="Placeholder"
+                                        multiline
+                                      />
 
                                         </Grid>
                                         <Grid item xs={6}>
