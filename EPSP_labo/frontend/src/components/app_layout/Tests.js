@@ -349,7 +349,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             
           }
 
-        }
+        
 
 
         const editExamenOpen = async() =>{
@@ -863,7 +863,22 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                   <DialogTitle>Resultat</DialogTitle>
                     <DialogContent>
                       <Grid container spacing={2}>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={4}>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DesktopDatePicker
+                                                        label="Date de resultat"
+                                                        inputFormat="DD/MM/YYYY"
+                                                        value={dateNaissance}
+                                                        onChange={handleChangeDateN}
+                                                        renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
+                                                        helperText={dateNaissanceError[1]} 
+                                                        required/>}
+                                                />
+
+                                            </LocalizationProvider>
+
+                                        </Grid>
+                                        <Grid item xs={4}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DesktopDatePicker
                                                         label="Date de resultat"
@@ -879,27 +894,69 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
                                         </Grid>
 
-                                        
-                                        <Grid item xs={6}>
-                                        <Autocomplete
-                                                    disablePortal
-                                                    value={infPrelevement}
-                                                    onChange={(event, newVlue) =>{
-                                                        setInfPrelevement(newVlue);                                                        
-                                                    }}
-                                                    options={allInfPrelevement}
-                                                    renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
-                                                    helperText={infPrelevementError[1]} fullWidth variant="standard" label="Laboriste" 
-                                                    required/>}
-                                                />                                          
-                                        </Grid>                        
+                                        <Grid item xs={4}>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DesktopDatePicker
+                                                        label="Date de resultat"
+                                                        inputFormat="DD/MM/YYYY"
+                                                        value={dateNaissance}
+                                                        onChange={handleChangeDateN}
+                                                        renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
+                                                        helperText={dateNaissanceError[1]} 
+                                                        required/>}
+                                                />
+
+                                            </LocalizationProvider>
+
+                                        </Grid>
+              
                       </Grid>
 
                       <br/><br/>
 
-                      <Grid container spacing={2}>                                                                                
+                      <Grid container spacing={2}>      
+                        <Grid item xs={4}>
+                                          <Autocomplete
+                                                      disablePortal
+                                                      value={infPrelevement}
+                                                      onChange={(event, newVlue) =>{
+                                                          setInfPrelevement(newVlue);                                                        
+                                                      }}
+                                                      options={allInfPrelevement}
+                                                      renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
+                                                      helperText={infPrelevementError[1]} fullWidth variant="standard" label="Laboriste" 
+                                                      required/>}
+                                                  />                                          
+                        </Grid>
+                        <Grid item xs={4}>
+                                          <Autocomplete
+                                                      disablePortal
+                                                      value={infPrelevement}
+                                                      onChange={(event, newVlue) =>{
+                                                          setInfPrelevement(newVlue);                                                        
+                                                      }}
+                                                      options={allInfPrelevement}
+                                                      renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
+                                                      helperText={infPrelevementError[1]} fullWidth variant="standard" label="Laboriste" 
+                                                      required/>}
+                                                  />                                          
+                        </Grid>
+                        <Grid item xs={4}>
+                                          <Autocomplete
+                                                      disablePortal
+                                                      value={infPrelevement}
+                                                      onChange={(event, newVlue) =>{
+                                                          setInfPrelevement(newVlue);                                                        
+                                                      }}
+                                                      options={allInfPrelevement}
+                                                      renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
+                                                      helperText={infPrelevementError[1]} fullWidth variant="standard" label="Laboriste" 
+                                                      required/>}
+                                                  />                                          
+                        </Grid>                                                                               
                       
                       </Grid>
+                      
                     </DialogContent>
                               <DialogActions>
                                 <Button onClick={addExamenClose}>Anuller</Button>
@@ -995,7 +1052,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 
         );
-  }
+                                                  
+      }
 
 
   
