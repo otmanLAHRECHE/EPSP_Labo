@@ -214,161 +214,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
           setDate(newValue);
         }
 
-<<<<<<< HEAD
-        const addExamenOpen = async() =>{
-=======
-        const addExamenOpen = async () =>{
-
->>>>>>> parent of 93c2f0da (updates)
-          setTestCode("");
-          setName("");
-          setPrename("");
-          setGenre(null);
-          setDateNaissance("");
-          setDate("");
-          setDocName("");
-          setInfPrelevement(null);
-          setTestType(null);
-          setTestes(null);
-
-          setTestCodeError([false, ""]);
-          setNameError([false, ""]);
-          setPrenameError([false, ""]);
-          setGenreError([false, ""]);
-          setDateNaissanceError([false, ""]);
-          setDateError([false, ""]);
-          setDocNameError([false, ""]);
-          setInfPrelevementError([false, ""]);
-          setTestTypeError([false, ""]);
-          setTestesError([false, ""]);
-
-<<<<<<< HEAD
-            const token = localStorage.getItem("auth_token");
-
-            setInfData(await getAllInfirmierForSelect(token));
-
-            setTestTypeData(await getAllTestesTypesForSelect(token));
-
-            setNumberEnrgData(await getLastExemenTest(token));
-        }
-
-        const addExamenClose = () =>{
-          setOpen(false);
-        }
-
-        const addExamenSave = async() =>{
-          var test = true;
-
-          if(testCode == "" || testCode == 0){
-            test = false;
-            setTestCodeError([true, "erreur sur ce champ"]);
-          }
-
-          if(name =="" || name == null){
-            test = false;
-            setNameError([true, "champ est obligatoire"]);
-          }
-
-          if(prename =="" || prename == null){
-            test = false;
-            setPrenameError([true, "champ est obligatoire"]);
-          }
-
-          if(genre == "" || genre ==null){
-            test = false;
-            setGenreError([true, "champ est obligatoire"]);
-          }
-
-          if(date == null || date == ""){
-            test = false;
-            setDateError([true, "champ est obligatoire"]);
-          }else if(date.isValid() == false){
-            test = false;
-            setDateError([true, "date n est pas valide"]);
-          }
-
-          if(dateNaissance == null || dateNaissance == ""){
-            test = false;
-            setDateNaissanceError([true, "champ est obligatoire"]);
-          }else if(dateNaissance.isValid() == false){
-            test = false;
-            setDateNaissanceError([true, "date n est pas valide"]);
-          }
-
-          if(infPrelevement ==null){
-            test = null;
-            setInfPrelevementError([true, "champ est obligatoire"]);
-          }
-
-          if(testType ==null){
-            test = null;
-            setTestTypeError([true, "champ est obligatoire"]);
-          }
-
-          if(testes ==null){
-            test = null;
-            setTestesError([true, "champ est obligatoire"]);
-          }
-
-          if(docName =="" || docName == null){
-            test = false;
-            setDocNameError([true, "champ est obligatoire"]);
-          }
-
-          if (test){
-
-            var m = date.get('month')+1;
-            const d = date.get('date') +"/"+m +"/"+date.get('year');
-
-            var mN = dateNaissance.get('month')+1;
-            const d2 = dateNaissance.get('date') +"/"+m +"/"+ dateNaissance.get('year');
-
-          
-
-            const data = {
-              "no_enregistrement": Number(testCode),
-              "patient_first_name": name,
-              "patient_last_name": prename,
-              "patient_birth_day": d2,
-              "patient_genre": genre,
-              "doctor_send_from": docName,
-              "date_prelevement": d,
-              "inf_prelevement_id": infPrelevement.id,
-              "exm_type": testType.label,
-              "test_seen": "false",
-              "result_ready": "false",
-            }
-
-            console.log(data);
-
-            const token = localStorage.getItem("auth_token");
-
-            setCallBack(await addNewExemen(token, JSON.stringify(data)));         
-
-          }else{
-
-            console.log("error");
-            setLoadError(true);
-          }
-
-
-
-            
-          }
-
-        
-
-=======
-          const token = localStorage.getItem("auth_token");
-
-          setInfData(await getAllInfirmierForSelect(token));
-
-          setTestTypeData(await getAllTestesTypesForSelect(token));
-
-          setNumberEnrgData(await getLastExemenTest(token));
-
-        }
->>>>>>> parent of 93c2f0da (updates)
 
         const editExamenOpen = async() =>{
           if(selectionModel.length == 0){
@@ -535,6 +380,41 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
         }
 
+
+        const addExamenOpen = async() =>{
+
+          setTestCode("");
+          setName("");
+          setPrename("");
+          setGenre(null);
+          setDateNaissance("");
+          setDate("");
+          setDocName("");
+          setInfPrelevement(null);
+          setTestType(null);
+          setTestes(null);
+
+          setTestCodeError([false, ""]);
+          setNameError([false, ""]);
+          setPrenameError([false, ""]);
+          setGenreError([false, ""]);
+          setDateNaissanceError([false, ""]);
+          setDateError([false, ""]);
+          setDocNameError([false, ""]);
+          setInfPrelevementError([false, ""]);
+          setTestTypeError([false, ""]);
+          setTestesError([false, ""]);
+
+            const token = localStorage.getItem("auth_token");
+
+            setInfData(await getAllInfirmierForSelect(token));
+
+            setTestTypeData(await getAllTestesTypesForSelect(token));
+
+            setNumberEnrgData(await getLastExemenTest(token));
+
+        }
+
         const addExamenClose = () =>{
           setOpen(false);
 
@@ -659,6 +539,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             setGenre("Famme")
           }
       };
+
+
     
       React.useEffect(() => {
         console.log(rowData);
@@ -955,12 +837,9 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
                         },
                     }}
                 >
-                <ButtonGroup variant="outlined" aria-label="outlined primary button group" orientation="vertical">
-<<<<<<< HEAD
+                <ButtonGroup variant="outlined" aria-label="outlined primary button group">
+
                   <Button startIcon={<AddCircleOutline />} onClick={addExamenOpen}>Ajouter un examen</Button>
-=======
-                  <Button startIcon={<AddCircleOutlineIcon />} onClick={addExamenOpen}>Ajouter un examen</Button>
->>>>>>> parent of 93c2f0da (updates)
                   <Button startIcon={<EditAttributesIcon />} onClick={editExamenOpen}>Modifier un examen</Button>
                   <Button startIcon={<DeleteForeverIcon />} onClick={deleteExamenOpen}>Supprimer un examen</Button>
                 </ButtonGroup>
@@ -995,121 +874,9 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             </Grid>
             <Copyright sx={{ pt: 4 }} />
 
-<<<<<<< HEAD
-            <Dialog open={open} onClose={addExamenClose}  maxWidth="lg" fullWidth={true}>
-                  <DialogTitle>Resultat</DialogTitle>
-                    <DialogContent>
-                      <Grid container spacing={2}>
-                                        <Grid item xs={4}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DesktopDatePicker
-                                                        label="Date de resultat"
-                                                        inputFormat="DD/MM/YYYY"
-                                                        value={dateNaissance}
-                                                        onChange={handleChangeDateN}
-                                                        renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
-                                                        helperText={dateNaissanceError[1]} 
-                                                        required/>}
-                                                />
-
-                                            </LocalizationProvider>
-
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DesktopDatePicker
-                                                        label="Date de resultat"
-                                                        inputFormat="DD/MM/YYYY"
-                                                        value={dateNaissance}
-                                                        onChange={handleChangeDateN}
-                                                        renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
-                                                        helperText={dateNaissanceError[1]} 
-                                                        required/>}
-                                                />
-
-                                            </LocalizationProvider>
-
-                                        </Grid>
-
-                                        <Grid item xs={4}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DesktopDatePicker
-                                                        label="Date de resultat"
-                                                        inputFormat="DD/MM/YYYY"
-                                                        value={dateNaissance}
-                                                        onChange={handleChangeDateN}
-                                                        renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
-                                                        helperText={dateNaissanceError[1]} 
-                                                        required/>}
-                                                />
-
-                                            </LocalizationProvider>
-
-                                        </Grid>
-              
-                      </Grid>
-
-                      <br/><br/>
-
-                      <Grid container spacing={2}>      
-                        <Grid item xs={4}>
-                                          <Autocomplete
-                                                      disablePortal
-                                                      value={infPrelevement}
-                                                      onChange={(event, newVlue) =>{
-                                                          setInfPrelevement(newVlue);                                                        
-                                                      }}
-                                                      options={allInfPrelevement}
-                                                      renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
-                                                      helperText={infPrelevementError[1]} fullWidth variant="standard" label="Laboriste" 
-                                                      required/>}
-                                                  />                                          
-                        </Grid>
-                        <Grid item xs={4}>
-                                          <Autocomplete
-                                                      disablePortal
-                                                      value={infPrelevement}
-                                                      onChange={(event, newVlue) =>{
-                                                          setInfPrelevement(newVlue);                                                        
-                                                      }}
-                                                      options={allInfPrelevement}
-                                                      renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
-                                                      helperText={infPrelevementError[1]} fullWidth variant="standard" label="Laboriste" 
-                                                      required/>}
-                                                  />                                          
-                        </Grid>
-                        <Grid item xs={4}>
-                                          <Autocomplete
-                                                      disablePortal
-                                                      value={infPrelevement}
-                                                      onChange={(event, newVlue) =>{
-                                                          setInfPrelevement(newVlue);                                                        
-                                                      }}
-                                                      options={allInfPrelevement}
-                                                      renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
-                                                      helperText={infPrelevementError[1]} fullWidth variant="standard" label="Laboriste" 
-                                                      required/>}
-                                                  />                                          
-                        </Grid>                                                                               
-                      
-                      </Grid>
-                      
-                    </DialogContent>
-                              <DialogActions>
-                                <Button onClick={addExamenClose}>Anuller</Button>
-                                <Button onClick={addExamenSave}>Sauvgarder</Button>
-                              </DialogActions>   
-
-                    
-            </Dialog>
-
-            <Dialog open={openUpdate} onClose={addResultatClose}  maxWidth="lg" fullWidth={true}>
-                  <DialogTitle>Resultat</DialogTitle>
-=======
 
             <Dialog open={open} onClose={addExamenClose}  maxWidth="lg" fullWidth={true}>
                   <DialogTitle>Ajouter un exemen</DialogTitle>
->>>>>>> parent of 93c2f0da (updates)
                     <DialogContent>
                       <Grid container spacing={2}>
                                         <Grid item xs={4}>

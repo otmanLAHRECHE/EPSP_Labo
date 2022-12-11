@@ -39,7 +39,7 @@ import { internal_processStyles } from '@mui/styled-engine';
 import ExamenItemsList from './Items-test-list';
 
 
-<<<<<<< HEAD
+
 import FormControl from '@mui/material/FormControl';
 
 import Select from '@mui/material/Select';
@@ -53,8 +53,7 @@ import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelecte
 import ReadyStatus from './ready_status';
 
 
-=======
->>>>>>> parent of 93c2f0da (updates)
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -164,8 +163,6 @@ const columns = [
 
         const handleChangeFilterDate = (newValue) =>{
           setDateFilter(newValue);
-
-<<<<<<< HEAD
         }
 
         const handleChangeDateN = (newValue) =>{
@@ -220,84 +217,8 @@ const columns = [
 
         const addResultatSave = async() =>{
 
-          var test = true;
-
-          if(testCode == "" || testCode == 0){
-            test = false;
-            setTestCodeError([true, "erreur sur ce champ"]);
-          }
-
-          if(name =="" || name == null){
-            test = false;
-            setNameError([true, "champ est obligatoire"]);
-          }
-
-          if(prename =="" || prename == null){
-            test = false;
-            setPrenameError([true, "champ est obligatoire"]);
-          }
-
-          if(genre == "" || genre ==null){
-            test = false;
-            setGenreError([true, "champ est obligatoire"]);
-          }
-
-          if(date == null || date == ""){
-            test = false;
-            setDateError([true, "champ est obligatoire"]);
-          }else if(date.isValid() == false){
-            test = false;
-            setDateError([true, "date n est pas valide"]);
-          }
-
-          if(dateNaissance == null || dateNaissance == ""){
-            test = false;
-            setDateNaissanceError([true, "champ est obligatoire"]);
-          }else if(dateNaissance.isValid() == false){
-            test = false;
-            setDateNaissanceError([true, "date n est pas valide"]);
-          }
-
-          if(infPrelevement ==null){
-            test = null;
-            setInfPrelevementError([true, "champ est obligatoire"]);
-          }
-
-          if(testType ==null){
-            test = null;
-            setTestTypeError([true, "champ est obligatoire"]);
-          }
-
-          if(testes ==null){
-            test = null;
-            setTestesError([true, "champ est obligatoire"]);
-          }
-
-          if(docName =="" || docName == null){
-            test = false;
-            setDocNameError([true, "champ est obligatoire"]);
-          }
-
-          if (test){
-            var m = date.get('month')+1;
-            const d = date.get('date') +"/"+m +"/"+date.get('year');
-
-            var mN = dateNaissance.get('month')+1;
-            const d2 = dateNaissance.get('date') +"/"+m +"/"+ dateNaissance.get('year');
-
-=======
-          console.log("filter date...", newValue);
-
         }
 
-        const addExamenOpen = () =>{
-
-        }
-
-        const editExamenOpen = () =>{
->>>>>>> parent of 93c2f0da (updates)
-          
-        }
 
         const deleteExamenOpen = () =>{
           
@@ -313,16 +234,7 @@ const columns = [
 
         }
 
-<<<<<<< HEAD
-        const change_type = (event) => {
-          if (event.target.value == ""){
-            setGenre("")
-          }else if (event.target.value == 1){
-            setGenre("Homme")
-          }else if (event.target.value == 2){
-            setGenre("Famme")
-          }
-      };
+       
     
 
       React.useEffect(() => {
@@ -378,43 +290,6 @@ const columns = [
         }
   
       }, [rowData]);
-
-      React.useEffect(() =>{
-        try{
-          if (infData == "no data"){
-            setResponseErrorSignal(true);
-          } else if(infData != "") {
-            setAllInfPrelevement(infData);
-          }
-        }catch(e){
-          console.log(e);
-        }
-      }, [infData]);
-
-      React.useEffect(() =>{
-        try{
-          if (testTypeData == "no data"){
-            setResponseErrorSignal(true);
-          } else if(testTypeData != "") {
-            setAllTestTypes(testTypeData);
-            setOpen(true);
-          }
-        }catch(e){
-          console.log(e);
-        }
-      }, [testTypeData]);
-
-      React.useEffect(() =>{
-        try{
-          if (test2TypeData == "no data"){
-            setResponseErrorSignal(true);
-          } else if(test2TypeData != "") {
-            setAllTestTypes(test2TypeData);
-          }
-        }catch(e){
-          console.log(e);
-        }
-      }, [test2TypeData]);
 
 
       React.useEffect(() =>{
@@ -578,10 +453,6 @@ const columns = [
 
 
 
-=======
-        
->>>>>>> parent of 93c2f0da (updates)
-
         return(
 
           <React.Fragment>
@@ -657,7 +528,6 @@ const columns = [
             </Grid>
             <Copyright sx={{ pt: 4 }} />
 
-<<<<<<< HEAD
 
             <Dialog open={openUpdate} onClose={addResultatClose}  maxWidth="lg" fullWidth={true}>
                   <DialogTitle>Resultat</DialogTitle>
@@ -677,7 +547,6 @@ const columns = [
                                                     required/>}
                                                 />  
                                         
-
                                         </Grid>
                                         <Grid item xs={6}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -723,9 +592,6 @@ const columns = [
 
                     
             </Dialog>
-=======
-            
->>>>>>> parent of 93c2f0da (updates)
 
             <Dialog open={openDelete}
                                     TransitionComponent={Transition}
