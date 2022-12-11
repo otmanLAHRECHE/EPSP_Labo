@@ -1,22 +1,12 @@
 import * as React from 'react';
-import { useTheme, styled  } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { DataGrid, GridToolbar, GridActionsCellItem,GridToolbarContainer,GridToolbarFilterButton,} from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 
-import Chip from '@mui/material/Chip';
-
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
-
-
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-
-import Checkbox from '@mui/material/Checkbox';
-
-
 
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -41,8 +31,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Typography from '@mui/material/Typography';
 
-import { darken, lighten } from '@mui/material/styles';
-
 import Container from '@mui/material/Container';
 
 import Alt from '../layouts/alert';
@@ -51,6 +39,7 @@ import { internal_processStyles } from '@mui/styled-engine';
 import ExamenItemsList from './Items-test-list';
 
 
+<<<<<<< HEAD
 import FormControl from '@mui/material/FormControl';
 
 import Select from '@mui/material/Select';
@@ -64,51 +53,40 @@ import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelecte
 import ReadyStatus from './ready_status';
 
 
+=======
+>>>>>>> parent of 93c2f0da (updates)
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 
-const getBackgroundColor = (color, mode) =>
-  mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6);
-
-const getHoverBackgroundColor = (color, mode) =>
-  mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5);
-
-
 const columns = [
     { field: 'id', headerName: 'Id', width: 60, hide: true },
-    { field: 'no_enregistrement', headerName: "No D'ENR", width: 80},
-    { field: 'patient_first_name', headerName: "NOM", width: 100},
-    { field: 'patient_last_name', headerName: "PRENOM", width: 100},
-    { field: 'patient_birth_day', headerName: "DATE Ns", width: 100},
-    { field: 'patient_genre', headerName: "GENRE", width: 80},
-    { field: 'date_prelevement', headerName: "DATE DE PRELEVEMENT", width: 160 },
-    { field: 'inf_prelevement', headerName: "INF DE PRELEVEMENT", width: 160, valueGetter: (params) =>
-    `${params.row.inf_prelevement.first_name || ''} ${params.row.inf_prelevement.last_name || ''}` },
-    { field: 'exm_type', headerName: "TYPE D'EXAMEN", width: 140 },
-    { field: 'tes_exm', headerName: "LES TESTES D'EXAMEN", width: 250 , renderCell: (params) => (
-      <ExamenItemsList testes={params.row.test_details}/>
+    { field: 'id2', headerName: "No D'ENREGISTREMENT", width: 180},
+    { field: 'id3', headerName: "NOM", width: 140},
+    { field: 'id4', headerName: "PRENOM", width: 140},
+    { field: 'id5', headerName: "AGE", width: 100},
+    { field: 'id6', headerName: "GENRE", width: 80},
+    { field: 'date', headerName: "DATE D'PRELEVEMENT", width: 150 },
+    { field: 'date2', headerName: "INF DE PRELEVEMENT", width: 150 },
+    { field: 'date3', headerName: "TYPE D'EXAMEN", width: 140 },
+    { field: 'sort', headerName: "LES TESTES D'EXAMEN", width: 200 , renderCell: (params) => (
+      <ExamenItemsList rows={params.row.sortie_items_set}/>
     ),
    },
-   { field: 'result_ready', headerName: "ETAT DE RESULTAT", width: 220 ,
-      renderCell: (params) => (
-        <ReadyStatus status={params.row.test_details}/>
-      ),
-  },
   ];
 
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
   
 
-  const ListItem = styled('li')(({ theme }) => ({
-    margin: theme.spacing(0.5),
-  }));
-
   
+  var sortieItemsTableData = [];
+
+
+
 
   export default function Tests(){
+
+
 
     const [testCode, setTestCode] = React.useState("");
     const [name, setName] = React.useState(null);
@@ -116,8 +94,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [dateNaissance, setDateNaissance] = React.useState("");
     const [genre, setGenre] = React.useState(null);
     const [testType, setTestType] = React.useState(null);
-    const [infPrelevement, setInfPrelevement] = React.useState(null);
-    const [testes, setTestes] = React.useState(null);
     const [docName, setDocName] = React.useState(null);
     const [date, setDate] = React.useState("");
 
@@ -128,7 +104,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [examenNameError, setExamenNameError] = React.useState([false, ""]);
 
     const [callBack, setCallBack] = React.useState("");
-    const [callBackUpdate, setCallBackUpdate] = React.useState("");
 
     const [dateFilterNotErr, setDateFilterNotErr] = React.useState(false);
     
@@ -139,12 +114,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [dateNaissanceError, setDateNaissanceError] = React.useState([false, ""]);
     const [genreError, setGenreError] = React.useState([false, ""]);
     const [testTypeError, setTestTypeError] = React.useState([false, ""]);
-    const [infPrelevementError, setInfPrelevementError] = React.useState([false, ""]);
     const [docNameError, setDocNameError] = React.useState([false, ""]);
     const [dateError, setDateError] = React.useState([false, ""]);
-    
-    const [testesError, setTestesError] = React.useState([false, ""]);
-
 
     const [dateFilterError, setDateFilterError] = React.useState("");
 
@@ -154,19 +125,12 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [responseErrorSignal, setResponseErrorSignal] = React.useState(false);
     const [sortieQntError, setSortieQntError] = React.useState(false);
 
-    const [allTestTypes, setAllTestTypes] = React.useState([]);
-    const [allInfPrelevement, setAllInfPrelevement] = React.useState([]);
-    const [allTestes, setAllTestes] = React.useState([]);
-
     const [currentStockItem, setCurrentStockItem] = React.useState([]);
     const [data, setData] = React.useState([]);
     const [dataSortie, setDataSortie] = React.useState([]);
-    const [infData, setInfData] = React.useState([]);
-    const [testTypeData, setTestTypeData] = React.useState([]);
-    const [test2TypeData, setTest2TypeData] = React.useState([]);
-    const [testesData, setTestesData] = React.useState([]);
-    const [testes2Data, setTestes2Data] = React.useState([]);
-    const [numberEnrgData, setNumberEnrgData] = React.useState([]);
+    const [namesData, setNamesData] = React.useState([]);
+    const [sourceData, setSourceData] = React.useState([]);
+    const [arrivageData, setArrivageData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false);
@@ -178,8 +142,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
     const [loadingSortieItem, setLoadingSortieItem] = React.useState(false);
 
     const [dataError, setDataError] = React.useState(false);
-    
-    const [genreValue, setGenreValue] = React.useState();
 
 
     const theme = useTheme
@@ -191,7 +153,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             <Typography variant="body2" color="text.secondary" align="center" {...props}>
               {'Copyright © '}
               <Link color="inherit" href="https://github.com/otmanLAHRECHE">
-                Labo_SysApp V1.0 
+                Labo_SysApp EPSP_labo V1.0 
               </Link>{' '}
               -- created by otman LAHRECHE
               {'.'}
@@ -203,6 +165,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
         const handleChangeFilterDate = (newValue) =>{
           setDateFilter(newValue);
 
+<<<<<<< HEAD
         }
 
         const handleChangeDateN = (newValue) =>{
@@ -322,63 +285,35 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             var mN = dateNaissance.get('month')+1;
             const d2 = dateNaissance.get('date') +"/"+m +"/"+ dateNaissance.get('year');
 
-          
-
-            const data = {
-              "no_enregistrement": Number(testCode),
-              "patient_first_name": name,
-              "patient_last_name": prename,
-              "patient_birth_day": d2,
-              "patient_genre": genre,
-              "doctor_send_from": docName,
-              "date_prelevement": d,
-              "inf_prelevement_id": infPrelevement.id,
-              "exm_type": testType.label,
-              "test_seen": "false",
-              "result_ready": "false",
-            }
-
-            console.log(data);
-
-            const token = localStorage.getItem("auth_token");
-
-            setCallBackUpdate(await updateExemen(token, JSON.stringify(data), rowData.id));         
-
-          }else{
-
-            console.log("error");
-            setLoadError(true);
-          }
-
+=======
+          console.log("filter date...", newValue);
 
         }
 
-        const deleteExamenOpen = () =>{
+        const addExamenOpen = () =>{
 
-          if(selectionModel.length == 0){
-            setSelectionError(true);
-          }else{   
-            setOpenDelete(true);
-          }
+        }
+
+        const editExamenOpen = () =>{
+>>>>>>> parent of 93c2f0da (updates)
+          
+        }
+
+        const deleteExamenOpen = () =>{
           
         }
 
         const deleteExamenClose = () =>{
 
-          setOpenDelete(false)
+
+        }
+
+        const deleteConfirmation = () =>{
 
 
         }
 
-        const deleteConfirmation = async () =>{
-
-          setOpenDelete(false);
-          const token = localStorage.getItem("auth_token");
-          setResponse(await deleteExemen(token, selectionModel[0])); 
-
-
-        }
-
+<<<<<<< HEAD
         const change_type = (event) => {
           if (event.target.value == ""){
             setGenre("")
@@ -643,12 +578,15 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 
 
+=======
+        
+>>>>>>> parent of 93c2f0da (updates)
 
         return(
 
           <React.Fragment>
 
-            <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={2}>
 
               <Grid item xs={6}>
@@ -693,13 +631,13 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
               </Grid>
 
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column'}}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                 <div style={{ height: 700, width: '100%' }}>
                           <DataGrid
                             components={{
                               Toolbar: GridToolbar,
                             }}
-                            rows={data}
+                              rows={data}
                               columns={columns}
                               pageSize={15}
                               checkboxSelection = {false}
@@ -719,6 +657,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
             </Grid>
             <Copyright sx={{ pt: 4 }} />
 
+<<<<<<< HEAD
 
             <Dialog open={openUpdate} onClose={addResultatClose}  maxWidth="lg" fullWidth={true}>
                   <DialogTitle>Resultat</DialogTitle>
@@ -784,6 +723,9 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
                     
             </Dialog>
+=======
+            
+>>>>>>> parent of 93c2f0da (updates)
 
             <Dialog open={openDelete}
                                     TransitionComponent={Transition}
