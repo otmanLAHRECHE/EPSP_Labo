@@ -5,6 +5,10 @@ import Paper from '@mui/material/Paper';
 import { DataGrid, GridToolbar, GridActionsCellItem,GridToolbarContainer,GridToolbarFilterButton,} from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 
+
+import PropTypes from 'prop-types';
+import { useGridApiContext } from '@mui/x-data-grid';
+
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 
@@ -51,71 +55,136 @@ import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
 import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
 import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelectedExemen, updateExemen, deleteTestOfExamen } from '../../actions/examen_data';
 import ReadyStatus from './ready_status';
+import { getAllLaboristeForSelect } from '../../actions/laboriste_data';
 
 
+function SelectEditInputCell(props) {
+  const { id, value, field } = props;
+  const apiRef = useGridApiContext();
+
+  const handleChange = async (event) => {
+    await apiRef.current.setEditCellValue({ id, field, value: event.target.value });
+    apiRef.current.stopCellEditMode({ id, field });
+  };
+
+  return (
+    <Select
+      value={value}
+      onChange={handleChange}
+      size="small"
+      sx={{ height: 1 }}
+      native
+      autoFocus
+    >
+      <option></option>
+      <option>Positiv +</option>
+      <option>Negativ -</option>
+    </Select>
+  );
+}
+
+SelectEditInputCell.propTypes = {
+  /**
+   * The column field of the cell that triggered the event.
+   */
+  field: PropTypes.string.isRequired,
+  /**
+   * The grid row id.
+   */
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  /**
+   * The cell value.
+   * If the column has `valueGetter`, use `params.row` to directly access the fields.
+   */
+  value: PropTypes.any,
+};
+
+const renderSelectEditInputCell = (params) => {
+  return <SelectEditInputCell {...params} />;
+};
+
+const columnsTest = [
+  {
+    field: 'test',
+    headerName: 'Test',
+    width: 120,
+  },
+  {
+    field: 'result',
+    headerName: 'Resultat',
+    renderEditCell: renderSelectEditInputCell,
+    editable: true,
+    width: 180,
+  },
+];
+
+const rowsTest = [
+  {
+    id: 1,
+    test: 'HIV',
+    result: '',
+  },
+  {
+    id: 2,
+    test: 'HBS',
+    result: '',
+  },
+  {
+    id: 3,
+    test: 'HOP',
+    result: '',
+  },
+];
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 
+let arr = rowsTest;
+
 const columns = [
-    { field: 'id', headerName: 'Id', width: 60, hide: true },
-    { field: 'id2', headerName: "No D'ENREGISTREMENT", width: 180},
-    { field: 'id3', headerName: "NOM", width: 140},
-    { field: 'id4', headerName: "PRENOM", width: 140},
-    { field: 'id5', headerName: "AGE", width: 100},
-    { field: 'id6', headerName: "GENRE", width: 80},
-    { field: 'date', headerName: "DATE D'PRELEVEMENT", width: 150 },
-    { field: 'date2', headerName: "INF DE PRELEVEMENT", width: 150 },
-    { field: 'date3', headerName: "TYPE D'EXAMEN", width: 140 },
-    { field: 'sort', headerName: "LES TESTES D'EXAMEN", width: 200 , renderCell: (params) => (
-      <ExamenItemsList rows={params.row.sortie_items_set}/>
-    ),
-   },
-  ];
+  { field: 'id', headerName: 'Id', width: 60, hide: true },
+  { field: 'no_enregistrement', headerName: "No D'ENR", width: 80},
+  { field: 'patient_first_name', headerName: "NOM", width: 100},
+  { field: 'patient_last_name', headerName: "PRENOM", width: 100},
+  { field: 'patient_birth_day', headerName: "DATE Ns", width: 100},
+  { field: 'patient_genre', headerName: "GENRE", width: 80},
+  { field: 'date_prelevement', headerName: "DATE DE PRELEVEMENT", width: 160 },
+  { field: 'inf_prelevement', headerName: "INF DE PRELEVEMENT", width: 160, valueGetter: (params) =>
+  `${params.row.inf_prelevement.first_name || ''} ${params.row.inf_prelevement.last_name || ''}` },
+  { field: 'exm_type', headerName: "TYPE D'EXAMEN", width: 140 },
+  { field: 'tes_exm', headerName: "LES TESTES D'EXAMEN", width: 250 , renderCell: (params) => (
+    <ExamenItemsList testes={params.row.test_details}/>
+  ),
+ },
+];
 
-  
-
-  
-  var sortieItemsTableData = [];
 
 
 
 
   export default function Tests(){
 
+    
 
+    const [laboriste, setLaboriste] = React.useState(null);
+    const [dateResult, setDateResult] = React.useState("");
+    const [resultNote, setResultNote] = React.useState(null);
 
-    const [testCode, setTestCode] = React.useState("");
-    const [name, setName] = React.useState(null);
-    const [prename, setPrename] = React.useState(null);
     const [dateNaissance, setDateNaissance] = React.useState("");
-    const [genre, setGenre] = React.useState(null);
-    const [testType, setTestType] = React.useState(null);
-    const [docName, setDocName] = React.useState(null);
-    const [date, setDate] = React.useState("");
 
     const [dateFilter, setDateFilter] = React.useState(dayjs());
-
-    const [examenName, setExamenName] = React.useState(null);
-
-    const [examenNameError, setExamenNameError] = React.useState([false, ""]);
 
     const [callBack, setCallBack] = React.useState("");
 
     const [dateFilterNotErr, setDateFilterNotErr] = React.useState(false);
     
 
-    const [testCodeError, setTestCodeError] = React.useState([false, ""]);
-    const [nameError, setNameError] = React.useState([false, ""]);
-    const [prenameError, setPrenameError] = React.useState([false, ""]);
+    const [laboristeError, setLaboristeError] = React.useState([false, ""]);
+    const [dateResultError, setDateResultError] = React.useState([false, ""]);
+    const [resultNoteError, setResultNoteError] = React.useState([false, ""]);
     const [dateNaissanceError, setDateNaissanceError] = React.useState([false, ""]);
-    const [genreError, setGenreError] = React.useState([false, ""]);
-    const [testTypeError, setTestTypeError] = React.useState([false, ""]);
-    const [docNameError, setDocNameError] = React.useState([false, ""]);
-    const [dateError, setDateError] = React.useState([false, ""]);
-
     const [dateFilterError, setDateFilterError] = React.useState("");
 
     const [loadError, setLoadError ] = React.useState(false);
@@ -124,12 +193,11 @@ const columns = [
     const [responseErrorSignal, setResponseErrorSignal] = React.useState(false);
     const [sortieQntError, setSortieQntError] = React.useState(false);
 
+    const [allLaboriste, setAllLaboriste] = React.useState([]);
+
     const [currentStockItem, setCurrentStockItem] = React.useState([]);
     const [data, setData] = React.useState([]);
-    const [dataSortie, setDataSortie] = React.useState([]);
-    const [namesData, setNamesData] = React.useState([]);
-    const [sourceData, setSourceData] = React.useState([]);
-    const [arrivageData, setArrivageData] = React.useState([]);
+    const [laboristeData, setLaboristeData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false);
@@ -165,48 +233,29 @@ const columns = [
           setDateFilter(newValue);
         }
 
-        const handleChangeDateN = (newValue) =>{
-          setDateNaissance(newValue);
+        const handleChangeResultDate = (newValue) =>{
+          setDateResult(newValue);
 
         }
 
-        const handleChangeDatePR = (newValue) =>{
-          setDate(newValue);
-        }
+        
 
         const addResultOpen = async() =>{
           if(selectionModel.length == 0){
             setSelectionError(true);
-          }else{    
-          setTestCode("");
-          setName("");
-          setPrename("");
-          setGenre(null);
-          setDateNaissance("");
-          setDate("");
-          setDocName("");
-          setInfPrelevement(null);
-          setTestType(null);
-          setTestes(null);
+          }else{  
+          
+          setLaboriste(null);
+          setDateResult("");
+          setResultNote("");
 
-          setTestCodeError([false, ""]);
-          setNameError([false, ""]);
-          setPrenameError([false, ""]);
-          setGenreError([false, ""]);
-          setDateNaissanceError([false, ""]);
-          setDateError([false, ""]);
-          setDocNameError([false, ""]);
-          setInfPrelevementError([false, ""]);
-          setTestTypeError([false, ""]);
-          setTestesError([false, ""]);
+          setLaboristeError([false, ""]);
+          setDateResultError([false, ""]);
+          setResultNoteError([false, ""]);
 
             const token = localStorage.getItem("auth_token");
 
-            setInfData(await getAllInfirmierForSelect(token));
-
-            setTest2TypeData(await getAllTestesTypesForSelect(token));
-    
-            setRowData(await getSelectedExemen(token, selectionModel[0])); 
+            setLaboristeData(await getAllLaboristeForSelect(token));
           }
           
         }
@@ -217,109 +266,46 @@ const columns = [
 
         const addResultatSave = async() =>{
 
+          console.log(rowsTest);
         }
 
 
         const deleteExamenOpen = () =>{
-          
+          if(selectionModel.length == 0){
+            setSelectionError(true);
+          }else{   
+            setOpenDelete(true);
+          }
         }
 
         const deleteExamenClose = () =>{
-
-
-        }
-
-        const deleteConfirmation = () =>{
-
+          setOpenDelete(false)
 
         }
 
-       
-    
+        const deleteConfirmation = async() =>{
+          setOpenDelete(false);
+          const token = localStorage.getItem("auth_token");
+          setResponse(await deleteExemen(token, selectionModel[0]));
 
-      React.useEffect(() => {
-        console.log(rowData);
-        try{
-
-          const get_data = async(x)=>{
-            const token = localStorage.getItem("auth_token");
-            setTestesData(await getTestesForSelectedType(token, x));
-          }
-
-
-  
-          if (rowData == "no data"){
-            setResponseErrorSignal(true);
-          } else if(rowData != "") {
-
-          get_data(rowData.exm_type)
-    
-          setOpenUpdate(true);
-    
-          setTestCode(rowData.no_enregistrement);
-          setName(rowData.patient_first_name);
-          setPrename(rowData.patient_last_name);
-          setDateNaissance(dayjs(rowData.patient_birth_day, 'YYYY-MM-DD'));
-          setGenre(rowData.patient_genre);
-          if(rowData.patient_genre == "Homme"){
-            setGenreValue(1);
-          }else{
-            setGenreValue(2);
-          }
-          setDocName(rowData.doctor_send_from);
-          setDate(dayjs(rowData.date_prelevement, 'YYYY-MM-DD'));
-          setInfPrelevement({"id":rowData.inf_prelevement.id, "label":rowData.inf_prelevement.first_name +" "+rowData.inf_prelevement.last_name})
-          setTestType({"label":rowData.exm_type});
-          
-          
-  
-          setTestCodeError([false, ""]);
-          setNameError([false, ""]);
-          setPrenameError([false, ""]);
-          setGenreError([false, ""]);
-          setDateNaissanceError([false, ""]);
-          setDateError([false, ""]);
-          setDocNameError([false, ""]);
-          setInfPrelevementError([false, ""]);
-          setTestTypeError([false, ""]);
-          setTestesError([false, ""]);
-  
-          }
-        }catch(e){
-          console.log(e)
         }
-  
-      }, [rowData]);
 
 
-      React.useEffect(() =>{
-        try{
-          if (testesData == "no data"){
-            setResponseErrorSignal(true);
-          } else if(testesData != "") {
-            setAllTestes(testesData);
-          }
-        }catch(e){
-          console.log(e);
-        }
-      }, [testesData]);
-
+        const processRowUpdate  = async(newRow) =>{
+            for (let i=0; i<arr.length; i++){ 
+              if(newRow == arr[i]){
+                console.log("equal..................");
+              }else{
+                  if(newRow.id == arr[i].id){   
+                    arr = arr.splice(i, 1);
+                    arr.push(newRow);              
+                }
+              } 
+            };
+            
+          console.log("arr..................", arr);
+        };
       
-
-      React.useEffect(() =>{
-        try{
-          if (numberEnrgData == "no data"){
-            setResponseErrorSignal(true);
-          } else if(numberEnrgData != "") {
-            setTestCode(numberEnrgData.no_enregistrement + 1);
-          } else{
-            setTestCode(1);
-          }
-        }catch(e){
-          console.log(e);
-        }
-      }, [numberEnrgData]);
-
 
       React.useEffect(() => {
   
@@ -359,97 +345,19 @@ const columns = [
       }, [response, dateFilter]);
 
 
-      React.useEffect(() => {
 
-        const upload = async (da) =>{
-          const token = localStorage.getItem("auth_token");
-            await addNewTest(token, JSON.stringify(da));
-        }
-
-        const upload2 = async (da) =>{
-          const token = localStorage.getItem("auth_token");           
-            setResponse(await addNewTest(token, JSON.stringify(da)));
-        }
-
-  
-        if (callBack == ""){
-
-        } else{
-
-          console.log("callback..........", callBack.id_examen);
-          console.log("length..........", testes.length);
-
-          for(var i=0; i<testes.length; i++){
-
-            if(i != testes.length - 1){
-              const d = {
-                "exam_id":Number(callBack.id_examen),
-                "exam_test_id":testes[i].id
-              };
-
-              upload(d);
-
-            }else{
-              const d = {
-                "exam_id":Number(callBack.id_examen),
-                "exam_test_id":testes[i].id
-              };
-              upload2(d);              
-            }                    
+      React.useEffect(() =>{
+        try{
+          if (laboristeData == "no data"){
+            setResponseErrorSignal(true);
+          } else if(laboristeData != "") {
+            setAllLaboriste(laboristeData);
+            setOpenUpdate(true);
           }
-          setResponseSuccesSignal(true);
-          setCallBack("");
-          setOpen(false);
+        }catch(e){
+          console.log(e);
         }
-  
-      }, [callBack]);
-
-
-      React.useEffect(() => {
-
-        const delete_history = async() =>{
-          const token = localStorage.getItem("auth_token");
-            await deleteTestOfExamen(token, rowData.id);
-        }
-
-        const upload = async (da) =>{
-          const token = localStorage.getItem("auth_token");
-            await addNewTest(token, JSON.stringify(da));
-        }
-        const upload2 = async (da) =>{
-          const token = localStorage.getItem("auth_token");           
-            setResponse(await addNewTest(token, JSON.stringify(da)));
-        }
-
-        if (callBackUpdate == ""){
-
-        } else{
-
-          delete_history();
-
-          for(var i=0; i<testes.length; i++){
-            if(i != testes.length - 1){
-              const d = {
-                "exam_id":Number(rowData.id),
-                "exam_test_id":testes[i].id
-              };
-
-              upload(d);
-
-            }else{
-              const d = {
-                "exam_id":Number(rowData.id),
-                "exam_test_id":testes[i].id
-              };
-              upload2(d);              
-            }                    
-          }
-          setResponseSuccesSignal(true);
-          setCallBackUpdate("");
-          setOpenUpdate(false);
-        }
-  
-      }, [callBackUpdate]);
+      }, [laboristeData]);
 
 
 
@@ -536,14 +444,14 @@ const columns = [
                                         <Grid item xs={6}>
                                         <Autocomplete
                                                     disablePortal
-                                                    value={infPrelevement}
+                                                    value={laboriste}
                                                     onChange={(event, newVlue) =>{
-                                                        setInfPrelevement(newVlue);
+                                                        setLaboriste(newVlue);
                                                         
                                                     }}
-                                                    options={allInfPrelevement}
-                                                    renderInput={(params) => <TextField {...params} error={infPrelevementError[0]}
-                                                    helperText={infPrelevementError[1]} fullWidth variant="standard" label="Infirmier de prélèvement" 
+                                                    options={allLaboriste}
+                                                    renderInput={(params) => <TextField {...params} error={laboristeError[0]}
+                                                    helperText={laboristeError[1]} fullWidth label="laborantin" 
                                                     required/>}
                                                 />  
                                         
@@ -551,12 +459,12 @@ const columns = [
                                         <Grid item xs={6}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DesktopDatePicker
-                                                        label="Date de naissanse"
+                                                        label="Date de resultat"
                                                         inputFormat="DD/MM/YYYY"
-                                                        value={dateNaissance}
-                                                        onChange={handleChangeDateN}
-                                                        renderInput={(params) => <TextField {...params} error={dateNaissanceError[0]}
-                                                        helperText={dateNaissanceError[1]} 
+                                                        value={dateResult}
+                                                        onChange={handleChangeResultDate}
+                                                        renderInput={(params) => <TextField {...params} fullWidth error={dateResultError[0]}
+                                                        helperText={dateResultError[1]} 
                                                         required/>}
                                                 />
 
@@ -569,16 +477,26 @@ const columns = [
                       <br></br> 
 
                       <Grid container spacing={2}>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={4}>
                                         <TextField
+                                        error={resultNoteError[0]}
+                                        helperText={resultNoteError[1]}
                                         id="outlined-textarea"
-                                        label="Multiline Placeholder"
-                                        placeholder="Placeholder"
+                                        label="Note"
                                         multiline
+                                        onChange={(event) => {setResultNote(event.target.value)}}                                          
                                       />
 
                                         </Grid>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={8}>
+                                        <div style={{ height: 300, width: '100%' }}>
+                                          <DataGrid
+                                            rows={rowsTest}
+                                            columns={columnsTest}
+                                            processRowUpdate ={processRowUpdate}
+                                            experimentalFeatures={{ newEditingApi: true }}
+                                          />
+                                        </div>
                                         
                                         </Grid>
                         
