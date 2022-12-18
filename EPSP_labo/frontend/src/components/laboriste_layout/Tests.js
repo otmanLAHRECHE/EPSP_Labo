@@ -52,7 +52,7 @@ import SummarizeIcon from '@mui/icons-material/Summarize';
 
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
-import { getAllTestesTypesForSelect, getLastExemenTest, getTestesForSelectedType } from '../../actions/exemen_test_data';
+import { getAllTestesTypesForSelect, getLastExemenTest, getTestDetailsForSelectedExam, getTestesForSelectedType } from '../../actions/exemen_test_data';
 import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelectedExemen, updateExemen, deleteTestOfExamen } from '../../actions/examen_data';
 import ReadyStatus from './ready_status';
 import { getAllLaboristeForSelect } from '../../actions/laboriste_data';
@@ -108,9 +108,11 @@ const columnsTest = [
     field: 'test',
     headerName: 'Test',
     width: 120,
+    valueGetter: (params) =>
+  `${params.row.examen_test.exam_test}` 
   },
   {
-    field: 'result',
+    field: 'resultat_test',
     headerName: 'Resultat',
     renderEditCell: renderSelectEditInputCell,
     editable: true,
@@ -118,30 +120,14 @@ const columnsTest = [
   },
 ];
 
-const rowsTest = [
-  {
-    id: 1,
-    test: 'HIV',
-    result: '',
-  },
-  {
-    id: 2,
-    test: 'HBS',
-    result: '',
-  },
-  {
-    id: 3,
-    test: 'HOP',
-    result: '',
-  },
-];
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 
-let arr = rowsTest;
+let arr = [];
 
 const columns = [
   { field: 'id', headerName: 'Id', width: 60, hide: true },
@@ -198,6 +184,7 @@ const columns = [
     const [currentStockItem, setCurrentStockItem] = React.useState([]);
     const [data, setData] = React.useState([]);
     const [laboristeData, setLaboristeData] = React.useState([]);
+    const [trData, setTrData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false);
@@ -244,6 +231,8 @@ const columns = [
           if(selectionModel.length == 0){
             setSelectionError(true);
           }else{  
+
+            arr= [];
           
           setLaboriste(null);
           setDateResult("");
@@ -256,6 +245,10 @@ const columns = [
             const token = localStorage.getItem("auth_token");
 
             setLaboristeData(await getAllLaboristeForSelect(token));
+
+            setTrData(await getTestDetailsForSelectedExam(token, selectionModel[0]));
+
+            
           }
           
         }
@@ -296,9 +289,10 @@ const columns = [
               if(newRow == arr[i]){
                 console.log("equal..................");
               }else{
+                
                   if(newRow.id == arr[i].id){   
-                    arr = arr.splice(i, 1);
-                    arr.push(newRow);              
+                    console.log("ids..........", arr[i].id, newRow.id, newRow.resultat_test);
+                    arr[i].resultat_test = newRow.resultat_test;            
                 }
               } 
             };
@@ -358,6 +352,20 @@ const columns = [
           console.log(e);
         }
       }, [laboristeData]);
+
+
+      React.useEffect(() =>{
+        try{
+          if (trData == "no data"){
+            setResponseErrorSignal(true);
+          } else if(trData != "") {
+            arr = trData;
+            console.log(arr);
+          }
+        }catch(e){
+          console.log(e);
+        }
+      }, [trData]);
 
 
 
@@ -491,7 +499,7 @@ const columns = [
                                         <Grid item xs={8}>
                                         <div style={{ height: 300, width: '100%' }}>
                                           <DataGrid
-                                            rows={rowsTest}
+                                            rows={trData}
                                             columns={columnsTest}
                                             processRowUpdate ={processRowUpdate}
                                             experimentalFeatures={{ newEditingApi: true }}

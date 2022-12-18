@@ -45,4 +45,7 @@ urlpatterns = [
     path('api/update_test/<int:id>', views.updateTest),
     path('api/delete_test/<int:id>', views.deleteTest),
     path('api/delete_test_of_examen/<int:id>', views.deleteTestOfExamen),
+
+    
+    path('api/get_test_details_of_exam/<int:id>', views.getTestResultOfExam),
 ]

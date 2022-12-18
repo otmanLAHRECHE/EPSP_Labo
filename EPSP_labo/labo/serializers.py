@@ -61,6 +61,14 @@ class TestDetailsSerializer(serializers.ModelSerializer):
         fields = ['id', 'examen_test']
 
 
+class TestDetailsForShowingSerializer(serializers.ModelSerializer):
+
+    examen_test = ExemenTestSerializer()
+    class Meta:
+        model = TestDetails
+        fields = ['id', 'examen_test', 'resultat_test']
+
+
 
 class ExemenSerializer(serializers.ModelSerializer):
     inf_prelevement = InfirmierSerializer()

@@ -565,3 +565,19 @@ def deleteTestOfExamen(request, id):
 
 
 
+
+@api_view(['GET'])
+def getTestResultOfExam(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        examen = Examen.objects.get(id = id)
+
+        queryset = TestDetails.objects.filter(examen = examen)
+
+        source_serial = TestDetailsForShowingSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+

@@ -198,3 +198,30 @@ export async function getAllExemenTEst(token){
     }
   
   };
+
+
+
+
+  export async function getTestDetailsForSelectedExam(token, id){
+  
+    const response = await fetch(
+      '/labo/api/get_test_details_of_exam/'+id,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' +token,
+        },
+        body: JSON.stringify()
+      }
+  );
+  const text = await response.text();
+  if (response.status === 200) {
+    return JSON.parse(text);
+  } else {
+    console.log("failed", text);
+    return "no data";
+  }
+  
+  };
