@@ -178,6 +178,7 @@ const columns = [
     const [responseSuccesSignal, setResponseSuccesSignal] = React.useState(false);
     const [responseErrorSignal, setResponseErrorSignal] = React.useState(false);
     const [sortieQntError, setSortieQntError] = React.useState(false);
+    const [testTableError, setTestTableError] = React.useState(false);
 
     const [allLaboriste, setAllLaboriste] = React.useState([]);
 
@@ -258,8 +259,36 @@ const columns = [
         }
 
         const addResultatSave = async() =>{
+          
+          var test = true;
 
-          console.log(rowsTest);
+          setLaboristeError([false, ""]);
+          setDateResultError([false, ""]);
+
+          if(laboriste == null || laboriste == ""){
+            test = false;
+            setLaboristeError([true, "champ est obligatoire"])
+          }
+          if(dateResult == null || dateResult == ""){
+            test = false;
+            setDateResultError([true, "champ est obligatoire"]);
+          }else if(dateResult.isValid() == false){
+            test = false;
+            setDateResultError([true, "date n'est pas valide"]);
+          }
+          
+          for(let i=0; i<arr.length; i++){
+            if(arr[i].resultat_test == ''){
+              test = false;
+              setTestTableError(true);
+            }
+          }
+
+
+          if (test){
+            console.log("lets gooo")
+          }
+          
         }
 
 
@@ -291,13 +320,11 @@ const columns = [
               }else{
                 
                   if(newRow.id == arr[i].id){   
-                    console.log("ids..........", arr[i].id, newRow.id, newRow.resultat_test);
                     arr[i].resultat_test = newRow.resultat_test;            
                 }
               } 
             };
             
-          console.log("arr..................", arr);
         };
       
 
@@ -360,7 +387,6 @@ const columns = [
             setResponseErrorSignal(true);
           } else if(trData != "") {
             arr = trData;
-            console.log(arr);
           }
         }catch(e){
           console.log(e);
@@ -547,6 +573,7 @@ const columns = [
             {sortieQntError ? <Alt type='error' message='la quantité remplie n est pas desponible' onClose={()=> setSortieQntError(false)} /> : null}
             {dataError ? <Alt type='error' message='La liste des items de bon de sorte est vide!!' onClose={()=> setDataError(false)} /> : null}
             {dateFilterNotErr ? <Alt type='error' message='La liste des items de bon de sorte est vide!!' onClose={()=> setDateFilterNotErr(false)} /> : null}
+            {testTableError ? <Alt type='error' message='Des erruers sur les resultat des testes!!' onClose={()=> setTestTableError(false)} /> : null}
           
         </React.Fragment>
 
