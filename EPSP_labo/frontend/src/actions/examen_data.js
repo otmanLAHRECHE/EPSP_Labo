@@ -241,3 +241,28 @@ export async function getAllExemen(token){
       }
       
       };
+
+
+
+      export async function getAllExamenOfMonthForLabo(token, month, year){
+        const response = await fetch(
+            '/labo/api/get_all_exmene_of_month_labo/' +month+ '/'+ year,
+            {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' +token,
+              },
+              body: JSON.stringify()
+            }
+        );
+        const text = await response.text();
+        if (response.status === 200) {
+          return JSON.parse(text);
+        } else {
+          console.log("failed", text);
+          return "no data";
+        }
+      
+      };

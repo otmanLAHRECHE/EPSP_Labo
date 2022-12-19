@@ -53,7 +53,7 @@ import SummarizeIcon from '@mui/icons-material/Summarize';
 import InputLabel from '@mui/material/InputLabel';
 import { getAllInfirmierForSelect } from '../../actions/inf_prelevement_data';
 import { getAllTestesTypesForSelect, getLastExemenTest, getTestDetailsForSelectedExam, getTestesForSelectedType } from '../../actions/exemen_test_data';
-import { addNewExemen, getAllExamenOfMonth, deleteExemen, addNewTest, getSelectedExemen, updateExemen, deleteTestOfExamen } from '../../actions/examen_data';
+import { addNewExemen, deleteExemen, addNewTest, getSelectedExemen, updateExemen, deleteTestOfExamen, getAllExamenOfMonthForLabo } from '../../actions/examen_data';
 import ReadyStatus from './ready_status';
 import { getAllLaboristeForSelect } from '../../actions/laboriste_data';
 
@@ -348,7 +348,7 @@ const columns = [
             const token = localStorage.getItem("auth_token");
             var month = dateFilter.get("month")+1
             var year = dateFilter.get('year')
-            setData(await getAllExamenOfMonth(token, month, year));
+            setData(await getAllExamenOfMonthForLabo(token, month, year));
             setLoading(false);
           } catch (error) {
             console.log("error", error);

@@ -587,9 +587,9 @@ def getTestResultOfExam(request, id):
 @api_view(['GET'])
 def getAllResults(request):
     if request.method == 'GET' and request.user.is_authenticated:
-        queryset = Examen.objects.all()
+        queryset = Resultat.objects.all()
 
-        source_serial = ExemenSerializer(queryset, many=True)
+        source_serial = ResultSerializer(queryset, many=True)
 
         return Response(status=status.HTTP_200_OK,data=source_serial.data)
                 
@@ -598,11 +598,11 @@ def getAllResults(request):
 
 
 @api_view(['GET'])
-def getSelectedExemen(request, id):
+def getSelectedResult(request, id):
     if request.method == 'GET' and request.user.is_authenticated:
-        queryset = Examen.objects.get(id = id)
+        queryset = Resultat.objects.get(id = id)
 
-        source_serial = ExemenSerializer(queryset)
+        source_serial = ResultSerializer(queryset)
 
         return Response(status=status.HTTP_200_OK,data=source_serial.data)
                 
@@ -617,52 +617,39 @@ def getSelectedExemen(request, id):
 def createNewExemen(request):
     if request.method == 'POST' and request.user.is_authenticated:
 
-        no_enregistrement = request.data.pop('no_enregistrement')
-        patient_first_name = request.data.pop('patient_first_name')
-        patient_last_name = request.data.pop('patient_last_name')
-        date_p = request.data.pop('date_prelevement')
-        date_ns = request.data.pop('patient_birth_day')
-        patient_genre = request.data.pop('patient_genre')
-        doctor_send_from = request.data.pop('doctor_send_from')
-        inf_prelevement_id = request.data.pop('inf_prelevement_id')
-        exm_type = request.data.pop('exm_type')
-        test_seen = request.data.pop('test_seen')
-        result_ready = request.data.pop('result_ready')
+        id_exemen = request.data.pop('id_exemen')
+        id_laboriste = request.data.pop('id_laboriste')
+        date_r = request.data.pop('date_result')
+        result_tests = request.data.pop('result_note')
+        
 
-        inf_prelevement = InfPrileve.objects.get(id=inf_prelevement_id)
+        laboriste_worker = Laboriste.objects.get(id=id_laboriste)
+        examen = Examen.objects.get(id= id_exemen)
 
-        date_prelevement = date_p.split("/")
-        patient_birth_day = date_ns.split("/")
+        date_result = date_r.split("/")
 
-        d_p = date_prelevement[0]
-        m_p = date_prelevement[1]
+        d_r = date_result[0]
+        m_r = date_result[1]
 
-        d_ns = patient_birth_day[0]
-        m_ns = patient_birth_day[1]
 
-        if d_p[0] == '0':
-            d_p.replace('0','',1)
-        if m_p[0] == '0':
-            m_p.replace('0','',1)
-        if d_ns[0] == '0':
-            d_ns.replace('0','',1)
-        if m_ns[0] == '0':
-            m_ns.replace('0','',1)
+        if d_r[0] == '0':
+            d_r.replace('0','',1)
+        if m_r[0] == '0':
+            m_r.replace('0','',1)
 
-        date_prelevement[0] = d_p
-        date_prelevement[1] = m_p
-        patient_birth_day[0] = d_ns
-        patient_birth_day[1] = m_ns
+        date_result[0] = d_r
+        date_result[1] = m_r
 
         
-        date_prelevement = datetime.date(int(date_prelevement[2]), int(date_prelevement[1]), int(date_prelevement[0]))
-        patient_birth_day = datetime.date(int(patient_birth_day[2]), int(patient_birth_day[1]), int(patient_birth_day[0]))
+        date_result = datetime.date(int(date_result[2]), int(date_result[1]), int(date_result[0]))
+        
 
-
-        source = Examen.objects.create(no_enregistrement = no_enregistrement, patient_first_name = patient_first_name, patient_last_name=patient_last_name, patient_birth_day=patient_birth_day, patient_genre=patient_genre, doctor_send_from=doctor_send_from, date_prelevement=date_prelevement, inf_prelevement=inf_prelevement, exm_type=exm_type, test_seen=test_seen, result_ready=result_ready)
+        source = Resultat.objects.create(examen = examen, laboriste_worker = laboriste_worker, date_result = date_result, result_tests = result_tests)
 
         if source.id is not None:
-            return Response(status=status.HTTP_201_CREATED, data = {"id_examen":source.id})
+            examen.result_ready = "true"
+            examen.save()
+            return Response(status=status.HTTP_201_CREATED, data = {"Result created succesfully for examen"})
         else:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -671,87 +658,49 @@ def createNewExemen(request):
 @api_view(['POST'])
 def updateExemen(request, id):
     if request.method == 'POST' and request.user.is_authenticated:
-        no_enregistrement = request.data.pop('no_enregistrement')
-        patient_first_name = request.data.pop('patient_first_name')
-        patient_last_name = request.data.pop('patient_last_name')
-        date_p = request.data.pop('date_prelevement')
-        date_ns = request.data.pop('patient_birth_day')
-        patient_genre = request.data.pop('patient_genre')
-        doctor_send_from = request.data.pop('doctor_send_from')
-        inf_prelevement_id = request.data.pop('inf_prelevement_id')
-        exm_type = request.data.pop('exm_type')
 
-        inf_prelevement = InfPrileve.objects.get(id=inf_prelevement_id)
+        date_r = request.data.pop('date_result')
+        result_tests = request.data.pop('result_note')
+        id_laboriste = request.data.pop('id_laboriste')
 
-        date_prelevement = date_p.split("/")
-        patient_birth_day = date_ns.split("/")
+        laboriste_worker = Laboriste.objects.get(id=id_laboriste)
 
-        d_p = date_prelevement[0]
-        m_p = date_prelevement[1]
+        date_result = date_r.split("/")
 
-        d_ns = patient_birth_day[0]
-        m_ns = patient_birth_day[1]
+        d_r = date_result[0]
+        m_r = date_result[1]
 
-        if d_p[0] == '0':
-            d_p.replace('0','',1)
-        if m_p[0] == '0':
-            m_p.replace('0','',1)
-        if d_ns[0] == '0':
-            d_ns.replace('0','',1)
-        if m_ns[0] == '0':
-            m_ns.replace('0','',1)
 
-        date_prelevement[0] = d_p
-        date_prelevement[1] = m_p
-        patient_birth_day[0] = d_ns
-        patient_birth_day[1] = m_ns
+        if d_r[0] == '0':
+            d_r.replace('0','',1)
+        if m_r[0] == '0':
+            m_r.replace('0','',1)
+
+        date_result[0] = d_r
+        date_result[1] = m_r
 
         
-        date_prelevement = datetime.date(int(date_prelevement[2]), int(date_prelevement[1]), int(date_prelevement[0]))
-        patient_birth_day = datetime.date(int(patient_birth_day[2]), int(patient_birth_day[1]), int(patient_birth_day[0]))
+        date_result = datetime.date(int(date_result[2]), int(date_result[1]), int(date_result[0]))
+        
+       
+        result_to_update = Resultat.objects.get(id = id)
 
-        examen_to_update = Examen.objects.get(id = id)
-
-        if not examen_to_update.no_enregistrement == no_enregistrement:
-            examen_to_update.no_enregistrement = no_enregistrement
-        if not examen_to_update.patient_first_name == patient_first_name:
-            examen_to_update.patient_first_name = patient_first_name
-        if not examen_to_update.patient_last_name == patient_last_name:
-            examen_to_update.patient_last_name = patient_last_name
+        if not result_to_update.laboriste_worker == laboriste_worker:
+            result_to_update.laboriste_worker = laboriste_worker
+        if not result_to_update.date_result == date_result:
+            result_to_update.date_result = date_result
+        if not result_to_update.result_tests == result_tests:
+            result_to_update.result_tests = result_tests
         
-        if not examen_to_update.patient_genre == patient_genre:
-            examen_to_update.patient_genre = patient_genre
         
-        if not examen_to_update.doctor_send_from == doctor_send_from:
-            examen_to_update.doctor_send_from = doctor_send_from
+        result_to_update.save()
         
-        if not examen_to_update.exm_type == exm_type:
-            examen_to_update.exm_type = exm_type
-        
-        if not examen_to_update.inf_prelevement.full_name == inf_prelevement.full_name:
-            examen_to_update.inf_prelevement = inf_prelevement
-        
-        if not examen_to_update.date_prelevement == date_prelevement:
-            examen_to_update.date_prelevement = date_prelevement
-            
-        if not examen_to_update.patient_birth_day == patient_birth_day:
-            examen_to_update.patient_birth_day = patient_birth_day
-        
-        examen_to_update.save()
-        
-        return Response(status=status.HTTP_200_OK, data = {"status":"Exemen updated"})
-
-
-@api_view(['DELETE'])
-def deleteExemen(request, id):
-    if request.method == 'DELETE' and request.user.is_authenticated:
-        Examen.objects.filter(id=id).delete()
-        return Response(status=status.HTTP_200_OK, data = {"status":"Exemen deleted"})
+        return Response(status=status.HTTP_200_OK, data = {"status":"Result updated succesfully"})
 
 
 
 @api_view(['GET'])
-def getAllExamenOfMonth(request, month, year):
+def getAllExamenOfMonthForLaboriste(request, month, year):
     if request.method == 'GET' and request.user.is_authenticated:
 
         range = monthrange(year, month)
@@ -759,7 +708,7 @@ def getAllExamenOfMonth(request, month, year):
         date_start = datetime.date(year , month, 1)
         date_end = datetime.date( year, month, range[1])
 
-        queryset = Examen.objects.filter(date_prelevement__gte=date_start, date_prelevement__lte=date_end).order_by("-date_prelevement")
+        queryset = Examen.objects.filter(date_prelevement__gte=date_start, date_prelevement__lte=date_end, result_ready="false").order_by("-date_prelevement")
 
         source_serial = ExemenSerializer(queryset, many=True)
 

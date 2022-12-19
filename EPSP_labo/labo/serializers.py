@@ -76,3 +76,11 @@ class ExemenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Examen
         fields = ['id', 'no_enregistrement','patient_first_name','patient_last_name','patient_birth_day','patient_genre','doctor_send_from','date_prelevement','inf_prelevement','exm_type','test_seen','result_ready','test_details']
+
+
+class ResultSerializer(serializers.ModelSerializer):
+    exemen = ExemenSerializer()
+    laboriste_worker = LaboristeSerializer()
+    class Meta:
+        model = Examen
+        fields = ['id', 'examen', 'laboriste_worker', 'date_result', 'result_tests']
