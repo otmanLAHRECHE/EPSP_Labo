@@ -563,9 +563,6 @@ def deleteTestOfExamen(request, id):
 
 
 
-
-
-
 @api_view(['GET'])
 def getTestResultOfExam(request, id):
     if request.method == 'GET' and request.user.is_authenticated:
@@ -614,7 +611,7 @@ def getSelectedResult(request, id):
 
 
 @api_view(['POST'])
-def createNewExemen(request):
+def createNewResult(request):
     if request.method == 'POST' and request.user.is_authenticated:
 
         id_exemen = request.data.pop('id_exemen')
@@ -656,7 +653,7 @@ def createNewExemen(request):
 
 
 @api_view(['POST'])
-def updateExemen(request, id):
+def updateResult(request, id):
     if request.method == 'POST' and request.user.is_authenticated:
 
         date_r = request.data.pop('date_result')
@@ -701,6 +698,24 @@ def updateExemen(request, id):
 
 @api_view(['GET'])
 def getAllExamenOfMonthForLaboriste(request, month, year):
+    if request.method == 'GET' and request.user.is_authenticated:
+
+        range = monthrange(year, month)
+
+        date_start = datetime.date(year , month, 1)
+        date_end = datetime.date( year, month, range[1])
+
+        queryset = Examen.objects.filter(date_prelevement__gte=date_start, date_prelevement__lte=date_end, result_ready="false").order_by("-date_prelevement")
+
+        source_serial = ExemenSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED) 
+
+@api_view(['GET'])
+def getAllResultOfMonth(request, month, year):
     if request.method == 'GET' and request.user.is_authenticated:
 
         range = monthrange(year, month)
